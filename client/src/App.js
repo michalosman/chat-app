@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import AdminPanel from './components/AdminPanel/AdminPanel'
-import Chat from './components/Chat/Chat'
+import UserPanel from './components/UserPanel/UserPanel'
 import ModeratorPanel from './components/ModeratorPanel/ModeratorPanel'
 import Auth from './components/Auth/Auth'
 import decode from 'jwt-decode'
@@ -25,7 +25,7 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (user && user.role === 'user') return <Chat />
+  if (user && user.role === 'user') return <UserPanel />
   if (user && user.role === 'moderator') return <ModeratorPanel />
   if (user && user.role === 'admin') return <AdminPanel />
 
