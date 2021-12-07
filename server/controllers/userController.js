@@ -7,7 +7,7 @@ dotenv.config()
 
 const SECRET_KEY = process.env.SECRET_KEY
 
-export const register = async (req, res) => {
+export const signUp = async (req, res) => {
   const { email, password, name } = req.body
 
   const doesExist = Boolean(await User.findOne({ email }))
@@ -29,7 +29,7 @@ export const register = async (req, res) => {
   res.status(200).json({ ...newUser._doc, token })
 }
 
-export const login = async (req, res) => {
+export const signIn = async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
@@ -41,10 +41,9 @@ export const login = async (req, res) => {
   const isPasswordCorrect = await bcrypt.compare(password, user.password)
 
   if (!isPasswordCorrect) {
-    res.status(400).json({ message: 'Password incorrect.' })
+    return res.status(400).json({ message: 'Password incorrect.' })
   }
 
   const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1h' })
-
   res.status(200).json({ ...user._doc, token })
 }
