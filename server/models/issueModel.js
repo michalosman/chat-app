@@ -7,14 +7,14 @@ const issueSchema = mongoose.Schema(
         type: String,
         required: true,
       },
-      username: {
+      name: {
         type: String,
         required: true,
       },
     },
     moderator: {
       id: String,
-      username: String,
+      name: String,
     },
     message: {
       type: String,
