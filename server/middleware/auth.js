@@ -11,7 +11,7 @@ export const auth = async (req, res, next) => {
     const decoded = jwt.verify(token, SECRET_KEY)
     req.user = await User.findById(decoded.id)
   } catch (error) {
-    res.status(401).json({ message: 'Unauthorized' })
+    return res.status(401).json({ message: 'Unauthorized' })
   }
   next()
 }

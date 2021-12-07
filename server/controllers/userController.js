@@ -26,7 +26,9 @@ export const signUp = async (req, res) => {
 
   const token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: '1h' })
 
-  res.status(200).json({ ...newUser._doc, token })
+  const { password: remove, ...userData } = newUser._doc
+
+  res.status(200).json({ ...userData, token })
 }
 
 export const signIn = async (req, res) => {
@@ -45,5 +47,8 @@ export const signIn = async (req, res) => {
   }
 
   const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1h' })
-  res.status(200).json({ ...user._doc, token })
+
+  const { password: remove, ...userData } = user._doc
+
+  res.status(200).json({ ...userData, token })
 }
