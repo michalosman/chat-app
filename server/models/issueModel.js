@@ -21,7 +21,7 @@ const issueSchema = mongoose.Schema(
       required: true,
     },
     response: String,
-    category: {
+    type: {
       type: String,
       required: true,
     },
