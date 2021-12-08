@@ -1,7 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { chats } from '../../../utils/data'
 import { v4 as uuidv4 } from 'uuid'
 import { useSelector } from 'react-redux'
 
@@ -26,23 +25,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Messages = () => {
+const Messages = ({ currentChat }) => {
   const classes = useStyles()
   const user = useSelector((state) => state.auth)
 
-  const messages = chats[0].messages.map((message) => {
-    return (
-      <Box
-        key={uuidv4()}
-        className={`${classes.message} ${
-          message.sender._id === user._id ? classes.ownMessage : ''
-        }`}
-        p={1}
-      >
-        {message.text}
-      </Box>
-    )
-  })
+  const messages = currentChat.messages
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .map((message) => {
+      return (
+        <Box
+          key={uuidv4()}
+          className={`${classes.message} ${
+            message.sender._id === user._id ? classes.ownMessage : ''
+          }`}
+          p={1}
+        >
+          {message.text}
+        </Box>
+      )
+    })
 
   return (
     <Box
@@ -51,15 +52,6 @@ const Messages = () => {
       flexDirection="column-reverse"
       flex={1}
     >
-      {messages}
-      {messages}
-      {messages}
-      {messages}
-      {messages}
-      {messages}
-      {messages}
-      {messages}
-      {messages}
       {messages}
     </Box>
   )

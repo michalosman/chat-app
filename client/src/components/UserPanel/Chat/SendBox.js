@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, IconButton, Input } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import { makeStyles } from '@mui/styles'
+import { useDispatch } from 'react-redux'
+import { addMessage } from '../../../actions/chats'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -11,11 +13,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SendBox = () => {
+const SendBox = ({ currentChat }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const [message, setMessage] = useState('')
 
   const sendMessage = (e) => {
     e.preventDefault()
+    dispatch(addMessage(currentChat._id, message))
+    setMessage('')
   }
 
   return (
@@ -26,6 +32,8 @@ const SendBox = () => {
           fullWidth
           disableUnderline
           placeholder="Aa"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <IconButton size="large" type="submit">
           <SendIcon />

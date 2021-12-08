@@ -21,11 +21,15 @@ const App = () => {
         dispatch(signOut())
       } else {
         dispatch(autoSignIn())
-        dispatch(getChats())
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    dispatch(getChats())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   if (user && user.role === 'user') return <UserPanel />
   if (user && user.role === 'moderator') return <ModeratorPanel />

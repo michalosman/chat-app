@@ -12,7 +12,7 @@ import { signUp, signIn } from '../../actions/auth'
 import { useDispatch } from 'react-redux'
 
 const Auth = () => {
-  const [isSignUp, setIsSignUp] = useState(true)
+  const [isSignUp, setIsSignUp] = useState(false)
   const dispatch = useDispatch()
 
   const toggleIsSignUp = () => setIsSignUp(!isSignUp)

@@ -19,18 +19,16 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { getInitials } from '../../../utils/functions'
 import { useDispatch } from 'react-redux'
 import { signOut } from '../../../actions/auth'
+import { addChat } from '../../../actions/chats'
 
 const UserSettings = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
-  const [openAddChat, setOpenAddChat] = useState(false)
-  const [openReportAnIssue, setOpenReportAnIssue] = useState(false)
-  const [reportType, setReportType] = useState('')
 
-  const handleOpenAddChat = () => setOpenAddChat(true)
-  const handleCloseAddChat = () => setOpenAddChat(false)
-  const handleOpenReportAnIssue = () => setOpenReportAnIssue(true)
-  const handleCloseReportAnIssue = () => setOpenReportAnIssue(false)
+  const addNewChat = () => {
+    handleCloseAddChat()
+    dispatch(addChat(newChatEmail))
+  }
 
   const handleReportTypeChange = (event) => {
     setReportType(event.target.value)
@@ -38,6 +36,27 @@ const UserSettings = () => {
 
   const logOut = () => {
     dispatch(signOut())
+  }
+
+  const [openAddChat, setOpenAddChat] = useState(false)
+  const [openReportAnIssue, setOpenReportAnIssue] = useState(false)
+  const [reportType, setReportType] = useState('')
+  const [newChatEmail, setNewChatEmail] = useState('')
+
+  const handleOpenAddChat = () => {
+    setOpenAddChat(true)
+    setNewChatEmail('')
+  }
+  const handleCloseAddChat = () => {
+    setOpenAddChat(false)
+    setNewChatEmail('')
+  }
+
+  const handleOpenReportAnIssue = () => {
+    setOpenReportAnIssue(true)
+  }
+  const handleCloseReportAnIssue = () => {
+    setOpenReportAnIssue(false)
   }
 
   return (
@@ -78,11 +97,13 @@ const UserSettings = () => {
               type="email"
               fullWidth
               variant="standard"
+              value={newChatEmail}
+              onChange={(e) => setNewChatEmail(e.target.value)}
             />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseAddChat}>Cancel</Button>
-            <Button onClick={handleCloseAddChat}>Add chat</Button>
+            <Button onClick={addNewChat}>Add chat</Button>
           </DialogActions>
         </Dialog>
         <IconButton onClick={handleOpenReportAnIssue}>

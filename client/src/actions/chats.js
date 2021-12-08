@@ -43,10 +43,11 @@ export const deleteChat = (chatId) => async (dispatch) => {
   }
 }
 
-export const addMessage = (text) => async (dispatch) => {
+export const addMessage = (id, text) => async (dispatch) => {
   try {
-    const { data } = await API.addMessage(text)
+    const { data } = await API.addMessage(id, text)
     dispatch({ type: ADD_MESSAGE, payload: data })
+    dispatch(getChats())
   } catch (error) {
     console.log(error)
   }
