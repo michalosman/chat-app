@@ -15,7 +15,7 @@ router.use(auth)
 router.get('/', getChats)
 router.get('/:chatId', getChat)
 router.post('/', addChat)
-router.post('/:chatId', addMessage)
 router.delete('/:chatId', deleteChat)
+router.post('/:chatId', addMessage)
 
 export default router

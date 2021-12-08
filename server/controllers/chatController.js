@@ -73,6 +73,28 @@ export const addChat = async (req, res) => {
   }
 }
 
+export const deleteChat = async (req, res) => {
+  const user = req.user
+  const chatId = req.params.chatId
+
+  try {
+    const chat = await Chat.findById(chatId)
+
+    const isMember = chat.members.find(
+      (member) => member._id === mongoose.Types.ObjectId(user._id).toString()
+    )
+
+    if (!isMember) {
+      return res.status(403).json({ message: 'Forbidden' })
+    }
+
+    await chat.remove()
+    res.status(200).json({ message: 'Deleted successfully' })
+  } catch (error) {
+    res.status(409).json({ message: error })
+  }
+}
+
 export const addMessage = async (req, res) => {
   const user = req.user
   const chatId = req.params.chatId
@@ -101,28 +123,6 @@ export const addMessage = async (req, res) => {
       $push: { messages: message },
     })
     res.status(200).json(updatedChat)
-  } catch (error) {
-    res.status(409).json({ message: error })
-  }
-}
-
-export const deleteChat = async (req, res) => {
-  const user = req.user
-  const chatId = req.params.chatId
-
-  try {
-    const chat = await Chat.findById(chatId)
-
-    const isMember = chat.members.find(
-      (member) => member._id === mongoose.Types.ObjectId(user._id).toString()
-    )
-
-    if (!isMember) {
-      return res.status(403).json({ message: 'Forbidden' })
-    }
-
-    await chat.remove()
-    res.status(200).json({ message: 'Deleted successfully' })
   } catch (error) {
     res.status(409).json({ message: error })
   }
