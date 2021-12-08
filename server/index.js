@@ -6,6 +6,7 @@ import usersRoutes from './routes/users.js'
 import chatsRoutes from './routes/chats.js'
 import issuesRoutes from './routes/issues.js'
 import issuesTypesRoutes from './routes/issuesTypes.js'
+import { Server } from 'socket.io'
 
 dotenv.config()
 
@@ -31,6 +32,22 @@ await mongoose
   .then(() => console.log('Connected to DB'))
   .catch((err) => console.log(err.message))
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
+})
+
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+})
+
+io.on('connection', (socket) => {
+  socket.on('joinChat', (chatId) => {
+    socket.join(chatId)
+  })
+
+  socket.on('newMessage', (chatId) => {
+    socket.to(chatId).emit('receivedMessage', chatId)
+  })
 })

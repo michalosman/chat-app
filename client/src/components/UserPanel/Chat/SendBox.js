@@ -13,15 +13,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SendBox = ({ currentChat }) => {
+const SendBox = ({ currentChat, socket }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [message, setMessage] = useState('')
+
+  // console.log(socket)
 
   const sendMessage = (e) => {
     e.preventDefault()
     dispatch(addMessage(currentChat._id, message))
     setMessage('')
+    socket.emit('newMessage', currentChat._id)
   }
 
   return (
