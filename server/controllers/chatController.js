@@ -17,6 +17,9 @@ export const getChat = async (req, res) => {
   const chatId = req.params.chatId
   const user = req.user
 
+  if (!mongoose.Types.ObjectId.isValid(chatId))
+    return res.status(404).send('No chat with given id')
+
   try {
     const chat = await Chat.findById(chatId)
 
@@ -77,6 +80,9 @@ export const deleteChat = async (req, res) => {
   const user = req.user
   const chatId = req.params.chatId
 
+  if (!mongoose.Types.ObjectId.isValid(chatId))
+    return res.status(404).send('No chat with given id')
+
   try {
     const chat = await Chat.findById(chatId)
 
@@ -99,6 +105,9 @@ export const addMessage = async (req, res) => {
   const user = req.user
   const chatId = req.params.chatId
   const { text } = req.body
+
+  if (!mongoose.Types.ObjectId.isValid(chatId))
+    return res.status(404).send('No chat with given id')
 
   try {
     const chat = await Chat.findById(chatId)
