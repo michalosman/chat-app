@@ -18,10 +18,6 @@ const userSchema = mongoose.Schema({
     required: true,
     default: 'user',
   },
-  chats: {
-    type: [String],
-    default: [],
-  },
   reportsCount: {
     type: Number,
     default: 0,

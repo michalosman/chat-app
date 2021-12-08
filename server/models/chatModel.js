@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const memberSchema = mongoose.Schema({
-  id: {
+  _id: {
     type: String,
     required: true,
   },
@@ -34,7 +34,6 @@ const chatSchema = mongoose.Schema({
     type: [messageSchema],
     default: [],
   },
-  recentMessage: messageSchema,
 })
 
 const Chat = mongoose.model('Chat', chatSchema)
