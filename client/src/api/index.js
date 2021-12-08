@@ -14,6 +14,11 @@ API.interceptors.request.use((req) => {
 export const signUp = (newUserData) => API.post('users/signUp', newUserData)
 export const signIn = (userData) => API.post('/users/signIn', userData)
 
+export const getUsers = () => API.get('/users')
+export const report = (userId) => API.patch(`/users/${userId}/report`)
+export const warn = (userId) => API.patch(`/users/${userId}/warn`)
+export const block = (userId) => API.patch(`/users/${userId}/block`)
+
 export const getChats = () => API.get('/chats')
 export const getChat = (id) => API.get(`/chats/${id}`)
 export const addChat = (email) => API.post('/chats', { email })

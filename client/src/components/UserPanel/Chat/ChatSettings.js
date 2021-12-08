@@ -5,17 +5,12 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { getInitials, getOtherMember } from '../../../utils/functions'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteChat } from '../../../actions/chats'
+import { report } from '../../../api'
 
 const ChatSettings = ({ currentChat }) => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
   const otherUser = getOtherMember(currentChat.members, user._id)
-
-  const reportUser = () => {}
-
-  const removeChat = () => {
-    dispatch(deleteChat(currentChat._id))
-  }
 
   return (
     <Box
@@ -36,10 +31,10 @@ const ChatSettings = ({ currentChat }) => {
         </Typography>
       </Box>
       <Box display="flex">
-        <IconButton onClick={reportUser}>
+        <IconButton onClick={() => report(otherUser._id)}>
           <ReportIcon />
         </IconButton>
-        <IconButton onClick={removeChat}>
+        <IconButton onClick={() => dispatch(deleteChat(currentChat._id))}>
           <DeleteIcon />
         </IconButton>
       </Box>

@@ -18,8 +18,6 @@ const SendBox = ({ currentChat, socket }) => {
   const dispatch = useDispatch()
   const [message, setMessage] = useState('')
 
-  // console.log(socket)
-
   const sendMessage = (e) => {
     e.preventDefault()
     dispatch(addMessage(currentChat._id, message))
