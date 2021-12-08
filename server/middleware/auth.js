@@ -13,6 +13,9 @@ export const auth = async (req, res, next) => {
   } catch (error) {
     return res.status(401).json({ message: 'Unauthorized' })
   }
+  if (req.user.isBlocked) {
+    return res.status(401).json({ message: 'You are banned' })
+  }
   next()
 }
 
