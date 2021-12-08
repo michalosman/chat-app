@@ -42,9 +42,9 @@ const Chats = () => {
             <Typography variant="body1" ml={1}>
               {otherUser.name}
             </Typography>
-            <Typography variant="body2" ml={1}>
+            {/* <Typography variant="body2" ml={1}>
               {chat.recentMessage.text}
-            </Typography>
+            </Typography> */}
           </Box>
         </Box>
       </Button>

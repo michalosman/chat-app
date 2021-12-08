@@ -6,6 +6,7 @@ import ModeratorPanel from './components/ModeratorPanel/ModeratorPanel'
 import Auth from './components/Auth/Auth'
 import decode from 'jwt-decode'
 import { signOut, autoSignIn } from './actions/auth'
+import { getChats } from './actions/chats'
 
 const App = () => {
   const user = useSelector((state) => state.auth)
@@ -20,6 +21,7 @@ const App = () => {
         dispatch(signOut())
       } else {
         dispatch(autoSignIn())
+        dispatch(getChats())
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

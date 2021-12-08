@@ -9,7 +9,9 @@ import CssBaseline from '@mui/material/CssBaseline'
 import App from './App'
 import reducers from './reducers'
 
-const store = createStore(reducers, compose(applyMiddleware(thunk)))
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
+
 const theme = createTheme()
 
 ReactDOM.render(
