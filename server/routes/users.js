@@ -5,11 +5,13 @@ import {
   report,
   warn,
   block,
+  getUsers
 } from '../controllers/userController.js'
 import { auth, authAdmin } from '../middleware/auth.js'
 
 const router = express.Router()
 
+router.get('/', auth, authAdmin, getUsers)
 router.post('/signUp', signUp)
 router.post('/signIn', signIn)
 router.patch('/:userId/report', auth, report)
