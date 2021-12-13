@@ -1,5 +1,16 @@
-import React from 'react'
-import { Box, Avatar, Typography, IconButton } from '@mui/material'
+import React, { useState } from 'react'
+import {
+  Box,
+  Avatar,
+  Typography,
+  IconButton,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@mui/material'
 import ReportIcon from '@mui/icons-material/Report'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { getInitials, getOtherMember } from '../../../utils/functions'
@@ -11,6 +22,31 @@ const ChatPanel = ({ currentChat }) => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
   const otherUser = getOtherMember(currentChat.members, user._id)
+  const [openReportUser, setOpenReportUser] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
+
+  const openReportUserDialog = () => {
+    setOpenReportUser(true)
+  }
+  const closeReportUserDialog = () => {
+    setOpenReportUser(false)
+  }
+
+  const handleReportUser = () => {
+    report()
+  }
+
+  const openDeleteDialog = () => {
+    setOpenDelete(true)
+  }
+  const closeDeleteDialog = () => {
+    setOpenDelete(false)
+  }
+
+  const handleDelete = () => {
+    dispatch(deleteChat(currentChat._id))
+    closeDeleteDialog()
+  }
 
   return (
     <Box
@@ -31,12 +67,56 @@ const ChatPanel = ({ currentChat }) => {
         </Typography>
       </Box>
       <Box display="flex">
-        <IconButton onClick={() => report(otherUser._id)}>
+        <IconButton onClick={openReportUserDialog}>
           <ReportIcon />
         </IconButton>
-        <IconButton onClick={() => dispatch(deleteChat(currentChat._id))}>
+        <Dialog
+          open={openReportUser}
+          onClose={closeReportUserDialog}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle>Report user</DialogTitle>
+          <DialogContent>
+            <Typography variant="body2" gutterBottom>
+              Tell us more about the issue you have with {otherUser.name}.
+            </Typography>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              fullWidth
+              type="text"
+              variant="standard"
+              multiline
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeReportUserDialog}>Cancel</Button>
+            <Button onClick={closeReportUserDialog}>Report</Button>
+          </DialogActions>
+        </Dialog>
+        <IconButton onClick={openDeleteDialog}>
           <DeleteIcon />
         </IconButton>
+        <Dialog
+          open={openDelete}
+          onClose={closeDeleteDialog}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle>Do you want to delete this chat?</DialogTitle>
+          <DialogContent>
+            <Typography variant="body2">
+              Notice: This action is irreversible and will result in permanent
+              deletion of the chat for both users.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeDeleteDialog}>No</Button>
+            <Button onClick={handleDelete}>Yes</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Box>
   )

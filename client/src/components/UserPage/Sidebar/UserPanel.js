@@ -10,11 +10,9 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  NativeSelect,
 } from '@mui/material'
 import { useSelector } from 'react-redux'
 import AddIcon from '@mui/icons-material/Add'
-import ReportIcon from '@mui/icons-material/Report'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { getInitials } from '../../../utils/functions'
 import { useDispatch } from 'react-redux'
@@ -24,39 +22,26 @@ import { addChat } from '../../../actions/chats'
 const UserPanel = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
-
-  const addNewChat = () => {
-    handleCloseAddChat()
-    dispatch(addChat(newChatEmail))
-  }
-
-  const handleReportTypeChange = (event) => {
-    setReportType(event.target.value)
-  }
+  const [openAddChat, setOpenAddChat] = useState(false)
+  const [newChatEmail, setNewChatEmail] = useState('')
 
   const logOut = () => {
     dispatch(signOut())
   }
 
-  const [openAddChat, setOpenAddChat] = useState(false)
-  const [openReportAnIssue, setOpenReportAnIssue] = useState(false)
-  const [reportType, setReportType] = useState('')
-  const [newChatEmail, setNewChatEmail] = useState('')
-
-  const handleOpenAddChat = () => {
+  const openAddChatDialog = () => {
     setOpenAddChat(true)
     setNewChatEmail('')
   }
-  const handleCloseAddChat = () => {
+
+  const closeAddChatDialog = () => {
     setOpenAddChat(false)
     setNewChatEmail('')
   }
 
-  const handleOpenReportAnIssue = () => {
-    setOpenReportAnIssue(true)
-  }
-  const handleCloseReportAnIssue = () => {
-    setOpenReportAnIssue(false)
+  const addNewChat = () => {
+    dispatch(addChat(newChatEmail))
+    closeAddChatDialog()
   }
 
   return (
@@ -83,17 +68,24 @@ const UserPanel = () => {
         </Typography>
       </Box>
       <Box display="flex">
-        <IconButton onClick={handleOpenAddChat}>
+        <IconButton onClick={openAddChatDialog}>
           <AddIcon />
         </IconButton>
-        <Dialog open={openAddChat} onClose={handleCloseAddChat}>
-          <DialogTitle>Add new chat</DialogTitle>
+        <Dialog
+          open={openAddChat}
+          onClose={closeAddChatDialog}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle>Create new chat</DialogTitle>
           <DialogContent>
+            <Typography variant="body2" gutterBottom>
+              Enter user's email address.
+            </Typography>
             <TextField
               autoFocus
               margin="dense"
-              id="name"
-              label="Email Address"
+              id="email"
               type="email"
               fullWidth
               variant="standard"
@@ -102,41 +94,8 @@ const UserPanel = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseAddChat}>Cancel</Button>
+            <Button onClick={closeAddChatDialog}>Cancel</Button>
             <Button onClick={addNewChat}>Add chat</Button>
-          </DialogActions>
-        </Dialog>
-        <IconButton onClick={handleOpenReportAnIssue}>
-          <ReportIcon />
-        </IconButton>
-        <Dialog open={openReportAnIssue} onClose={handleCloseReportAnIssue}>
-          <DialogTitle>Report an issue</DialogTitle>
-          <DialogContent>
-            <NativeSelect
-              value={reportType}
-              label="Report type"
-              onChange={handleReportTypeChange}
-              fullWidth
-            >
-              <option value={'Other'}>Other</option>
-              <option value={'Smth 1'}>Smth 1</option>
-              <option value={'Smth 2'}>Smth 2</option>
-              <option value={'Smth 3'}>Smth 3</option>
-              <option value={'Smth 4'}>Smth 4</option>
-            </NativeSelect>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Description"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseReportAnIssue}>Cancel</Button>
-            <Button onClick={handleCloseReportAnIssue}>Send report</Button>
           </DialogActions>
         </Dialog>
         <IconButton onClick={logOut}>

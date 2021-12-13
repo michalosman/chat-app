@@ -19,19 +19,14 @@ const UserChats = () => {
         key={chat._id}
         style={{ textDecoration: 'none' }}
       >
-        <Button fullWidth style={{ textTransform: 'none' }}>
+        <Button fullWidth style={{ textTransform: 'none', color: 'black' }}>
           <Box display="flex" alignItems="center" width="100%" p={1}>
             <Avatar
               src={`https://avatars.dicebear.com/api/initials/${getInitials(
                 otherUser.name
               )}.svg`}
             />
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="flex-start"
-              style={{ color: 'black' }}
-            >
+            <Box display="flex" flexDirection="column" alignItems="flex-start">
               <Typography variant="body1" ml={1}>
                 {otherUser.name}
               </Typography>
