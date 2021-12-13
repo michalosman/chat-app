@@ -21,7 +21,7 @@ import { useDispatch } from 'react-redux'
 import { signOut } from '../../../actions/auth'
 import { addChat } from '../../../actions/chats'
 
-const UserSettings = () => {
+const UserPanel = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
 
@@ -147,4 +147,4 @@ const UserSettings = () => {
   )
 }
 
-export default UserSettings
+export default UserPanel

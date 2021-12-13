@@ -7,7 +7,7 @@ import WarningIcon from '@mui/icons-material/Warning'
 import BlockIcon from '@mui/icons-material/Block'
 import { v4 as uuidv4 } from 'uuid'
 
-const AdminPanel = () => {
+const AdminPage = () => {
   const dispatch = useDispatch()
   const [users, setUsers] = useState([])
 
@@ -58,4 +58,4 @@ const AdminPanel = () => {
   )
 }
 
-export default AdminPanel
+export default AdminPage

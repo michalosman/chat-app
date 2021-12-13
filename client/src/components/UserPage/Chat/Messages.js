@@ -1,35 +1,14 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 import { v4 as uuidv4 } from 'uuid'
 import { useSelector } from 'react-redux'
-
-const useStyles = makeStyles((theme) => ({
-  scrollBox: {
-    overflowY: 'scroll',
-  },
-
-  message: {
-    marginRight: 'auto',
-    marginBottom: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-    borderRadius: '10px',
-    backgroundColor: '#eee',
-  },
-
-  ownMessage: {
-    marginRight: theme.spacing(2),
-    marginLeft: 'auto',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-  },
-}))
+import useStyles from '../styles'
 
 const Messages = ({ currentChat }) => {
   const classes = useStyles()
   const user = useSelector((state) => state.auth)
 
-  const messages = currentChat.messages
+  const messageBoxes = currentChat.messages
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .map((message) => {
       return (
@@ -52,7 +31,7 @@ const Messages = ({ currentChat }) => {
       flexDirection="column-reverse"
       flex={1}
     >
-      {messages}
+      {messageBoxes}
     </Box>
   )
 }

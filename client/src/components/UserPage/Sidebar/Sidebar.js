@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import UserSettings from './UserSettings'
-import Chats from './Chats'
+import UserPanel from './UserPanel'
+import UserChats from './UserChats'
 
 const Sidebar = () => {
   return (
@@ -12,8 +12,8 @@ const Sidebar = () => {
       borderRight={1}
       borderColor={'divider'}
     >
-      <UserSettings />
-      <Chats />
+      <UserPanel />
+      <UserChats />
     </Box>
   )
 }

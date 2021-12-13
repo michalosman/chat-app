@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { deleteChat } from '../../../actions/chats'
 import { report } from '../../../api'
 
-const ChatSettings = ({ currentChat }) => {
+const ChatPanel = ({ currentChat }) => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
   const otherUser = getOtherMember(currentChat.members, user._id)
@@ -42,4 +42,4 @@ const ChatSettings = ({ currentChat }) => {
   )
 }
 
-export default ChatSettings
+export default ChatPanel

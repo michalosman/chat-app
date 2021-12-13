@@ -1,10 +1,10 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import Sidebar from './Sidebar/Sidebar'
-import Chat from './Chat/Chat'
+import Sidebar from './Sidebar'
+import Chat from './Chat'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-const UserPanel = () => {
+const UserPage = () => {
   return (
     <Router>
       <Box display="flex" height="100vh">
@@ -15,4 +15,4 @@ const UserPanel = () => {
   )
 }
 
-export default UserPanel
+export default UserPage

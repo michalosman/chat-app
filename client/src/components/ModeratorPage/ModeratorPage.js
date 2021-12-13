@@ -3,7 +3,7 @@ import { signOut } from '../../actions/auth'
 import { useDispatch } from 'react-redux'
 import { Box, Button } from '@mui/material'
 
-const ModeratorPanel = () => {
+const ModeratorPage = () => {
   const dispatch = useDispatch()
 
   return (
@@ -21,4 +21,4 @@ const ModeratorPanel = () => {
   )
 }
 
-export default ModeratorPanel
+export default ModeratorPage

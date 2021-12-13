@@ -11,7 +11,7 @@ import Container from '@mui/material/Container'
 import { signUp, signIn } from '../../actions/auth'
 import { useDispatch } from 'react-redux'
 
-const Auth = () => {
+const AuthPage = () => {
   const [isSignUp, setIsSignUp] = useState(false)
   const dispatch = useDispatch()
 
@@ -21,13 +21,14 @@ const Auth = () => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
 
-    const name = data.get('firstName') + ' ' + data.get('lastName')
-    const email = data.get('email')
-    const password = data.get('password')
-
     if (isSignUp) {
+      const name = data.get('firstName') + ' ' + data.get('lastName')
+      const email = data.get('email')
+      const password = data.get('password')
       dispatch(signUp({ name, email, password }))
     } else {
+      const email = data.get('email')
+      const password = data.get('password')
       dispatch(signIn({ email, password }))
     }
   }
@@ -143,4 +144,4 @@ function Copyright(props) {
   )
 }
 
-export default Auth
+export default AuthPage

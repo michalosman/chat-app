@@ -3,15 +3,9 @@ import { Link } from 'react-router-dom'
 import { Box, Typography, Avatar, Button } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { getInitials, getOtherMember } from '../../../utils/functions'
-import { makeStyles } from '@mui/styles'
+import useStyles from '../styles'
 
-const useStyles = makeStyles({
-  scrollBox: {
-    overflowY: 'scroll',
-  },
-})
-
-const Chats = () => {
+const UserChats = () => {
   const classes = useStyles()
   const user = useSelector((state) => state.auth)
   const chats = useSelector((state) => state.chats)
@@ -55,4 +49,4 @@ const Chats = () => {
   )
 }
 
-export default Chats
+export default UserChats
