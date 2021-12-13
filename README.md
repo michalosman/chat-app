@@ -12,19 +12,16 @@ Realtime **Chat App** created with MERN stack.
 ### User
 
 - [x] Create and delete private chats
-- [x] Write messages and read them in real time
-- [x] Report user
-- [ ] Report an issue
+- [x] Create new messages
+- [ ] Report users
 
 ### Moderator
 
-- [ ] Respond to issue reports
-- [ ] Create new problems categories?
+- [ ] Respond to user reports (warn user or ignore report)
 
 ### Admin
 
-- [ ] Warn users
-- [ ] Block users
+- [ ] List users warned 3 times (ban user or reset warns)
 
 ## Technologies used
 
