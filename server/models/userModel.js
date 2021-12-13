@@ -18,10 +18,6 @@ const userSchema = mongoose.Schema({
     required: true,
     default: 'user',
   },
-  reportsCount: {
-    type: Number,
-    default: 0,
-  },
   warningsCount: {
     type: Number,
     default: 0,

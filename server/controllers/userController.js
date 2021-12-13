@@ -54,25 +54,6 @@ export const signIn = async (req, res) => {
   res.status(200).json({ ...userData, token })
 }
 
-export const report = async (req, res) => {
-  const userId = req.params.userId
-
-  if (!mongoose.Types.ObjectId.isValid(userId))
-    return res.status(404).send('No user with given id')
-
-  const user = await User.findById(userId)
-
-  const updatedUser = await User.findByIdAndUpdate(
-    userId,
-    {
-      reportsCount: user.reportsCount + 1,
-    },
-    { new: true }
-  )
-
-  res.json(updatedUser)
-}
-
 export const warn = async (req, res) => {
   const userId = req.params.userId
 

@@ -3,8 +3,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import usersRoutes from './routes/users.js'
 import chatsRoutes from './routes/chats.js'
-import issuesRoutes from './routes/issues.js'
-import issuesTypesRoutes from './routes/issuesTypes.js'
+import reportsRoutes from './routes/reports.js'
 import { Server } from 'socket.io'
 import http from 'http'
 import dotenv from 'dotenv'
@@ -25,8 +24,7 @@ app.use(cors())
 
 app.use('/users', usersRoutes)
 app.use('/chats', chatsRoutes)
-app.use('/issues', issuesRoutes)
-app.use('/issuesTypes', issuesTypesRoutes)
+app.use('/reports', reportsRoutes)
 
 const MONGO_URI = process.env.MONGO_URI
 
