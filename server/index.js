@@ -1,5 +1,4 @@
 import express from 'express'
-import dotenv from 'dotenv'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import usersRoutes from './routes/users.js'
@@ -7,13 +6,18 @@ import chatsRoutes from './routes/chats.js'
 import issuesRoutes from './routes/issues.js'
 import issuesTypesRoutes from './routes/issuesTypes.js'
 import { Server } from 'socket.io'
+import http from 'http'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
-const PORT = process.env.PORT || 5000
-const MONGO_URI = process.env.MONGO_URI
-
 const app = express()
+const server = http.createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+})
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -24,7 +28,9 @@ app.use('/chats', chatsRoutes)
 app.use('/issues', issuesRoutes)
 app.use('/issuesTypes', issuesTypesRoutes)
 
-await mongoose
+const MONGO_URI = process.env.MONGO_URI
+
+mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -32,22 +38,22 @@ await mongoose
   .then(() => console.log('Connected to DB'))
   .catch((err) => console.log(err.message))
 
-const server = app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`)
-})
-
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3000',
-  },
-})
-
 io.on('connection', (socket) => {
-  socket.on('joinChat', (chatId) => {
+  socket.on('join chat', (chatId) => {
     socket.join(chatId)
   })
 
-  socket.on('newMessage', (chatId) => {
-    socket.to(chatId).emit('receivedMessage', chatId)
+  socket.on('send message', (chatId) => {
+    socket.to(chatId).emit('receive message', chatId)
   })
+
+  socket.on('leave chats', () =>
+    socket.rooms.forEach((roomId) => socket.leave(roomId))
+  )
+})
+
+const PORT = process.env.PORT || 5000
+
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`)
 })
