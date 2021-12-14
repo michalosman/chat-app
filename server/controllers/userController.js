@@ -98,3 +98,7 @@ export const getUsers = async (req, res) => {
     res.status(404).json({ message: error })
   }
 }
+
+export const validateRole = (req, res) => {
+  return res.status(200).send(req.body.role === req.user.role)
+}

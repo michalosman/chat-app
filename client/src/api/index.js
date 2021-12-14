@@ -13,6 +13,7 @@ API.interceptors.request.use((req) => {
 
 export const signUp = (newUserData) => API.post('users/signUp', newUserData)
 export const signIn = (userData) => API.post('/users/signIn', userData)
+export const validateRole = () => API.get('/users/validateRole')
 
 export const getUsers = () => API.get('/users')
 export const report = (userId) => API.patch(`/users/${userId}/report`)

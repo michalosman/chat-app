@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import AdminPage from './components/AdminPage'
-import UserPage from './components/UserPage/UserPage'
-import ModeratorPage from './components/ModeratorPage/ModeratorPage'
-import AuthPage from './components/AuthPage/AuthPage'
+import AdminPage from './pages/AdminPage'
+import UserPage from './pages/UserPage'
+import ModeratorPage from './pages/ModeratorPage'
+import AuthPage from './pages/AuthPage'
 import decode from 'jwt-decode'
 import { signOut, autoSignIn } from './actions/auth'
 import { getChats } from './actions/chats'
+import { validateRole } from './api'
 
 const App = () => {
   const user = useSelector((state) => state.auth)
@@ -17,19 +19,30 @@ const App = () => {
 
     if (userData) {
       const decodedToken = decode(userData.token)
+
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         dispatch(signOut())
       } else {
-        dispatch(autoSignIn())
+        validateUserData(userData)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    dispatch(getChats())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (user) {
+      dispatch(getChats())
+    }
   }, [user])
+
+  const validateUserData = async (userData) => {
+    const { data: isValid } = await validateRole(userData.role)
+
+    if (isValid) {
+      dispatch(autoSignIn())
+    } else {
+      dispatch(signOut())
+    }
+  }
 
   if (user && user.role === 'user') return <UserPage />
   if (user && user.role === 'moderator') return <ModeratorPage />
