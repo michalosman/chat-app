@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Box } from '@mui/material'
 import ChatPanel from './ChatPanel'
 import Messages from './Messages'
@@ -16,12 +16,19 @@ const Chat = () => {
   const dispatch = useDispatch()
   const chats = useSelector((state) => state.chats)
   const [currentChat, setCurrentChat] = useState(null)
+  const prevLocation = useRef('')
 
   useEffect(() => {
     setCurrentChat(findCurrentChat())
   }, [chats])
 
   useEffect(() => {
+    if (prevLocation.current.pathname === location.pathname) {
+      return
+    } else {
+      prevLocation.current = location
+    }
+
     const chat = findCurrentChat()
     socket.emit('leave chats')
 
@@ -47,7 +54,7 @@ const Chat = () => {
       borderColor={'divider'}
     >
       <ChatPanel currentChat={currentChat} />
-      <Messages currentChat={currentChat} socket={socket} />
+      <Messages currentChat={currentChat} />
       <SendBox currentChat={currentChat} socket={socket} />
     </Box>
   ) : (
