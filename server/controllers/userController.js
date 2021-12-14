@@ -99,6 +99,6 @@ export const getUsers = async (req, res) => {
   }
 }
 
-export const validateRole = (req, res) => {
-  return res.status(200).send(req.body.role === req.user.role)
+export const validateUser = (req, res) => {
+  return res.status(200).send({ isValid: req.body.role === req.user.role })
 }

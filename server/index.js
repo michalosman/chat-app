@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('send message', (chatId) => {
-    socket.to(chatId).emit('receive message', chatId)
+    socket.to(chatId).emit('receive message')
   })
 
   socket.on('leave chats', () =>

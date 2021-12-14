@@ -27,6 +27,7 @@ const SendBox = ({ currentChat, socket }) => {
           placeholder="Aa"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          required
         />
         <IconButton size="large" type="submit">
           <SendIcon />

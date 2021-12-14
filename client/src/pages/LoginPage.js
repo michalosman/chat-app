@@ -11,7 +11,7 @@ import Container from '@mui/material/Container'
 import { signUp, signIn } from '../actions/auth'
 import { useDispatch } from 'react-redux'
 
-const AuthPage = () => {
+const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false)
   const dispatch = useDispatch()
 
@@ -144,4 +144,4 @@ function Copyright(props) {
   )
 }
 
-export default AuthPage
+export default LoginPage
