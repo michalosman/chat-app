@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/material'
 import ChatPanel from './ChatPanel'
@@ -5,7 +6,7 @@ import Messages from './Messages'
 import SendBox from './SendBox'
 import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { getChat } from '../../../actions/chats'
+import { getChat } from '../../actions/chats'
 import io from 'socket.io-client'
 
 const socket = io('http://localhost:5000')
@@ -18,30 +19,23 @@ const Chat = () => {
 
   useEffect(() => {
     setCurrentChat(findCurrentChat())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chats])
 
   useEffect(() => {
     const chat = findCurrentChat()
+    socket.emit('leave chats')
 
     if (chat) {
-      updateChat(chat._id)
-      socket.emit('leave chats')
+      dispatch(getChat(chat._id))
       socket.emit('join chat', chat._id)
-      socket.on('receive message', () => updateChat(chat._id))
+      socket.on('receive message', () => dispatch(getChat(chat._id)))
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
   const findCurrentChat = () => {
     const chatId = location.pathname.substring(1)
     const chat = chats.find((chat) => chat._id === chatId)
     return chat
-  }
-
-  const updateChat = async (chatId) => {
-    await dispatch(getChat(chatId))
   }
 
   return currentChat ? (

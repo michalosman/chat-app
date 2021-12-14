@@ -13,10 +13,10 @@ import {
 } from '@mui/material'
 import ReportIcon from '@mui/icons-material/Report'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { getInitials, getOtherMember } from '../../../utils/functions'
+import { getInitials, getOtherMember } from '../../utils/functions'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteChat } from '../../../actions/chats'
-import { report } from '../../../api'
+import { deleteChat } from '../../actions/chats'
+import { report } from '../../api'
 
 const ChatPanel = ({ currentChat }) => {
   const dispatch = useDispatch()

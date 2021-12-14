@@ -1,5 +1,5 @@
 import React from 'react'
-import { signOut } from '../../actions/auth'
+import { signOut } from '../actions/auth'
 import { useDispatch } from 'react-redux'
 import { Box, Button } from '@mui/material'
 

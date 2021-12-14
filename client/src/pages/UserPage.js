@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import Sidebar from './Sidebar'
-import Chat from './Chat'
+import Sidebar from '../components/Sidebar'
+import Chat from '../components/Chat'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 const UserPage = () => {

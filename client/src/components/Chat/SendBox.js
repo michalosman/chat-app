@@ -3,7 +3,7 @@ import { Box, IconButton, Input } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import useStyles from '../styles'
 import { useDispatch } from 'react-redux'
-import { addMessage } from '../../../actions/chats'
+import { addMessage } from '../../actions/chats'
 
 const SendBox = ({ currentChat, socket }) => {
   const classes = useStyles()

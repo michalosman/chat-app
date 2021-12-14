@@ -14,10 +14,10 @@ import {
 import { useSelector } from 'react-redux'
 import AddIcon from '@mui/icons-material/Add'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { getInitials } from '../../../utils/functions'
+import { getInitials } from '../../utils/functions'
 import { useDispatch } from 'react-redux'
-import { signOut } from '../../../actions/auth'
-import { addChat } from '../../../actions/chats'
+import { signOut } from '../../actions/auth'
+import { addChat } from '../../actions/chats'
 
 const UserPanel = () => {
   const dispatch = useDispatch()
