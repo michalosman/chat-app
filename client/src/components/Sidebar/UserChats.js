@@ -15,7 +15,7 @@ const UserChats = () => {
 
     return (
       <Link
-        to={`${chat._id}`}
+        to={`/${chat._id}`}
         key={chat._id}
         style={{ textDecoration: 'none' }}
       >
