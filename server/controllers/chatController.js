@@ -128,9 +128,14 @@ export const addMessage = async (req, res) => {
       text,
     }
 
-    const updatedChat = await Chat.findByIdAndUpdate(chatId, {
-      $push: { messages: message },
-    })
+    const updatedChat = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $push: { messages: message },
+      },
+      { new: true } // this flag decides if we get old doc or updated doc
+    )
+
     res.status(200).json(updatedChat)
   } catch (error) {
     res.status(409).json({ message: error })
