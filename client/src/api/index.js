@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API = axios.create({ baseURL: 'http://localhost:5000' })
+const API = axios.create({ baseURL: process.env.REACT_APP_SERVER_URL })
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem('userData')) {
@@ -13,16 +13,17 @@ API.interceptors.request.use((req) => {
 
 export const signUp = (newUserData) => API.post('users/signUp', newUserData)
 export const signIn = (userData) => API.post('/users/signIn', userData)
+
+export const fetchUsers = () => API.get('/users')
+export const reportUser = (userId) => API.patch(`/users/${userId}/report`)
+export const warnUser = (userId) => API.patch(`/users/${userId}/warn`)
+export const blockUser = (userId) => API.patch(`/users/${userId}/block`)
 export const validateUser = (userData) =>
   API.post('/users/validateUser', userData)
 
-export const getUsers = () => API.get('/users')
-export const report = (userId) => API.patch(`/users/${userId}/report`)
-export const warn = (userId) => API.patch(`/users/${userId}/warn`)
-export const block = (userId) => API.patch(`/users/${userId}/block`)
-
-export const getChats = () => API.get('/chats')
-export const getChat = (id) => API.get(`/chats/${id}`)
-export const addChat = (email) => API.post('/chats', { email })
-export const deleteChat = (id) => API.delete(`/chats/${id}`)
-export const addMessage = (id, text) => API.post(`/chats/${id}`, { text })
+export const fetchChats = () => API.get('/chats')
+export const fetchChat = (chatId) => API.get(`/chats/${chatId}`)
+export const createChat = (email) => API.post('/chats', { email })
+export const deleteChat = (chatId) => API.delete(`/chats/${chatId}`)
+export const sendMessage = (chatId, text) =>
+  API.post(`/chats/${chatId}`, { text })

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { signOut } from '../actions/auth'
 import { useDispatch } from 'react-redux'
 import { Box, Button, IconButton } from '@mui/material'
-import { getUsers, warn, block } from '../api'
+import { fetchUsers, warnUser, blockUser } from '../api'
 import WarningIcon from '@mui/icons-material/Warning'
 import BlockIcon from '@mui/icons-material/Block'
 import { v4 as uuidv4 } from 'uuid'
@@ -12,11 +12,11 @@ const AdminPage = () => {
   const [users, setUsers] = useState([])
 
   useEffect(() => {
-    fetchUsers()
+    loadUsers()
   }, [])
 
-  const fetchUsers = async () => {
-    const { data } = await getUsers()
+  const loadUsers = async () => {
+    const { data } = await fetchUsers()
     setUsers(data)
   }
 
@@ -32,10 +32,10 @@ const AdminPage = () => {
     >
       {user.name}
       <Box ml={4}>
-        <IconButton onClick={() => warn(user._id)}>
+        <IconButton onClick={() => warnUser(user._id)}>
           <WarningIcon />
         </IconButton>
-        <IconButton onClick={() => block(user._id)}>
+        <IconButton onClick={() => blockUser(user._id)}>
           <BlockIcon />
         </IconButton>
       </Box>

@@ -5,7 +5,7 @@ import UserPage from './pages/UserPage'
 import ModeratorPage from './pages/ModeratorPage'
 import LoginPage from './pages/LoginPage'
 import useAuth from './hooks/useAuth'
-import { getChats } from './actions/chats'
+import { fetchChats } from './actions/chats'
 import LoadingPage from './pages/LoadingPage'
 import { useDispatch } from 'react-redux'
 
@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getChats())
+      dispatch(fetchChats())
     }
   }, [user])
 

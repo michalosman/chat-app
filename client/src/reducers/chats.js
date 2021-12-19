@@ -1,24 +1,24 @@
 import {
-  GET_CHAT,
-  GET_CHATS,
-  ADD_CHAT,
+  FETCH_CHAT,
+  FETCH_CHATS,
+  CREATE_CHAT,
   DELETE_CHAT,
-  ADD_MESSAGE,
+  SEND_MESSAGE,
 } from '../constants/actionTypes'
 
 const chatsReducer = (chats = [], action) => {
   switch (action.type) {
-    case GET_CHATS:
+    case FETCH_CHATS:
       return action.payload
-    case GET_CHAT:
+    case FETCH_CHAT:
       return chats.map((chat) =>
         chat._id === action.payload._id ? action.payload : chat
       )
-    case ADD_CHAT:
+    case CREATE_CHAT:
       return [...chats, action.payload]
     case DELETE_CHAT:
       return chats.filter((chat) => chat._id !== action.payload)
-    case ADD_MESSAGE:
+    case SEND_MESSAGE:
       return chats.map((chat) =>
         chat._id === action.payload._id ? action.payload : chat
       )

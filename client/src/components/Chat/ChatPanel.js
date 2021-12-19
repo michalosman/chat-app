@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { getInitials, getOtherMember } from '../../utils/functions'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteChat } from '../../actions/chats'
-import { report } from '../../api'
+import { reportUser } from '../../api'
 
 const ChatPanel = ({ currentChat }) => {
   const dispatch = useDispatch()
@@ -24,6 +24,7 @@ const ChatPanel = ({ currentChat }) => {
   const otherUser = getOtherMember(currentChat.members, user._id)
   const [openReportUser, setOpenReportUser] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
+  const [reportDescription, setReportDescription] = useState('')
 
   const openReportUserDialog = () => {
     setOpenReportUser(true)
@@ -32,8 +33,11 @@ const ChatPanel = ({ currentChat }) => {
     setOpenReportUser(false)
   }
 
-  const handleReportUser = () => {
-    report()
+  const handleReportUser = (e) => {
+    e.preventDefault()
+    // dispatch reportUser
+    // setReportDescription('')
+    // closeReportUserDialog()
   }
 
   const openDeleteDialog = () => {
@@ -76,25 +80,30 @@ const ChatPanel = ({ currentChat }) => {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle>Report user</DialogTitle>
-          <DialogContent>
-            <Typography variant="body2" gutterBottom>
-              Tell us more about the issue you have with {otherUser.name}.
-            </Typography>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              fullWidth
-              type="text"
-              variant="standard"
-              multiline
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeReportUserDialog}>Cancel</Button>
-            <Button onClick={closeReportUserDialog}>Report</Button>
-          </DialogActions>
+          <form onSubmit={handleReportUser}>
+            <DialogTitle>Report user</DialogTitle>
+            <DialogContent>
+              <Typography variant="body2" gutterBottom>
+                Tell us more about the issue you have with {otherUser.name}.
+              </Typography>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                fullWidth
+                type="text"
+                variant="standard"
+                multiline
+                value={reportDescription}
+                onChange={(e) => setReportDescription(e.target.value)}
+                required
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={closeReportUserDialog}>Cancel</Button>
+              <Button type="submit">Report</Button>
+            </DialogActions>
+          </form>
         </Dialog>
         <IconButton onClick={openDeleteDialog}>
           <DeleteIcon />
