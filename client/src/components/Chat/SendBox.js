@@ -1,25 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Box, IconButton, Input } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import useStyles from '../styles'
 import { useDispatch } from 'react-redux'
-import { addMessage } from '../../actions/chats'
+import { sendMessage } from '../../actions/chats'
+import { SocketContext } from '../../context/Socket'
 
-const SendBox = ({ currentChat, socket }) => {
+const SendBox = ({ currentChat }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [message, setMessage] = useState('')
+  const socket = useContext(SocketContext)
 
-  const sendMessage = async (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault()
-    await dispatch(addMessage(currentChat._id, message))
-    socket.emit('send message', currentChat._id)
+    if (!message) return
+
+    dispatch(sendMessage(currentChat._id, message, socket))
     setMessage('')
   }
 
   return (
     <Box p={2} borderTop={1} borderColor={'divider'}>
-      <Box component="form" onSubmit={sendMessage} display="flex">
+      <Box component="form" onSubmit={handleSendMessage} display="flex">
         <Input
           className={classes.input}
           fullWidth
@@ -27,7 +30,6 @@ const SendBox = ({ currentChat, socket }) => {
           placeholder="Aa"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          required
         />
         <IconButton size="large" type="submit">
           <SendIcon />

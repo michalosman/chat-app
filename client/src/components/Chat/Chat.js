@@ -1,49 +1,36 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { Box } from '@mui/material'
 import ChatPanel from './ChatPanel'
 import Messages from './Messages'
 import SendBox from './SendBox'
-import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { getChat } from '../../actions/chats'
-import io from 'socket.io-client'
-
-const socket = io('http://localhost:5000')
+import { fetchChat } from '../../actions/chats'
+import { SocketContext } from '../../context/Socket'
+import { useParams } from 'react-router-dom'
 
 const Chat = () => {
-  const location = useLocation()
   const dispatch = useDispatch()
+  const socket = useContext(SocketContext)
   const chats = useSelector((state) => state.chats)
+  const prevChatId = useRef('')
+  const { chatId } = useParams()
   const [currentChat, setCurrentChat] = useState(null)
-  const prevLocation = useRef('')
 
   useEffect(() => {
-    setCurrentChat(findCurrentChat())
+    setCurrentChat(chats.find((chat) => chat._id === chatId))
   }, [chats])
 
   useEffect(() => {
-    if (prevLocation.current.pathname === location.pathname) {
-      return
-    } else {
-      prevLocation.current = location
-    }
+    if (prevChatId.current === chatId) return
+    if (!chats.find((chat) => chat._id === chatId)) return
 
-    const chat = findCurrentChat()
-    socket.emit('leave chats')
+    socket.unsubscribeChat(prevChatId.current)
+    prevChatId.current = chatId
 
-    if (chat) {
-      dispatch(getChat(chat._id))
-      socket.emit('join chat', chat._id)
-      socket.on('receive message', () => dispatch(getChat(chat._id)))
-    }
-  }, [location])
-
-  const findCurrentChat = () => {
-    const chatId = location.pathname.substring(1)
-    const chat = chats.find((chat) => chat._id === chatId)
-    return chat
-  }
+    socket.subscribeChat(chatId)
+    dispatch(fetchChat(chatId))
+  }, [chatId])
 
   return currentChat ? (
     <Box
@@ -55,7 +42,7 @@ const Chat = () => {
     >
       <ChatPanel currentChat={currentChat} />
       <Messages currentChat={currentChat} />
-      <SendBox currentChat={currentChat} socket={socket} />
+      <SendBox currentChat={currentChat} />
     </Box>
   ) : (
     <></>
