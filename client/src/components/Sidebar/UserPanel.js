@@ -17,7 +17,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { getInitials } from '../../utils/functions'
 import { useDispatch } from 'react-redux'
 import { signOut } from '../../actions/auth'
-import { addChat } from '../../actions/chats'
+import { createChat } from '../../actions/chats'
 
 const UserPanel = () => {
   const dispatch = useDispatch()
@@ -39,8 +39,8 @@ const UserPanel = () => {
     setNewChatEmail('')
   }
 
-  const addNewChat = () => {
-    dispatch(addChat(newChatEmail))
+  const handleAddChat = () => {
+    dispatch(createChat(newChatEmail))
     closeAddChatDialog()
   }
 
@@ -95,7 +95,7 @@ const UserPanel = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={closeAddChatDialog}>Cancel</Button>
-            <Button onClick={addNewChat}>Add chat</Button>
+            <Button onClick={handleAddChat}>Add chat</Button>
           </DialogActions>
         </Dialog>
         <IconButton onClick={logOut}>
