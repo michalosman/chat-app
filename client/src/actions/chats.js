@@ -1,34 +1,34 @@
 import * as API from '../api'
 import {
-  GET_CHAT,
-  GET_CHATS,
-  ADD_CHAT,
+  FETCH_CHAT,
+  FETCH_CHATS,
+  CREATE_CHAT,
   DELETE_CHAT,
-  ADD_MESSAGE,
+  SEND_MESSAGE,
 } from '../constants/actionTypes'
 
-export const getChats = () => async (dispatch) => {
+export const fetchChats = () => async (dispatch) => {
   try {
-    const { data } = await API.getChats()
-    dispatch({ type: GET_CHATS, payload: data })
+    const { data } = await API.fetchChats()
+    dispatch({ type: FETCH_CHATS, payload: data })
   } catch (error) {
     console.log(error)
   }
 }
 
-export const getChat = (chatId) => async (dispatch) => {
+export const fetchChat = (chatId) => async (dispatch) => {
   try {
-    const { data } = await API.getChat(chatId)
-    dispatch({ type: GET_CHAT, payload: data })
+    const { data } = await API.fetchChat(chatId)
+    dispatch({ type: FETCH_CHAT, payload: data })
   } catch (error) {
     console.log(error)
   }
 }
 
-export const addChat = (email) => async (dispatch) => {
+export const createChat = (email) => async (dispatch) => {
   try {
-    const { data } = await API.addChat(email)
-    dispatch({ type: ADD_CHAT, payload: data })
+    const { data } = await API.createChat(email)
+    dispatch({ type: CREATE_CHAT, payload: data })
   } catch (error) {
     console.log(error)
   }
@@ -43,11 +43,11 @@ export const deleteChat = (chatId) => async (dispatch) => {
   }
 }
 
-export const addMessage = (id, text) => async (dispatch) => {
+export const sendMessage = (chatId, message, socket) => async (dispatch) => {
   try {
-    const { data } = await API.addMessage(id, text)
-    dispatch({ type: ADD_MESSAGE, payload: data })
-    dispatch(getChats())
+    const { data } = await API.sendMessage(chatId, message)
+    socket.sendMessage(chatId)
+    dispatch({ type: SEND_MESSAGE, payload: data })
   } catch (error) {
     console.log(error)
   }
