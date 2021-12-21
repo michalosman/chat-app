@@ -20,11 +20,10 @@ const App = () => {
   }, [user])
 
   if (loading) return <LoadingPage />
+  if (!user || user?.isBlocked) return <LoginPage />
   if (user && user.role === 'user') return <UserPage />
   if (user && user.role === 'moderator') return <ModeratorPage />
   if (user && user.role === 'admin') return <AdminPage />
-
-  return <LoginPage />
 }
 
 export default App
