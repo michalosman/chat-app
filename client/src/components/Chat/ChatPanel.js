@@ -33,11 +33,11 @@ const ChatPanel = ({ currentChat }) => {
     setOpenReportUser(false)
   }
 
-  const handleReportUser = (e) => {
+  const handleReportUser = async (e) => {
     e.preventDefault()
-    // dispatch reportUser
-    // setReportDescription('')
-    // closeReportUserDialog()
+    await reportUser(otherUser, reportDescription)
+    setReportDescription('')
+    closeReportUserDialog()
   }
 
   const openDeleteDialog = () => {
