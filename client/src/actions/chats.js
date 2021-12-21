@@ -5,6 +5,7 @@ import {
   CREATE_CHAT,
   DELETE_CHAT,
   SEND_MESSAGE,
+  RECEIVE_MESSAGE,
 } from '../constants/actionTypes'
 
 export const fetchChats = () => async (dispatch) => {
@@ -46,9 +47,14 @@ export const deleteChat = (chatId) => async (dispatch) => {
 export const sendMessage = (chatId, message, socket) => async (dispatch) => {
   try {
     const { data } = await API.sendMessage(chatId, message)
-    socket.sendMessage(chatId)
+    // Socket is here because we must ensure that message is saved to DB
+    socket.sendMessage(chatId, data.recentMessage)
     dispatch({ type: SEND_MESSAGE, payload: data })
   } catch (error) {
     console.log(error)
   }
+}
+
+export const receiveMessage = (chatId, message) => {
+  return { type: RECEIVE_MESSAGE, payload: { chatId, message } }
 }
