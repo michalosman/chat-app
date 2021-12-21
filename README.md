@@ -13,15 +13,15 @@ Realtime **Chat App** created with MERN stack.
 
 - [x] Create and delete private chats
 - [x] Create new messages
-- [ ] Report users
+- [x] Report users
 
 ### Moderator
 
-- [ ] Respond to user reports (warn user or ignore report)
+- [x] Respond to user reports (warn user or close report)
 
 ### Admin
 
-- [ ] List users warned 3 times (ban user or reset warns)
+- [x] List users warned 3 or more times (ability to ban listed users)
 
 ## Technologies used
 
@@ -50,6 +50,14 @@ cd chat-app-mern
 
 ### Client setup
 
+Create a .env file in the client directory and set up the following environment variables
+
+```
+REACT_APP_SERVER_URL='Address of the server'
+```
+
+Install packages and start client
+
 ```
 cd client
 npm install
@@ -64,7 +72,10 @@ Create a .env file in the server directory and set up the following environment 
 PORT='The port the server will run on'
 MONGO_URI='Your MongoDB database URI'
 SECRET_KEY='Passwords encryption secret key'
+CLIENT_URL='Address of the client'
 ```
+
+Install packages and start server
 
 ```
 cd server
