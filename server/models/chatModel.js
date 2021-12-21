@@ -34,6 +34,9 @@ const chatSchema = mongoose.Schema({
     type: [messageSchema],
     default: [],
   },
+  recentMessage: {
+    type: messageSchema,
+  },
 })
 
 const Chat = mongoose.model('Chat', chatSchema)

@@ -132,6 +132,7 @@ export const addMessage = async (req, res) => {
       chatId,
       {
         $push: { messages: message },
+        recentMessage: message,
       },
       { new: true } // this flag decides if we get old doc or updated doc
     )
