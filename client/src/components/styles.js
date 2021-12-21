@@ -6,6 +6,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   message: {
+    display: 'flex',
+    flexDirection: 'column',
     marginRight: 'auto',
     marginBottom: theme.spacing(2),
     marginLeft: theme.spacing(2),
@@ -14,10 +16,21 @@ const useStyles = makeStyles((theme) => ({
   },
 
   ownMessage: {
+    alignItems: 'flex-end',
     marginRight: theme.spacing(2),
     marginLeft: 'auto',
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
+  },
+
+  messageTime: {
+    fontSize: '10px',
+    fontWeight: 'bold',
+    color: 'grey',
+  },
+
+  ownMessageTime: {
+    color: 'lightgrey',
   },
 
   input: {
