@@ -15,7 +15,6 @@ export const signUp = (newUserData) => API.post('users/signUp', newUserData)
 export const signIn = (userData) => API.post('/users/signIn', userData)
 
 export const fetchUsers = () => API.get('/users')
-export const reportUser = (userId) => API.patch(`/users/${userId}/report`)
 export const warnUser = (userId) => API.patch(`/users/${userId}/warn`)
 export const blockUser = (userId) => API.patch(`/users/${userId}/block`)
 export const validateUser = (userData) =>
@@ -27,3 +26,7 @@ export const createChat = (email) => API.post('/chats', { email })
 export const deleteChat = (chatId) => API.delete(`/chats/${chatId}`)
 export const sendMessage = (chatId, text) =>
   API.post(`/chats/${chatId}`, { text })
+
+export const getReports = () => API.get('/reports')
+export const reportUser = (reportedUser, description) =>
+  API.post(`/reports`, { reportedUser, description })

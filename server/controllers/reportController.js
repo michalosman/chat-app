@@ -2,6 +2,15 @@ import mongoose from 'mongoose'
 import Report from '../models/reportModel.js'
 import User from '../models/userModel.js'
 
+export const getReports = async (req, res) => {
+  try {
+    const reports = await Report.find()
+    res.status(200).send(reports)
+  } catch (error) {
+    res.status(404).send({ message: error })
+  }
+}
+
 export const addReport = async (req, res) => {
   const creator = req.user
   const { reportedUser, description } = req.body
@@ -35,6 +44,7 @@ export const addReport = async (req, res) => {
 }
 
 export const closeReport = async (req, res) => {
+  const moderator = req.user
   const reportId = req.params.id
 
   if (!mongoose.Types.ObjectId.isValid(reportId)) {
@@ -43,6 +53,7 @@ export const closeReport = async (req, res) => {
 
   try {
     const updatedReport = await Report.findByIdAndUpdate(reportId, {
+      moderator,
       isClosed: true,
     })
     res.status(200).send(updatedReport)
