@@ -46,7 +46,7 @@ export const deleteChat = (chatId) => async (dispatch) => {
 
 export const sendMessage = (chatId, message, socket) => async (dispatch) => {
   try {
-    const { data } = await API.sendMessage(chatId, message)
+    const { data } = await API.createMessage(chatId, message)
     // Socket is here because we must ensure that message is saved to DB
     socket.sendMessage(chatId, data.recentMessage)
     dispatch({ type: SEND_MESSAGE, payload: data })

@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { getInitials, getOtherMember } from '../../utils/functions'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteChat } from '../../actions/chats'
-import { reportUser } from '../../api'
+import { createReport } from '../../api'
 
 const ChatPanel = ({ currentChat }) => {
   const dispatch = useDispatch()
@@ -35,7 +35,7 @@ const ChatPanel = ({ currentChat }) => {
 
   const handleReportUser = async (e) => {
     e.preventDefault()
-    await reportUser(otherUser, reportDescription)
+    await createReport(otherUser, reportDescription)
     setReportDescription('')
     closeReportUserDialog()
   }

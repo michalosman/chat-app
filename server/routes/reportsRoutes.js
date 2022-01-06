@@ -12,6 +12,6 @@ router.use(auth)
 
 router.get('/', authModerator, getReports)
 router.post('/', addReport)
-router.patch('/close/:id', authModerator, closeReport)
+router.put('/close/:id', authModerator, closeReport)
 
 export default router

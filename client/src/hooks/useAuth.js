@@ -21,7 +21,6 @@ const useAuth = () => {
         setLoading(false)
       } else {
         validateUserData(userData)
-        setTimeout(() => setLoading(false), 1000)
       }
     } else {
       setLoading(false)
@@ -40,6 +39,7 @@ const useAuth = () => {
     } catch (error) {
       console.log('Provided credentials are incorrect')
     }
+    setTimeout(() => setLoading(false), 300)
   }
 
   return [user, loading]
