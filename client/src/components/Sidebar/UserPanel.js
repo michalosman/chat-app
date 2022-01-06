@@ -41,6 +41,7 @@ const UserPanel = () => {
   }
 
   const handleAddChat = () => {
+    if (!newChatEmail) return
     dispatch(createChat(newChatEmail, socket))
     closeAddChatDialog()
   }

@@ -21,6 +21,7 @@ export const signIn = (userData) => async (dispatch) => {
     dispatch({ type: SIGN_IN, payload: data })
   } catch (error) {
     console.log(error)
+    alert('Incorrect email or password')
   }
 }
 

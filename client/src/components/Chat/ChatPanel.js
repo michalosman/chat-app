@@ -35,8 +35,8 @@ const ChatPanel = ({ currentChat }) => {
     setOpenReportUser(false)
   }
 
-  const handleReportUser = async (e) => {
-    e.preventDefault()
+  const handleReportUser = async () => {
+    if (!reportDescription) return
     await createReport(otherUser, reportDescription)
     setReportDescription('')
     closeReportUserDialog()
@@ -82,30 +82,27 @@ const ChatPanel = ({ currentChat }) => {
           fullWidth
           maxWidth="xs"
         >
-          <form onSubmit={handleReportUser}>
-            <DialogTitle>Report user</DialogTitle>
-            <DialogContent>
-              <Typography variant="body2" gutterBottom>
-                Tell us more about the issue you have with {otherUser.name}.
-              </Typography>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                fullWidth
-                type="text"
-                variant="standard"
-                multiline
-                value={reportDescription}
-                onChange={(e) => setReportDescription(e.target.value)}
-                required
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={closeReportUserDialog}>Cancel</Button>
-              <Button type="submit">Report</Button>
-            </DialogActions>
-          </form>
+          <DialogTitle>Report user</DialogTitle>
+          <DialogContent>
+            <Typography variant="body2" gutterBottom>
+              Tell us more about the issue you have with {otherUser.name}.
+            </Typography>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              fullWidth
+              type="text"
+              variant="standard"
+              multiline
+              value={reportDescription}
+              onChange={(e) => setReportDescription(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeReportUserDialog}>Cancel</Button>
+            <Button onClick={handleReportUser}>Report</Button>
+          </DialogActions>
         </Dialog>
         <IconButton onClick={openDeleteDialog}>
           <DeleteIcon />

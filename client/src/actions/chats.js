@@ -33,6 +33,7 @@ export const createChat = (email, socket) => async (dispatch) => {
     dispatch({ type: CREATE_CHAT, payload: data })
   } catch (error) {
     console.log(error)
+    alert('User not found')
   }
 }
 
