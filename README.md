@@ -17,11 +17,16 @@ Realtime **Chat App** created with MERN stack.
 
 ### Moderator
 
-- [x] Respond to user reports (warn user or close report)
+- [x] List users reports (able to warn reported user or close report)
+- [x] Warn reported user
+- [x] Close report
 
 ### Admin
 
-- [x] List users warned 3 or more times (ability to ban listed users)
+- [x] List users warned 3 or more times
+- [x] Ban user warned 3 or more times
+- [x] List banned users
+- [x] Unban user
 
 ## Technologies used
 
