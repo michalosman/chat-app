@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { signOut } from '../actions/auth'
 import { useDispatch } from 'react-redux'
 import { Box, Button, Typography } from '@mui/material'
-import { getReports } from '../api'
+import { fetchReports } from '../api'
 import { Card, CardContent, CardActions } from '@mui/material'
 import { closeReport, warnUser } from '../api'
 
@@ -15,24 +15,29 @@ const ModeratorPage = () => {
   }, [])
 
   const loadReports = async () => {
-    const { data } = await getReports()
+    const { data } = await fetchReports()
     setReports(data)
   }
 
-  const handleClose = async (reportId) => {
+  const handleClose = async (e, reportId) => {
     await closeReport(reportId)
-    window.location.reload(false)
+    loadReports()
   }
 
-  const handleWarn = async (reportId, userId) => {
+  const handleWarn = async (e, reportId, userId) => {
     await warnUser(userId)
     await closeReport(reportId)
-    window.location.reload(false)
+    loadReports()
   }
 
-  const reportCards = reports.map((report) =>
-    !report.isClosed ? (
-      <Card key={report._id} style={{ marginTop: '30px', width: 700 }}>
+  const reportCards = reports
+    .filter((report) => !report.isClosed)
+    .map((report) => (
+      <Card
+        key={report._id}
+        variant="outlined"
+        style={{ width: 500, maxWidth: '90%', marginBottom: '16px' }}
+      >
         <CardContent>
           <Typography
             gutterBottom
@@ -49,34 +54,43 @@ const ModeratorPage = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button onClick={() => handleClose(report._id)}>Close</Button>
+          <Button onClick={(e) => handleClose(e, report._id)}>Close</Button>
           <Button
-            onClick={() => handleWarn(report._id, report.reportedUser._id)}
+            onClick={(e) => handleWarn(e, report._id, report.reportedUser._id)}
           >
             Warn
           </Button>
         </CardActions>
       </Card>
-    ) : (
-      ''
-    )
-  )
+    ))
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <h1>Moderator Panel</h1>
-      <Button variant="contained" onClick={() => dispatch(signOut())}>
-        Sign out
-      </Button>
-      <Box display="flex" flexDirection="column">
-        {reportCards}
+    <>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        p={3}
+        width="100%"
+      >
+        <Typography variant="h5">
+          <strong>Moderator Panel</strong>
+        </Typography>
+        <Button variant="contained" onClick={() => dispatch(signOut())}>
+          Sign out
+        </Button>
       </Box>
-    </Box>
+      {reportCards.length > 0 ? (
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Typography variant="h5" mb={2}>
+            <strong>Reports</strong>
+          </Typography>
+          {reportCards}
+        </Box>
+      ) : (
+        ''
+      )}
+    </>
   )
 }
 
