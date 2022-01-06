@@ -32,7 +32,9 @@ const Chat = () => {
     dispatch(fetchChat(chatId))
   }, [chatId])
 
-  return currentChat ? (
+  if (!currentChat) return <></>
+
+  return (
     <Box
       display="flex"
       flexDirection="column"
@@ -44,8 +46,6 @@ const Chat = () => {
       <Messages currentChat={currentChat} />
       <SendBox currentChat={currentChat} />
     </Box>
-  ) : (
-    <></>
   )
 }
 
