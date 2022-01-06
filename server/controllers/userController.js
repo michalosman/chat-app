@@ -54,7 +54,7 @@ export const signIn = async (req, res) => {
   res.status(200).json({ ...userData, token })
 }
 
-export const warn = async (req, res) => {
+export const warnUser = async (req, res) => {
   const userId = req.params.userId
 
   if (!mongoose.Types.ObjectId.isValid(userId))
@@ -73,7 +73,7 @@ export const warn = async (req, res) => {
   res.json(updatedUser)
 }
 
-export const block = async (req, res) => {
+export const blockUser = async (req, res) => {
   const userId = req.params.userId
 
   if (!mongoose.Types.ObjectId.isValid(userId))
@@ -83,6 +83,23 @@ export const block = async (req, res) => {
     userId,
     {
       isBlocked: true,
+    },
+    { new: true }
+  )
+
+  res.json(updatedUser)
+}
+
+export const unblockUser = async (req, res) => {
+  const userId = req.params.userId
+
+  if (!mongoose.Types.ObjectId.isValid(userId))
+    return res.status(404).send('No user with given id')
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      isBlocked: false,
     },
     { new: true }
   )
