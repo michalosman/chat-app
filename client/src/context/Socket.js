@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 import { useDispatch } from 'react-redux'
-import { receiveMessage } from '../actions/chats'
+import { fetchChats, receiveMessage } from '../actions/chats'
 import io from 'socket.io-client'
 
 export const SocketContext = createContext(null)
@@ -8,6 +8,19 @@ export const SocketContext = createContext(null)
 const SocketProvider = ({ children }) => {
   const socket = io(process.env.REACT_APP_SERVER_URL)
   const dispatch = useDispatch()
+
+  const subscribeOwnChats = (userId) => {
+    socket.emit('join app', userId)
+    socket.on('chats changed', () => dispatch(fetchChats()))
+  }
+
+  const createChat = (userId) => {
+    socket.emit('create chat', userId)
+  }
+
+  const deleteChat = (userId) => {
+    socket.emit('delete chat', userId)
+  }
 
   const subscribeChat = (chatId) => {
     socket.emit('join chat', chatId)
@@ -27,7 +40,14 @@ const SocketProvider = ({ children }) => {
 
   return (
     <SocketContext.Provider
-      value={{ socket, subscribeChat, unsubscribeChat, sendMessage }}
+      value={{
+        subscribeOwnChats,
+        createChat,
+        deleteChat,
+        subscribeChat,
+        unsubscribeChat,
+        sendMessage,
+      }}
     >
       {children}
     </SocketContext.Provider>

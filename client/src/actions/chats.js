@@ -26,18 +26,21 @@ export const fetchChat = (chatId) => async (dispatch) => {
   }
 }
 
-export const createChat = (email) => async (dispatch) => {
+export const createChat = (email, socket) => async (dispatch) => {
   try {
     const { data } = await API.createChat(email)
+    data.members.map((member) => socket.createChat(member._id))
     dispatch({ type: CREATE_CHAT, payload: data })
   } catch (error) {
     console.log(error)
   }
 }
 
-export const deleteChat = (chatId) => async (dispatch) => {
+export const deleteChat = (chatId, socket) => async (dispatch) => {
   try {
+    const { data } = await API.fetchChat(chatId)
     await API.deleteChat(chatId)
+    data.members.map((member) => socket.deleteChat(member._id))
     dispatch({ type: DELETE_CHAT, payload: chatId })
   } catch (error) {
     console.log(error)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Box,
   Typography,
@@ -18,12 +18,14 @@ import { getInitials } from '../../utils/functions'
 import { useDispatch } from 'react-redux'
 import { signOut } from '../../actions/auth'
 import { createChat } from '../../actions/chats'
+import { SocketContext } from '../../context/Socket'
 
 const UserPanel = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
   const [openAddChat, setOpenAddChat] = useState(false)
   const [newChatEmail, setNewChatEmail] = useState('')
+  const socket = useContext(SocketContext)
 
   const logOut = () => {
     dispatch(signOut())
@@ -40,7 +42,7 @@ const UserPanel = () => {
   }
 
   const handleAddChat = () => {
-    dispatch(createChat(newChatEmail))
+    dispatch(createChat(newChatEmail, socket))
     closeAddChatDialog()
   }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Box,
   Avatar,
@@ -17,6 +17,7 @@ import { getInitials, getOtherMember } from '../../utils/functions'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteChat } from '../../actions/chats'
 import { createReport } from '../../api'
+import { SocketContext } from '../../context/Socket'
 
 const ChatPanel = ({ currentChat }) => {
   const dispatch = useDispatch()
@@ -25,6 +26,7 @@ const ChatPanel = ({ currentChat }) => {
   const [openReportUser, setOpenReportUser] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [reportDescription, setReportDescription] = useState('')
+  const socket = useContext(SocketContext)
 
   const openReportUserDialog = () => {
     setOpenReportUser(true)
@@ -48,7 +50,7 @@ const ChatPanel = ({ currentChat }) => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteChat(currentChat._id))
+    dispatch(deleteChat(currentChat._id, socket))
     closeDeleteDialog()
   }
 

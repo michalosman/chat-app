@@ -44,6 +44,18 @@ mongoose
 
 // Socket.io
 io.on('connection', (socket) => {
+  socket.on('join app', (userId) => {
+    socket.join(userId)
+  })
+
+  socket.on('create chat', (userId) => {
+    socket.to(userId).emit('chats changed')
+  })
+
+  socket.on('delete chat', (userId) => {
+    socket.to(userId).emit('chats changed')
+  })
+
   socket.on('join chat', (chatId) => {
     socket.join(chatId)
   })
