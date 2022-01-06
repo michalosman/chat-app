@@ -41,6 +41,10 @@ export const addChat = async (req, res) => {
   const creator = req.user
   const { email } = req.body
 
+  if (email === creator.email) {
+    return res.status(400).json({ message: 'Cannot create chat' })
+  }
+
   const user = await User.findOne({ email })
 
   if (!user) {
