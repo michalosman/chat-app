@@ -1,7 +1,6 @@
-import React from 'react'
-import { Box } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 import { useSelector } from 'react-redux'
+import { Box } from '@mui/material'
 import useStyles from '../styles'
 
 const Messages = ({ currentChat }) => {

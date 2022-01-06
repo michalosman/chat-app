@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { signOut } from '../actions/auth'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Button, Typography } from '@mui/material'
-import { fetchReports } from '../api'
 import { Card, CardContent, CardActions } from '@mui/material'
-import { closeReport, warnUser } from '../api'
+import { signOut } from '../actions/auth'
+import { fetchReports, closeReport, warnUser } from '../api'
 
 const ModeratorPage = () => {
   const dispatch = useDispatch()

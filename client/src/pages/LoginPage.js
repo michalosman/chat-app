@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
+import { useState } from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-
-import { signUp, signIn } from '../actions/auth'
 import { useDispatch } from 'react-redux'
+import {
+  Avatar,
+  Button,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from '@mui/material'
+import { signUp, signIn } from '../actions/auth'
 
 const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false)

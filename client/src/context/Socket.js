@@ -1,7 +1,7 @@
+import io from 'socket.io-client'
 import { createContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchChats, receiveMessage } from '../actions/chats'
-import io from 'socket.io-client'
 
 export const SocketContext = createContext(null)
 

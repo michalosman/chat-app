@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef, useContext } from 'react'
+import { useEffect, useState, useRef, useContext } from 'react'
+import { useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import { Box } from '@mui/material'
 import ChatPanel from './ChatPanel'
 import Messages from './Messages'
 import SendBox from './SendBox'
-import { useSelector, useDispatch } from 'react-redux'
 import { fetchChat } from '../../actions/chats'
 import { SocketContext } from '../../context/Socket'
-import { useParams } from 'react-router-dom'
 
 const Chat = () => {
   const dispatch = useDispatch()

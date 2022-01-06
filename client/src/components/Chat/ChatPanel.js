@@ -1,4 +1,7 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import ReportIcon from '@mui/icons-material/Report'
+import DeleteIcon from '@mui/icons-material/Delete'
 import {
   Box,
   Avatar,
@@ -11,13 +14,10 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material'
-import ReportIcon from '@mui/icons-material/Report'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { getInitials, getOtherMember } from '../../utils/functions'
-import { useSelector, useDispatch } from 'react-redux'
 import { deleteChat } from '../../actions/chats'
 import { createReport } from '../../api'
 import { SocketContext } from '../../context/Socket'
+import { getInitials, getOtherMember } from '../../utils/functions'
 
 const ChatPanel = ({ currentChat }) => {
   const dispatch = useDispatch()

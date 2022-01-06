@@ -1,8 +1,7 @@
-import React from 'react'
 import { Box } from '@mui/material'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import Chat from '../components/Chat'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 const UserPage = () => {
   return (

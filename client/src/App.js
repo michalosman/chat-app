@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
+import { useDispatch } from 'react-redux'
 import AdminPage from './pages/AdminPage'
 import UserPage from './pages/UserPage'
 import ModeratorPage from './pages/ModeratorPage'
 import LoginPage from './pages/LoginPage'
 import useAuth from './hooks/useAuth'
-import { fetchChats } from './actions/chats'
 import LoadingPage from './pages/LoadingPage'
-import { useDispatch } from 'react-redux'
+import { fetchChats } from './actions/chats'
 import { SocketContext } from './context/Socket'
 
 const App = () => {
@@ -18,6 +18,7 @@ const App = () => {
   useEffect(() => {
     if (user) {
       dispatch(fetchChats())
+
       if (user.role === 'user') {
         socket.subscribeOwnChats(user._id)
       }

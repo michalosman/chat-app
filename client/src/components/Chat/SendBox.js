@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react'
-import { Box, IconButton, Input } from '@mui/material'
-import SendIcon from '@mui/icons-material/Send'
-import useStyles from '../styles'
+import { useState, useContext } from 'react'
 import { useDispatch } from 'react-redux'
+import SendIcon from '@mui/icons-material/Send'
+import { Box, IconButton, Input } from '@mui/material'
+import useStyles from '../styles'
 import { sendMessage } from '../../actions/chats'
 import { SocketContext } from '../../context/Socket'
 

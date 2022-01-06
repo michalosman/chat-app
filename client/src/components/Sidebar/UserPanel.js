@@ -1,4 +1,7 @@
-import React, { useState, useContext } from 'react'
+import { useState, useContext } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import AddIcon from '@mui/icons-material/Add'
+import LogoutIcon from '@mui/icons-material/Logout'
 import {
   Box,
   Typography,
@@ -11,11 +14,7 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material'
-import { useSelector } from 'react-redux'
-import AddIcon from '@mui/icons-material/Add'
-import LogoutIcon from '@mui/icons-material/Logout'
 import { getInitials } from '../../utils/functions'
-import { useDispatch } from 'react-redux'
 import { signOut } from '../../actions/auth'
 import { createChat } from '../../actions/chats'
 import { SocketContext } from '../../context/Socket'

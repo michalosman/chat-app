@@ -1,9 +1,8 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
-import { Box, Typography, Avatar, Button } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { getInitials, getOtherMember } from '../../utils/functions'
+import { Box, Typography, Avatar, Button } from '@mui/material'
 import useStyles from '../styles'
+import { getInitials, getOtherMember } from '../../utils/functions'
 
 const UserChats = () => {
   const classes = useStyles()

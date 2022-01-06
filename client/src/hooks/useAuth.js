@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react'
 import decode from 'jwt-decode'
-import { signOut, autoSignIn } from '../actions/auth'
-import { validateUser } from '../api'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { validateUser } from '../api'
+import { signOut, autoSignIn } from '../actions/auth'
 
 const useAuth = () => {
   const user = useSelector((state) => state.auth)

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { signOut } from '../actions/auth'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   Box,
@@ -9,6 +8,7 @@ import {
   CardActions,
   Typography,
 } from '@mui/material'
+import { signOut } from '../actions/auth'
 import { fetchUsers, blockUser, unblockUser } from '../api'
 
 const AdminPage = () => {
