@@ -1,12 +1,22 @@
 import axios from 'axios'
+import decode from 'jwt-decode'
 
 const API = axios.create({ baseURL: process.env.REACT_APP_SERVER_URL })
 
 API.interceptors.request.use((req) => {
-  if (localStorage.getItem('userData')) {
-    req.headers.Authorization = `Bearer ${
-      JSON.parse(localStorage.getItem('userData')).token
-    }`
+  const userData = localStorage.getItem('userData')
+
+  if (userData) {
+    const userToken = JSON.parse(userData).token
+
+    req.headers.Authorization = `Bearer ${userToken}`
+
+    const decodedToken = decode(userToken)
+
+    if (decodedToken.exp * 1000 < new Date().getTime()) {
+      window.location.reload(false)
+      alert('Your token expired, please sign in again')
+    }
   }
   return req
 })
@@ -20,14 +30,15 @@ export const fetchChats = () => API.get('/chats')
 export const fetchChat = (chatId) => API.get(`/chats/${chatId}`)
 export const createChat = (email) => API.post('/chats', { email })
 export const deleteChat = (chatId) => API.delete(`/chats/${chatId}`)
-export const sendMessage = (chatId, text) =>
+export const createMessage = (chatId, text) =>
   API.post(`/chats/${chatId}`, { text })
-export const reportUser = (reportedUser, description) =>
-  API.post(`/reports`, { reportedUser, description })
 
-export const getReports = () => API.get('/reports')
-export const closeReport = (id) => API.patch(`/reports/close/${id}`)
-export const warnUser = (userId) => API.patch(`/users/warn/${userId}`)
+export const fetchReports = () => API.get('/reports')
+export const createReport = (reportedUser, description) =>
+  API.post(`/reports`, { reportedUser, description })
+export const closeReport = (id) => API.put(`/reports/close/${id}`)
 
 export const fetchUsers = () => API.get('/users')
-export const blockUser = (userId) => API.patch(`/users/block/${userId}`)
+export const warnUser = (userId) => API.put(`/users/warn/${userId}`)
+export const blockUser = (userId) => API.put(`/users/block/${userId}`)
+export const unblockUser = (userId) => API.put(`/users/unblock/${userId}`)
