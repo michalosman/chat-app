@@ -1,6 +1,6 @@
 # Chat App MERN
 
-Realtime **Chat App** created with MERN stack.
+Realtime **Chat App** created with MERN & PERN stack.
 
 ## Features
 
@@ -40,7 +40,8 @@ Realtime **Chat App** created with MERN stack.
 
 - Node.js
 - Express
-- MongoDB
+- MongoDB & Mongoose (NoSQL)
+- PostgreSQL & TypeORM (SQL)
 - Socket.io
 - JWT
 
