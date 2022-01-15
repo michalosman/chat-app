@@ -22,12 +22,12 @@ const UserChats = () => {
           <Box display="flex" alignItems="center" width="100%" p={1}>
             <Avatar
               src={`https://avatars.dicebear.com/api/initials/${getInitials(
-                otherUser.name
+                chat.type === 'private' ? otherUser.name : chat.name
               )}.svg`}
             />
             <Box display="flex" flexDirection="column" alignItems="flex-start">
               <Typography variant="body1" ml={1}>
-                {otherUser.name}
+                {chat.type === 'private' ? otherUser.name : chat.name}
               </Typography>
             </Box>
           </Box>

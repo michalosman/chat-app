@@ -28,7 +28,9 @@ export const validateUser = (userData) =>
 
 export const fetchChats = () => API.get('/chats')
 export const fetchChat = (chatId) => API.get(`/chats/${chatId}`)
-export const createChat = (email) => API.post('/chats', { email })
+export const createPrivateChat = (email) =>
+  API.post('/chats/private', { email })
+export const createGroupChat = (name) => API.post('/chats/group', { name })
 export const deleteChat = (chatId) => API.delete(`/chats/${chatId}`)
 export const createMessage = (chatId, text) =>
   API.post(`/chats/${chatId}`, { text })

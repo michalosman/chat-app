@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ReportIcon from '@mui/icons-material/Report'
 import DeleteIcon from '@mui/icons-material/Delete'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import {
   Box,
   Avatar,
@@ -13,6 +14,10 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
 } from '@mui/material'
 import { deleteChat } from '../../actions/chats'
 import { createReport } from '../../api'
@@ -23,16 +28,28 @@ const ChatPanel = ({ currentChat }) => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
   const otherUser = getOtherMember(currentChat.members, user._id)
-  const [openReportUser, setOpenReportUser] = useState(false)
-  const [openDelete, setOpenDelete] = useState(false)
-  const [reportDescription, setReportDescription] = useState('')
   const socket = useContext(SocketContext)
+
+  const [menuAnchor, setMenuAnchor] = useState(null)
+  const [openReportUser, setOpenReportUser] = useState(false)
+  const [reportDescription, setReportDescription] = useState('')
+  const [openDelete, setOpenDelete] = useState(false)
+
+  const openChatMenu = (e) => {
+    setMenuAnchor(e.currentTarget)
+  }
+
+  const closeChatMenu = () => {
+    setMenuAnchor(null)
+  }
 
   const openReportUserDialog = () => {
     setOpenReportUser(true)
+    closeChatMenu()
   }
   const closeReportUserDialog = () => {
     setOpenReportUser(false)
+    closeChatMenu()
   }
 
   const handleReportUser = async () => {
@@ -44,9 +61,11 @@ const ChatPanel = ({ currentChat }) => {
 
   const openDeleteDialog = () => {
     setOpenDelete(true)
+    closeChatMenu()
   }
   const closeDeleteDialog = () => {
     setOpenDelete(false)
+    closeChatMenu()
   }
 
   const handleDelete = () => {
@@ -73,9 +92,30 @@ const ChatPanel = ({ currentChat }) => {
         </Typography>
       </Box>
       <Box display="flex">
-        <IconButton onClick={openReportUserDialog}>
-          <ReportIcon />
+        <IconButton onClick={openChatMenu}>
+          <MoreHorizIcon />
         </IconButton>
+        <Menu
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={closeChatMenu}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <MenuItem onClick={openReportUserDialog}>
+            <ListItemIcon>
+              <ReportIcon />
+            </ListItemIcon>
+            Report
+          </MenuItem>
+          <MenuItem onClick={openDeleteDialog}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            Delete
+          </MenuItem>
+        </Menu>
         <Dialog
           open={openReportUser}
           onClose={closeReportUserDialog}
@@ -104,9 +144,6 @@ const ChatPanel = ({ currentChat }) => {
             <Button onClick={handleReportUser}>Report</Button>
           </DialogActions>
         </Dialog>
-        <IconButton onClick={openDeleteDialog}>
-          <DeleteIcon />
-        </IconButton>
         <Dialog
           open={openDelete}
           onClose={closeDeleteDialog}

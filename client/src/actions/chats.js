@@ -26,14 +26,25 @@ export const fetchChat = (chatId) => async (dispatch) => {
   }
 }
 
-export const createChat = (email, socket) => async (dispatch) => {
+export const createPrivateChat = (email, socket) => async (dispatch) => {
   try {
-    const { data } = await API.createChat(email)
+    const { data } = await API.createPrivateChat(email)
     data.members.map((member) => socket.createChat(member._id))
     dispatch({ type: CREATE_CHAT, payload: data })
   } catch (error) {
     console.log(error)
     alert('User not found')
+  }
+}
+
+export const createGroupChat = (name, socket) => async (dispatch) => {
+  try {
+    const { data } = await API.createGroupChat(name)
+    data.members.map((member) => socket.createChat(member._id))
+    dispatch({ type: CREATE_CHAT, payload: data })
+  } catch (error) {
+    console.log(error)
+    alert('Something went wrong. Try again.')
   }
 }
 
