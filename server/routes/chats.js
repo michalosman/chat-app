@@ -3,9 +3,12 @@ import { auth } from '../middleware/auth.js'
 import {
   getChats,
   getChat,
-  addChat,
-  addMessage,
+  createPrivateChat,
+  createGroupChat,
+  createMessage,
   deleteChat,
+  addMember,
+  leaveChat,
 } from '../controllers/chatController.js'
 
 const router = express.Router()
@@ -14,8 +17,14 @@ router.use(auth)
 
 router.get('/', getChats)
 router.get('/:chatId', getChat)
-router.post('/', addChat)
+
+router.post('/private', createPrivateChat)
+router.post('/group', createGroupChat)
+router.post('/:chatId', createMessage)
+
+router.put('/:chatId/add-member', addMember)
+router.put('/:chatId/leave', leaveChat)
+
 router.delete('/:chatId', deleteChat)
-router.post('/:chatId', addMessage)
 
 export default router
