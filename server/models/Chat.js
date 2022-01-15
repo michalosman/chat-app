@@ -25,19 +25,33 @@ const messageSchema = mongoose.Schema(
   { timestamps: true }
 )
 
-const chatSchema = mongoose.Schema({
-  members: {
-    type: [memberSchema],
-    required: true,
+const chatSchema = mongoose.Schema(
+  {
+    ownerId: {
+      type: String,
+    },
+    name: {
+      type: String,
+    },
+    type: {
+      type: String,
+      enum: ['private', 'group'],
+      default: 'private',
+    },
+    members: {
+      type: [memberSchema],
+      required: true,
+    },
+    messages: {
+      type: [messageSchema],
+      default: [],
+    },
+    recentMessage: {
+      type: messageSchema,
+    },
   },
-  messages: {
-    type: [messageSchema],
-    default: [],
-  },
-  recentMessage: {
-    type: messageSchema,
-  },
-})
+  { timestamps: true }
+)
 
 const Chat = mongoose.model('Chat', chatSchema)
 
