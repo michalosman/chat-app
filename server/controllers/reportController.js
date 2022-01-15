@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-import Report from '../models/reportModel.js'
-import User from '../models/userModel.js'
+import Report from '../models/Report.js'
+import User from '../models/User.js'
 
 export const getReports = async (req, res) => {
   try {

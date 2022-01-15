@@ -1,5 +1,5 @@
-import Chat from '../models/chatModel.js'
-import User from '../models/userModel.js'
+import Chat from '../models/Chat.js'
+import User from '../models/User.js'
 import mongoose from 'mongoose'
 
 export const getChats = async (req, res) => {
