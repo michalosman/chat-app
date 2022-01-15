@@ -38,13 +38,13 @@ export const signIn = async (req, res) => {
   const user = await User.findOne({ email })
 
   if (!user) {
-    return res.status(404).json({ message: "User doesn't exist." })
+    return res.status(404).json({ message: "User doesn't exist" })
   }
 
   const isPasswordCorrect = await bcrypt.compare(password, user.password)
 
   if (!isPasswordCorrect) {
-    return res.status(400).json({ message: 'Password incorrect.' })
+    return res.status(400).json({ message: 'Password incorrect' })
   }
 
   const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1h' })
@@ -55,10 +55,10 @@ export const signIn = async (req, res) => {
 }
 
 export const warnUser = async (req, res) => {
-  const userId = req.params.userId
+  const { userId } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(userId))
-    return res.status(404).send('No user with given id')
+    return res.status(404).json({ message: 'No user with given id' })
 
   const user = await User.findById(userId)
 
@@ -74,10 +74,10 @@ export const warnUser = async (req, res) => {
 }
 
 export const blockUser = async (req, res) => {
-  const userId = req.params.userId
+  const { userId } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(userId))
-    return res.status(404).send('No user with given id')
+    return res.status(404).json({ message: 'No user with given id' })
 
   const updatedUser = await User.findByIdAndUpdate(
     userId,
@@ -91,10 +91,10 @@ export const blockUser = async (req, res) => {
 }
 
 export const unblockUser = async (req, res) => {
-  const userId = req.params.userId
+  const { userId } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(userId))
-    return res.status(404).send('No user with given id')
+    return res.status(404).json({ message: 'No user with given id' })
 
   const updatedUser = await User.findByIdAndUpdate(
     userId,
@@ -117,5 +117,5 @@ export const getUsers = async (req, res) => {
 }
 
 export const validateUser = (req, res) => {
-  return res.status(200).send({ isValid: req.body.role === req.user.role })
+  return res.status(200).json({ isValid: req.body.role === req.user.role })
 }

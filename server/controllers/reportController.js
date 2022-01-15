@@ -5,26 +5,26 @@ import User from '../models/User.js'
 export const getReports = async (req, res) => {
   try {
     const reports = await Report.find()
-    res.status(200).send(reports)
+    res.status(200).json(reports)
   } catch (error) {
-    res.status(404).send({ message: error })
+    res.status(404).json({ message: error })
   }
 }
 
-export const addReport = async (req, res) => {
+export const createReport = async (req, res) => {
   const creator = req.user
   const { reportedUser, description } = req.body
 
   if (!description) {
     return res
       .status(400)
-      .send({ message: 'Report must contain a description' })
+      .json({ message: 'Report must contain a description' })
   }
 
   const user = await User.findById(reportedUser._id)
 
   if (!user) {
-    return res.status(404).send({ message: "Reported user doesn't exist" })
+    return res.status(404).json({ message: "Reported user doesn't exist" })
   }
 
   const report = {
@@ -37,18 +37,18 @@ export const addReport = async (req, res) => {
 
   try {
     await newReport.save()
-    res.status(200).send(newReport)
+    res.status(200).json(newReport)
   } catch (error) {
-    res.status(409).send({ message: error })
+    res.status(409).json({ message: error })
   }
 }
 
 export const closeReport = async (req, res) => {
   const moderator = req.user
-  const reportId = req.params.id
+  const { reportId } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(reportId)) {
-    return res.status(400).send({ message: 'Invalid report Id' })
+    return res.status(400).json({ message: 'Invalid report Id' })
   }
 
   try {
@@ -56,8 +56,8 @@ export const closeReport = async (req, res) => {
       moderator,
       isClosed: true,
     })
-    res.status(200).send(updatedReport)
+    res.status(200).json(updatedReport)
   } catch (error) {
-    res.status(409).send({ message: error })
+    res.status(409).json({ message: error })
   }
 }
