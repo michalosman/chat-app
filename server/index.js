@@ -44,23 +44,31 @@ mongoose
 
 // Socket.io
 io.on('connection', (socket) => {
-  socket.on('join app', (userId) => {
+  socket.on('subscribe chats', (userId) => {
     socket.join(userId)
   })
 
   socket.on('create chat', (userId) => {
-    socket.to(userId).emit('chats changed')
+    socket.to(userId).emit('chat created')
   })
 
   socket.on('delete chat', (userId) => {
-    socket.to(userId).emit('chats changed')
+    socket.to(userId).emit('chat deleted')
   })
 
-  socket.on('join chat', (chatId) => {
+  socket.on('add member', (userId) => {
+    socket.to(userId).emit('member added')
+  })
+
+  socket.on('leave group', (userId) => {
+    socket.to(userId).emit('member left')
+  })
+
+  socket.on('subscribe chat messages', (chatId) => {
     socket.join(chatId)
   })
 
-  socket.on('leave chat', (chatId) => {
+  socket.on('unsubscribe chat messages', (chatId) => {
     socket.leave(chatId)
   })
 

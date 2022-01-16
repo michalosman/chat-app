@@ -8,7 +8,7 @@ import {
   createMessage,
   deleteChat,
   addMember,
-  leaveChat,
+  leaveGroup,
 } from '../controllers/chatController.js'
 
 const router = express.Router()
@@ -23,7 +23,7 @@ router.post('/group', createGroupChat)
 router.post('/:chatId', createMessage)
 
 router.put('/:chatId/add-member', addMember)
-router.put('/:chatId/leave', leaveChat)
+router.put('/:chatId/leave', leaveGroup)
 
 router.delete('/:chatId', deleteChat)
 
