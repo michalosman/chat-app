@@ -4,11 +4,11 @@ import {
   SIGN_OUT,
   AUTO_SIGN_IN,
 } from '../constants/actionTypes'
-import * as API from '../api'
+import * as api from '../api'
 
 export const signUp = (newUserData) => async (dispatch) => {
   try {
-    const { data } = await API.signUp(newUserData)
+    const { data } = await api.signUp(newUserData)
     dispatch({ type: SIGN_UP, payload: data })
   } catch (error) {
     console.log(error)
@@ -17,7 +17,7 @@ export const signUp = (newUserData) => async (dispatch) => {
 
 export const signIn = (userData) => async (dispatch) => {
   try {
-    const { data } = await API.signIn(userData)
+    const { data } = await api.signIn(userData)
     dispatch({ type: SIGN_IN, payload: data })
   } catch (error) {
     console.log(error)

@@ -3,30 +3,30 @@ import { useDispatch } from 'react-redux'
 import { Box, Button, Typography } from '@mui/material'
 import { Card, CardContent, CardActions } from '@mui/material'
 import { signOut } from '../actions/auth'
-import { fetchReports, closeReport, warnUser } from '../api'
+import * as api from '../api'
 
 const ModeratorPage = () => {
   const dispatch = useDispatch()
   const [reports, setReports] = useState([])
 
   useEffect(() => {
-    loadReports()
+    fetchReports()
   }, [])
 
-  const loadReports = async () => {
-    const { data } = await fetchReports()
+  const fetchReports = async () => {
+    const { data } = await api.getReports()
     setReports(data)
   }
 
-  const handleClose = async (e, reportId) => {
-    await closeReport(reportId)
-    loadReports()
+  const handleCloseReport = async (e, reportId) => {
+    await api.closeReport(reportId)
+    fetchReports()
   }
 
-  const handleWarn = async (e, reportId, userId) => {
-    await warnUser(userId)
-    await closeReport(reportId)
-    loadReports()
+  const handleWarnUser = async (e, reportId, userId) => {
+    await api.warnUser(userId)
+    await api.closeReport(reportId)
+    fetchReports()
   }
 
   const reportCards = reports
@@ -53,9 +53,13 @@ const ModeratorPage = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button onClick={(e) => handleClose(e, report._id)}>Close</Button>
+          <Button onClick={(e) => handleCloseReport(e, report._id)}>
+            Close
+          </Button>
           <Button
-            onClick={(e) => handleWarn(e, report._id, report.reportedUser._id)}
+            onClick={(e) =>
+              handleWarnUser(e, report._id, report.reportedUser._id)
+            }
           >
             Warn
           </Button>

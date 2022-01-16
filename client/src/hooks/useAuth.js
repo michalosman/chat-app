@@ -2,7 +2,7 @@
 import decode from 'jwt-decode'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { validateUser } from '../api'
+import * as api from '../api'
 import { signOut, autoSignIn } from '../actions/auth'
 
 const useAuth = () => {
@@ -20,16 +20,16 @@ const useAuth = () => {
         dispatch(signOut())
         setLoading(false)
       } else {
-        validateUserData(userData)
+        validateUser(userData)
       }
     } else {
       setLoading(false)
     }
   }, [])
 
-  const validateUserData = async (userData) => {
+  const validateUser = async (userData) => {
     try {
-      const { data } = await validateUser(userData)
+      const { data } = await api.validateUser(userData)
 
       if (data.isValid) {
         dispatch(autoSignIn())

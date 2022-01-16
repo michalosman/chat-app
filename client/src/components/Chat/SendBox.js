@@ -6,7 +6,7 @@ import useStyles from '../styles'
 import { sendMessage } from '../../actions/chats'
 import { SocketContext } from '../../context/Socket'
 
-const SendBox = ({ currentChat }) => {
+const SendBox = ({ chat }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [message, setMessage] = useState('')
@@ -16,7 +16,7 @@ const SendBox = ({ currentChat }) => {
     e.preventDefault()
     if (!message) return
 
-    dispatch(sendMessage(currentChat._id, message, socket))
+    dispatch(sendMessage(chat._id, message, socket))
     setMessage('')
   }
 

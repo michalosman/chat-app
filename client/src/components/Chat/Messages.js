@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 import { Box } from '@mui/material'
 import useStyles from '../styles'
 
-const Messages = ({ currentChat }) => {
+const Messages = ({ chat }) => {
   const classes = useStyles()
   const user = useSelector((state) => state.auth)
 
-  const messageBoxes = currentChat.messages
+  const messageBoxes = chat.messages
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .map((message) => {
       return (

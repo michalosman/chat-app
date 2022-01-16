@@ -9,29 +9,29 @@ import {
   Typography,
 } from '@mui/material'
 import { signOut } from '../actions/auth'
-import { fetchUsers, blockUser, unblockUser } from '../api'
+import * as api from '../api'
 
 const AdminPage = () => {
   const dispatch = useDispatch()
   const [users, setUsers] = useState([])
 
   useEffect(() => {
-    loadUsers()
+    fetchUsers()
   }, [])
 
-  const loadUsers = async () => {
-    const { data } = await fetchUsers()
+  const fetchUsers = async () => {
+    const { data } = await api.getUsers()
     setUsers(data)
   }
 
   const handleBlock = async (e, userId) => {
-    await blockUser(userId)
-    loadUsers()
+    await api.blockUser(userId)
+    fetchUsers()
   }
 
   const handleUnblock = async (e, userId) => {
-    await unblockUser(userId)
-    loadUsers()
+    await api.unblockUser(userId)
+    fetchUsers()
   }
 
   const userCards = users
