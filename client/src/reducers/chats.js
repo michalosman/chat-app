@@ -3,6 +3,7 @@ import {
   FETCH_CHATS,
   CREATE_CHAT,
   DELETE_CHAT,
+  LEAVE_GROUP,
   SEND_MESSAGE,
   RECEIVE_MESSAGE,
 } from '../constants/actionTypes'
@@ -18,6 +19,7 @@ const chatsReducer = (chats = [], action) => {
     case CREATE_CHAT:
       return [...chats, action.payload]
     case DELETE_CHAT:
+    case LEAVE_GROUP:
       return chats.filter((chat) => chat._id !== action.payload)
     case SEND_MESSAGE:
       return chats.map((chat) =>
