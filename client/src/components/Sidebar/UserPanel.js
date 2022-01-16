@@ -21,7 +21,7 @@ import {
 } from '@mui/material'
 import { getInitials } from '../../utils/functions'
 import { signOut } from '../../actions/auth'
-import { createPrivateChat } from '../../actions/chats'
+import { createPrivateChat, createGroupChat } from '../../actions/chats'
 import { SocketContext } from '../../context/Socket'
 
 const UserPanel = () => {
@@ -31,7 +31,7 @@ const UserPanel = () => {
 
   const [menuAnchor, setMenuAnchor] = useState(null)
   const [openAddPrivate, setOpenAddPrivate] = useState(false)
-  const [newPrivateEmail, setNewChatEmail] = useState('')
+  const [newPrivateEmail, setNewPrivateEmail] = useState('')
   const [openAddGroup, setOpenAddGroup] = useState(false)
   const [newGroupName, setNewGroupName] = useState('')
 
@@ -49,13 +49,13 @@ const UserPanel = () => {
 
   const openAddPrivateDialog = () => {
     setOpenAddPrivate(true)
-    setNewChatEmail('')
+    setNewPrivateEmail('')
     closeAddMenu()
   }
 
   const closeAddPrivateDialog = () => {
     setOpenAddPrivate(false)
-    setNewChatEmail('')
+    setNewPrivateEmail('')
   }
 
   const handleAddPrivate = () => {
@@ -77,8 +77,8 @@ const UserPanel = () => {
 
   const handleAddGroup = () => {
     if (!newGroupName) return
-    dispatch(createPrivateChat(newGroupName, socket))
-    closeAddPrivateDialog()
+    dispatch(createGroupChat(newGroupName))
+    closeAddGroupDialog()
   }
 
   return (
@@ -148,7 +148,7 @@ const UserPanel = () => {
               fullWidth
               variant="standard"
               value={newPrivateEmail}
-              onChange={(e) => setNewChatEmail(e.target.value)}
+              onChange={(e) => setNewPrivateEmail(e.target.value)}
             />
           </DialogContent>
           <DialogActions>

@@ -15,24 +15,24 @@ const Chat = () => {
   const chats = useSelector((state) => state.chats)
   const prevChatId = useRef('')
   const { chatId } = useParams()
-  const [currentChat, setCurrentChat] = useState(null)
+  const [chat, setChat] = useState(null)
 
   useEffect(() => {
-    setCurrentChat(chats.find((chat) => chat._id === chatId))
+    setChat(chats.find((chat) => chat._id === chatId))
   }, [chats])
 
   useEffect(() => {
     if (prevChatId.current === chatId) return
     if (!chats.find((chat) => chat._id === chatId)) return
 
-    socket.unsubscribeChat(prevChatId.current)
+    socket.unsubscribeChatMessages(prevChatId.current)
     prevChatId.current = chatId
 
-    socket.subscribeChat(chatId)
+    socket.subscribeChatMessages(chatId)
     dispatch(fetchChat(chatId))
   }, [chatId])
 
-  if (!currentChat) return <></>
+  if (!chat) return <></>
 
   return (
     <Box
@@ -42,9 +42,9 @@ const Chat = () => {
       borderRight={1}
       borderColor={'divider'}
     >
-      <ChatPanel currentChat={currentChat} />
-      <Messages currentChat={currentChat} />
-      <SendBox currentChat={currentChat} />
+      <ChatPanel chat={chat} />
+      <Messages chat={chat} />
+      <SendBox chat={chat} />
     </Box>
   )
 }
