@@ -78,7 +78,7 @@ export const createPrivateChat = async (req, res) => {
     await newChat.save()
     res.status(200).json(newChat)
   } catch (error) {
-    res.status(409).json({ message: error })
+    res.status(409).json({ message: error.message })
   }
 }
 
@@ -111,7 +111,7 @@ export const addMember = async (req, res) => {
   const { chatId } = req.params
   const { email } = req.body
 
-  if (email !== owner.email) {
+  if (email === owner.email) {
     return res.status(400).json({ message: 'Cannot perform operation' })
   }
 
@@ -149,7 +149,7 @@ export const addMember = async (req, res) => {
   }
 }
 
-export const leaveChat = async (req, res) => {
+export const leaveGroup = async (req, res) => {
   const user = req.user
   const { chatId } = req.params
 
@@ -186,7 +186,7 @@ export const deleteChat = async (req, res) => {
     const chat = await Chat.findById(chatId)
 
     if (chat.type === 'group') {
-      if (!chat.ownerId === mongoose.Types.ObjectId(user._id).toString()) {
+      if (chat.ownerId !== mongoose.Types.ObjectId(user._id).toString()) {
         return res
           .status(403)
           .json({ message: 'Only group owner can perform this operation' })
