@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useContext } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import AdminPage from './pages/AdminPage'
 import UserPage from './pages/UserPage'
 import ModeratorPage from './pages/ModeratorPage'
@@ -14,13 +14,14 @@ const App = () => {
   const [user, loading] = useAuth()
   const dispatch = useDispatch()
   const socket = useContext(SocketContext)
+  const chats = useSelector((state) => state.chats)
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchChats())
-
       if (user.role === 'user') {
-        socket.subscribeOwnChats(user._id)
+        dispatch(fetchChats())
+        socket.subscribeChats(user._id)
+        chats.map((chat) => socket.subscribeChatMessages(chat._id))
       }
     }
   }, [user])

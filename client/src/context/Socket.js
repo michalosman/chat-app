@@ -9,9 +9,12 @@ const SocketProvider = ({ children }) => {
   const socket = io(process.env.REACT_APP_SERVER_URL)
   const dispatch = useDispatch()
 
-  const subscribeOwnChats = (userId) => {
-    socket.emit('join app', userId)
-    socket.on('chats changed', () => dispatch(fetchChats()))
+  const subscribeChats = (userId) => {
+    socket.emit('subscribe chats', userId)
+    socket.on('chat created', () => dispatch(fetchChats()))
+    socket.on('chat deleted', () => dispatch(fetchChats()))
+    socket.on('member added', () => dispatch(fetchChats()))
+    socket.on('member left', () => dispatch(fetchChats()))
   }
 
   const createChat = (userId) => {
@@ -22,16 +25,24 @@ const SocketProvider = ({ children }) => {
     socket.emit('delete chat', userId)
   }
 
-  const subscribeChat = (chatId) => {
-    socket.emit('join chat', chatId)
-    socket.on('receive message', (message) => {
-      dispatch(receiveMessage(chatId, message))
-    })
+  const addMember = (userId) => {
+    socket.emit('add member', userId)
   }
 
-  const unsubscribeChat = (chatId) => {
+  const leaveGroup = (userId) => {
+    socket.emit('leave group', userId)
+  }
+
+  const subscribeChatMessages = (chatId) => {
+    socket.emit('subscribe chat messages', chatId)
+    socket.on('receive message', (message) =>
+      dispatch(receiveMessage(chatId, message))
+    )
+  }
+
+  const unsubscribeChatMessages = (chatId) => {
     socket.off('receive message')
-    socket.emit('leave chat', chatId)
+    socket.emit('unsubscribe chat messages', chatId)
   }
 
   const sendMessage = (chatId, message) => {
@@ -41,11 +52,13 @@ const SocketProvider = ({ children }) => {
   return (
     <SocketContext.Provider
       value={{
-        subscribeOwnChats,
+        subscribeChats,
         createChat,
         deleteChat,
-        subscribeChat,
-        unsubscribeChat,
+        addMember,
+        leaveGroup,
+        subscribeChatMessages,
+        unsubscribeChatMessages,
         sendMessage,
       }}
     >
