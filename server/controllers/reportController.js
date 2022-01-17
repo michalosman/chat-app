@@ -1,59 +1,41 @@
 import mongoose from 'mongoose'
+import ApiError from '../error/ApiError.js'
 import Report from '../models/Report.js'
 import User from '../models/User.js'
+import 'express-async-errors'
 
 export const getReports = async (req, res) => {
-  try {
-    const reports = await Report.find()
-    res.status(200).json(reports)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  const reports = await Report.find()
+  res.status(200).json(reports)
 }
 
 export const createReport = async (req, res) => {
   const creator = req.user
   const { reportedUser, description } = req.body
 
-  if (!description)
-    return res
-      .status(400)
-      .json({ message: 'Report must contain a description' })
+  if (!description) throw ApiError.badRequest('No description')
 
   const user = await User.findById(reportedUser._id)
+  if (!user) throw ApiError.notFound('User not found')
 
-  if (!user) return res.status(404).json({ message: 'User not found' })
-
-  const report = {
+  const newReport = new Report({
     sender: { _id: creator._id, name: creator.name },
     reportedUser,
     description,
-  }
+  })
 
-  const newReport = new Report(report)
-
-  try {
-    await newReport.save()
-    res.status(200).json(newReport)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  await newReport.save()
+  res.status(200).json(newReport)
 }
 
 export const closeReport = async (req, res) => {
   const moderator = req.user
   const { reportId } = req.params
 
-  if (!mongoose.Types.ObjectId.isValid(reportId))
-    return res.status(400).json({ message: 'Invalid report id' })
+  const updatedReport = await Report.findByIdAndUpdate(reportId, {
+    moderator,
+    isClosed: true,
+  })
 
-  try {
-    const updatedReport = await Report.findByIdAndUpdate(reportId, {
-      moderator,
-      isClosed: true,
-    })
-    res.status(200).json(updatedReport)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  res.status(200).json(updatedReport)
 }

@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import usersRoutes from './routes/users.js'
 import chatsRoutes from './routes/chats.js'
 import reportsRoutes from './routes/reports.js'
+import errorHandler from './error/errorHandler.js'
 import { Server } from 'socket.io'
 import http from 'http'
 import dotenv from 'dotenv'
@@ -28,6 +29,8 @@ app.use(cors())
 app.use('/users', usersRoutes)
 app.use('/chats', chatsRoutes)
 app.use('/reports', reportsRoutes)
+
+app.use(errorHandler)
 
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)

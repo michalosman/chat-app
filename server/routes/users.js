@@ -9,6 +9,7 @@ import {
   validateUser,
 } from '../controllers/userController.js'
 import { auth, authModerator, authAdmin } from '../middleware/auth.js'
+import idValidator from '../middleware/idValidator.js'
 
 const router = express.Router()
 
@@ -18,8 +19,8 @@ router.post('/signUp', signUp)
 router.post('/signIn', signIn)
 router.post('/validateUser', auth, validateUser)
 
-router.put('/warn/:userId', auth, authModerator, warnUser)
-router.put('/block/:userId', auth, authAdmin, blockUser)
-router.put('/unblock/:userId', auth, authAdmin, unblockUser)
+router.put('/warn/:userId', auth, authModerator, idValidator, warnUser)
+router.put('/block/:userId', auth, authAdmin, idValidator, blockUser)
+router.put('/unblock/:userId', auth, authAdmin, idValidator, unblockUser)
 
 export default router

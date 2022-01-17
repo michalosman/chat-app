@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
 import User from '../models/User.js'
 import mongoose from 'mongoose'
+import ApiError from '../error/ApiError.js'
+import 'express-async-errors'
 
 dotenv.config()
 
@@ -11,133 +13,96 @@ const SECRET_KEY = process.env.SECRET_KEY
 export const signUp = async (req, res) => {
   const { email, password, name } = req.body
 
-  if (!email || !password || !name)
-    return res.status(400).json({ message: 'New user data incomplete' })
+  if (!email || !password || !name) throw ApiError.badRequest('Data incomplete')
 
-  try {
-    const doesExist = Boolean(await User.findOne({ email }))
+  const doesExist = Boolean(await User.findOne({ email }))
+  if (doesExist) throw ApiError.badRequest('Account already exists')
 
-    if (doesExist)
-      return res.status(400).json({ message: 'Account already exists' })
+  const hashedPassword = await bcrypt.hash(password, 12)
 
-    const hashedPassword = await bcrypt.hash(password, 12)
+  const newUser = await User.create({
+    email,
+    password: hashedPassword,
+    name,
+  })
 
-    const newUser = await User.create({
-      email,
-      password: hashedPassword,
-      name,
-    })
+  const token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: '7d' })
+  const { password: remove, ...userData } = newUser._doc
 
-    const token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: '7d' })
-
-    const { password: remove, ...userData } = newUser._doc
-
-    res.status(200).json({ ...userData, token })
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  res.status(200).json({ ...userData, token })
 }
 
 export const signIn = async (req, res) => {
   const { email, password } = req.body
 
-  try {
-    const user = await User.findOne({ email })
+  const user = await User.findOne({ email })
+  if (!user) throw ApiError.notFound('User not found')
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' })
-    }
+  const isPasswordCorrect = await bcrypt.compare(password, user.password)
+  if (!isPasswordCorrect) throw ApiError.badRequest('Wrong password')
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+  const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '7d' })
+  const { password: remove, ...userData } = user._doc
 
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: 'Password incorrect' })
-    }
-
-    const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '7d' })
-
-    const { password: remove, ...userData } = user._doc
-
-    res.status(200).json({ ...userData, token })
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  res.status(200).json({ ...userData, token })
 }
 
 export const warnUser = async (req, res) => {
   const { userId } = req.params
 
-  if (!mongoose.Types.ObjectId.isValid(userId))
-    return res.status(400).json({ message: 'Invalid user id' })
+  const user = await User.findById(userId)
+  if (!user) throw ApiError.notFound('User not found')
 
-  try {
-    const user = await User.findById(userId)
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      warningsCount: user.warningsCount + 1,
+    },
+    { new: true }
+  )
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        warningsCount: user.warningsCount + 1,
-      },
-      { new: true }
-    )
-
-    res.status(200).json(updatedUser)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  res.status(200).json(updatedUser)
 }
 
 export const blockUser = async (req, res) => {
   const { userId } = req.params
 
-  if (!mongoose.Types.ObjectId.isValid(userId))
-    return res.status(400).json({ message: 'Invalid user id' })
+  const user = await User.findById(userId)
+  if (!user) throw ApiError.notFound('User not found')
 
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        isBlocked: true,
-      },
-      { new: true }
-    )
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      isBlocked: true,
+    },
+    { new: true }
+  )
 
-    res.status(200).json(updatedUser)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  res.status(200).json(updatedUser)
 }
 
 export const unblockUser = async (req, res) => {
   const { userId } = req.params
 
-  if (!mongoose.Types.ObjectId.isValid(userId))
-    return res.status(400).json({ message: 'Invalid user id' })
+  const user = await User.findById(userId)
+  if (!user) throw ApiError.notFound('User not found')
 
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        isBlocked: false,
-      },
-      { new: true }
-    )
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      isBlocked: false,
+    },
+    { new: true }
+  )
 
-    res.status(200).json(updatedUser)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  res.status(200).json(updatedUser)
 }
 
 export const getUsers = async (req, res) => {
-  try {
-    const users = await User.find()
-    res.status(200).json(users)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+  const users = await User.find()
+  res.status(200).json(users)
 }
 
 export const validateUser = (req, res) => {
-  return res.status(200).json({ isValid: req.body.role === req.user.role })
+  res.status(200).json({ isValid: req.body.role === req.user.role })
 }
