@@ -7,7 +7,7 @@ export const getReports = async (req, res) => {
     const reports = await Report.find()
     res.status(200).json(reports)
   } catch (error) {
-    res.status(404).json({ message: error })
+    res.status(500).json({ message: error.message })
   }
 }
 
@@ -15,17 +15,14 @@ export const createReport = async (req, res) => {
   const creator = req.user
   const { reportedUser, description } = req.body
 
-  if (!description) {
+  if (!description)
     return res
       .status(400)
       .json({ message: 'Report must contain a description' })
-  }
 
   const user = await User.findById(reportedUser._id)
 
-  if (!user) {
-    return res.status(404).json({ message: "Reported user doesn't exist" })
-  }
+  if (!user) return res.status(404).json({ message: 'User not found' })
 
   const report = {
     sender: { _id: creator._id, name: creator.name },
@@ -39,7 +36,7 @@ export const createReport = async (req, res) => {
     await newReport.save()
     res.status(200).json(newReport)
   } catch (error) {
-    res.status(409).json({ message: error })
+    res.status(500).json({ message: error.message })
   }
 }
 
@@ -47,9 +44,8 @@ export const closeReport = async (req, res) => {
   const moderator = req.user
   const { reportId } = req.params
 
-  if (!mongoose.Types.ObjectId.isValid(reportId)) {
-    return res.status(400).json({ message: 'Invalid report Id' })
-  }
+  if (!mongoose.Types.ObjectId.isValid(reportId))
+    return res.status(400).json({ message: 'Invalid report id' })
 
   try {
     const updatedReport = await Report.findByIdAndUpdate(reportId, {
@@ -58,6 +54,6 @@ export const closeReport = async (req, res) => {
     })
     res.status(200).json(updatedReport)
   } catch (error) {
-    res.status(409).json({ message: error })
+    res.status(500).json({ message: error.message })
   }
 }
