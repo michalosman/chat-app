@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import ApiError from '../error/ApiError.js'
 import Report from '../models/Report.js'
 import User from '../models/User.js'

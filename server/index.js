@@ -1,6 +1,5 @@
 import express from 'express'
 import cors from 'cors'
-import mongoose from 'mongoose'
 import usersRoutes from './routes/users.js'
 import chatsRoutes from './routes/chats.js'
 import reportsRoutes from './routes/reports.js'
@@ -8,11 +7,11 @@ import errorHandler from './error/errorHandler.js'
 import { Server } from 'socket.io'
 import http from 'http'
 import dotenv from 'dotenv'
+import connectToDB from './db.js'
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:3000'
-const MONGO_URI = process.env.MONGO_URI
 
 const app = express()
 const server = http.createServer(app)
@@ -36,16 +35,8 @@ server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
 })
 
-// MongoDB
-mongoose
-  .connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('Connected to DB'))
-  .catch((err) => console.log(err.message))
+connectToDB()
 
-// Socket.io
 io.on('connection', (socket) => {
   socket.on('subscribe chats', (userId) => {
     socket.join(userId)
