@@ -1,8 +1,14 @@
+import { User } from './User'
+import { Message } from './Message'
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm'
 
 enum ChatType {
@@ -10,7 +16,7 @@ enum ChatType {
   PUBLIC = 'public',
 }
 
-@Entity('chats')
+@Entity()
 export class Chat {
   @PrimaryGeneratedColumn()
   id: number
@@ -29,4 +35,14 @@ export class Chat {
 
   @CreateDateColumn()
   created_at: Date
+
+  @OneToOne(() => Message)
+  @JoinColumn()
+  recent_message: Message
+
+  @OneToMany(() => Message, (message) => message.chat)
+  messages: Message[]
+
+  @ManyToOne(() => User, (user) => user.owned_groups)
+  owner: User
 }

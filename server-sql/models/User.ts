@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { Chat } from './Chat'
+import { Message } from './Message'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm'
 import { Report } from './Report'
 
 enum UserRole {
@@ -7,7 +16,7 @@ enum UserRole {
   USER = 'user',
 }
 
-@Entity('users')
+@Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number
@@ -43,12 +52,22 @@ export class User {
   @Column({ default: false })
   is_blocked: boolean
 
-  @OneToMany(() => Report, (report) => report.sender, { nullable: true })
+  @OneToMany(() => Message, (message) => message.sender)
+  messages: Message[]
+
+  @OneToMany(() => Report, (report) => report.creator)
   created_reports: Report[]
 
-  @OneToMany(() => Report, (report) => report.sender, { nullable: true })
+  @OneToMany(() => Report, (report) => report.reported)
   received_reports: Report[]
 
-  @OneToMany(() => Report, (report) => report.sender, { nullable: true })
+  @OneToMany(() => Report, (report) => report.moderator)
   managed_reports: Report[]
+
+  @OneToMany(() => Chat, (chat) => chat.owner)
+  owned_groups: Chat[]
+
+  @ManyToMany(() => Chat)
+  @JoinTable()
+  chats: Chat[]
 }

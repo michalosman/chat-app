@@ -5,10 +5,9 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm'
 
-@Entity('reports')
+@Entity()
 export class Report {
   @PrimaryGeneratedColumn()
   id: number
@@ -27,22 +26,13 @@ export class Report {
   created_at: Date
 
   @ManyToOne(() => User, (user) => user.created_reports)
-  @JoinColumn({
-    name: 'sender_id',
-  })
-  sender: User
+  creator: User
 
   @ManyToOne(() => User, (user) => user.received_reports)
-  @JoinColumn({
-    name: 'reported_id',
-  })
   reported: User
 
   @ManyToOne(() => User, (user) => user.managed_reports, {
     nullable: true,
-  })
-  @JoinColumn({
-    name: 'moderator_id',
   })
   moderator: User
 }

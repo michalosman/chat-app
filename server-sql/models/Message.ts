@@ -1,11 +1,14 @@
+import { Chat } from './Chat'
 import {
   Entity,
   Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
+  ManyToOne,
 } from 'typeorm'
+import { User } from './User'
 
-@Entity('messages')
+@Entity()
 export class Message {
   @PrimaryGeneratedColumn()
   id: number
@@ -17,4 +20,10 @@ export class Message {
 
   @CreateDateColumn()
   created_at: Date
+
+  @ManyToOne(() => User, (user) => user.messages)
+  sender: User
+
+  @ManyToOne(() => Chat, (chat) => chat.messages)
+  chat: Chat
 }
