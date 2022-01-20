@@ -35,8 +35,8 @@ const AdminPage = () => {
   }
 
   const userCards = users
-    .filter((user) => user.warningsCount >= 3 && !user.isBlocked)
-    .sort((user1, user2) => user2.warningsCount - user1.warningsCount)
+    .filter((user) => user.warnings >= 3 && !user.isBlocked)
+    .sort((user1, user2) => user2.warnings - user1.warnings)
     .map((user) => (
       <Card
         key={user._id}
@@ -48,7 +48,7 @@ const AdminPage = () => {
             <strong>User:</strong> {user.name}
           </Typography>
           <Typography>
-            <strong>Warnings:</strong> {user.warningsCount}
+            <strong>Warnings:</strong> {user.warnings}
           </Typography>
         </CardContent>
         <CardActions>
@@ -58,8 +58,8 @@ const AdminPage = () => {
     ))
 
   const blockedUserCards = users
-    .filter((user) => user.warningsCount >= 3 && user.isBlocked)
-    .sort((user1, user2) => user2.warningsCount - user1.warningsCount)
+    .filter((user) => user.warnings >= 3 && user.isBlocked)
+    .sort((user1, user2) => user2.warnings - user1.warnings)
     .map((user) => (
       <Card
         key={user._id}
@@ -71,7 +71,7 @@ const AdminPage = () => {
             <strong>User:</strong> {user.name}
           </Typography>
           <Typography>
-            <strong>Warnings:</strong> {user.warningsCount}
+            <strong>Warnings:</strong> {user.warnings}
           </Typography>
         </CardContent>
         <CardActions>

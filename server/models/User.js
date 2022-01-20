@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
     required: true,
     default: 'user',
   },
-  warningsCount: {
+  warnings: {
     type: Number,
     default: 0,
   },
