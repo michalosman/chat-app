@@ -54,12 +54,14 @@ export const warnUser = async (req, res) => {
   const updatedUser = await User.findByIdAndUpdate(
     userId,
     {
-      warningsCount: user.warningsCount + 1,
+      warnings: user.warnings + 1,
     },
     { new: true }
   )
 
-  res.status(200).json(updatedUser)
+  res
+    .status(200)
+    .json({ name: updatedUser.name, warnings: updatedUser.warnings })
 }
 
 export const blockUser = async (req, res) => {
@@ -76,7 +78,9 @@ export const blockUser = async (req, res) => {
     { new: true }
   )
 
-  res.status(200).json(updatedUser)
+  res
+    .status(200)
+    .json({ name: updatedUser.name, isBlocked: updatedUser.isBlocked })
 }
 
 export const unblockUser = async (req, res) => {
@@ -93,12 +97,25 @@ export const unblockUser = async (req, res) => {
     { new: true }
   )
 
-  res.status(200).json(updatedUser)
+  res
+    .status(200)
+    .json({ name: updatedUser.name, isBlocked: updatedUser.isBlocked })
 }
 
 export const getUsers = async (req, res) => {
   const users = await User.find()
-  res.status(200).json(users)
+  res.status(200).json(
+    users.map((user) => {
+      return {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        warnings: user.warnings,
+        isBlocked: user.isBlocked,
+      }
+    })
+  )
 }
 
 export const validateUser = (req, res) => {
