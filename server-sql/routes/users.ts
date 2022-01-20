@@ -7,8 +7,8 @@ import {
   unblockUser,
   getUsers,
   validateUser,
-} from '../controllers/userController.js'
-import { auth, authModerator, authAdmin } from '../middleware/auth.js'
+} from '../controllers/userController'
+import { auth, authModerator, authAdmin } from '../middleware/auth'
 
 const router = express.Router()
 

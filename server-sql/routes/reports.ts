@@ -1,10 +1,10 @@
 import express from 'express'
-import { auth, authModerator } from '../middleware/auth.js'
+import { auth, authModerator } from '../middleware/auth'
 import {
   createReport,
   closeReport,
   getReports,
-} from '../controllers/reportController.js'
+} from '../controllers/reportController'
 
 const router = express.Router()
 
