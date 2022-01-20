@@ -5,10 +5,11 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  BaseEntity,
 } from 'typeorm'
 
-@Entity()
-export class Report {
+@Entity('reports')
+export class Report extends BaseEntity{
   @PrimaryGeneratedColumn()
   id: number
 
@@ -25,8 +26,8 @@ export class Report {
   @CreateDateColumn()
   created_at: Date
 
-  @ManyToOne(() => User, (user) => user.created_reports)
-  creator: User
+  @ManyToOne(() => User, (user) => user.sent_reports)
+  sender: User
 
   @ManyToOne(() => User, (user) => user.received_reports)
   reported: User

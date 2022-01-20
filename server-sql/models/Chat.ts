@@ -9,6 +9,7 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
+  BaseEntity,
 } from 'typeorm'
 
 enum ChatType {
@@ -16,8 +17,8 @@ enum ChatType {
   PUBLIC = 'public',
 }
 
-@Entity()
-export class Chat {
+@Entity('chats')
+export class Chat extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 

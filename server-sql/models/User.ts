@@ -7,6 +7,7 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  BaseEntity,
 } from 'typeorm'
 import { Report } from './Report'
 
@@ -16,8 +17,8 @@ enum UserRole {
   USER = 'user',
 }
 
-@Entity()
-export class User {
+@Entity('users')
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -55,8 +56,8 @@ export class User {
   @OneToMany(() => Message, (message) => message.sender)
   messages: Message[]
 
-  @OneToMany(() => Report, (report) => report.creator)
-  created_reports: Report[]
+  @OneToMany(() => Report, (report) => report.sender)
+  sent_reports: Report[]
 
   @OneToMany(() => Report, (report) => report.reported)
   received_reports: Report[]
@@ -68,6 +69,14 @@ export class User {
   owned_groups: Chat[]
 
   @ManyToMany(() => Chat)
-  @JoinTable()
+  @JoinTable({
+    name: 'users_chats',
+    joinColumn: {
+      name: 'user_id',
+    },
+    inverseJoinColumn: {
+      name: 'chat_id',
+    },
+  })
   chats: Chat[]
 }
