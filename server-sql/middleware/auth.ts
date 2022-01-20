@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import { User } from '../models/User'
 import { Request, Response, NextFunction } from 'express'
-import ApiError from 'error/ApiError'
+import ApiError from '../error/ApiError'
 
 dotenv.config()
 const SECRET_KEY = process.env.SECRET_KEY || ''
@@ -14,17 +14,13 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   const decoded = jwt.verify(token, SECRET_KEY)
 
-  if (typeof decoded === 'string') {
-    throw ApiError.badRequest('Invalid token')
-  }
+  if (typeof decoded === 'string') throw ApiError.badRequest('Invalid token')
 
-  const user = await User.findById(decoded?.id)
+  const user = await User.findOne({ id: decoded?.id })
 
-  if (!user) {
-    return res.status(401).json({ message: 'User not found' })
-  }
+  if (!user) return res.status(401).json({ message: 'Account not found' })
 
-  if (user.isBlocked)
+  if (user.is_blocked)
     return res.status(403).json({ message: 'Account is blocked' })
 
   req.user = user
