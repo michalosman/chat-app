@@ -10,16 +10,16 @@ export const getReports = async (req, res) => {
 
 export const createReport = async (req, res) => {
   const creator = req.user
-  const { reportedUser, description } = req.body
+  const { reported, description } = req.body
 
   if (!description) throw ApiError.badRequest('No description')
 
-  const user = await User.findById(reportedUser._id)
-  if (!user) throw ApiError.notFound('User not found')
+  const user = await User.findById(reported._id)
+  if (!user) throw ApiError.notFound('Reported user not found')
 
   const newReport = new Report({
     sender: { _id: creator._id, name: creator.name },
-    reportedUser,
+    reported,
     description,
   })
 
