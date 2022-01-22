@@ -55,7 +55,7 @@ export const warnUser = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   if (!userId) throw ApiError.badRequest('Request data incomplete')
-  if (parseInt(userId)) throw ApiError.badRequest('Invalid user id')
+  if (!parseInt(userId)) throw ApiError.badRequest('Invalid user id')
 
   const user = await User.findOne(userId)
   if (!user) throw ApiError.notFound('User not found')
@@ -70,7 +70,7 @@ export const blockUser = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   if (!userId) throw ApiError.badRequest('Request data incomplete')
-  if (parseInt(userId)) throw ApiError.badRequest('Invalid user id')
+  if (!parseInt(userId)) throw ApiError.badRequest('Invalid user id')
 
   const user = await User.findOne(userId)
   if (!user) throw ApiError.notFound('User not found')
@@ -85,7 +85,7 @@ export const unblockUser = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   if (!userId) throw ApiError.badRequest('Request data incomplete')
-  if (parseInt(userId)) throw ApiError.badRequest('Invalid user id')
+  if (!parseInt(userId)) throw ApiError.badRequest('Invalid user id')
 
   const user = await User.findOne(userId)
   if (!user) throw ApiError.notFound('User not found')
