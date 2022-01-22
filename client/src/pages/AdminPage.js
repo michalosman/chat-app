@@ -39,7 +39,7 @@ const AdminPage = () => {
     .sort((user1, user2) => user2.warnings - user1.warnings)
     .map((user) => (
       <Card
-        key={user._id}
+        key={user.id}
         variant="outlined"
         style={{ width: 300, maxWidth: '90%', marginBottom: '16px' }}
       >
@@ -52,7 +52,7 @@ const AdminPage = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button onClick={(e) => handleBlock(e, user._id)}>Block</Button>
+          <Button onClick={(e) => handleBlock(e, user.id)}>Block</Button>
         </CardActions>
       </Card>
     ))
@@ -62,7 +62,7 @@ const AdminPage = () => {
     .sort((user1, user2) => user2.warnings - user1.warnings)
     .map((user) => (
       <Card
-        key={user._id}
+        key={user.id}
         variant="outlined"
         style={{ width: 300, maxWidth: '90%', marginBottom: '16px' }}
       >
@@ -75,7 +75,7 @@ const AdminPage = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button onClick={(e) => handleUnblock(e, user._id)}>Unblock</Button>
+          <Button onClick={(e) => handleUnblock(e, user.id)}>Unblock</Button>
         </CardActions>
       </Card>
     ))

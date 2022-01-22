@@ -14,14 +14,14 @@ const Messages = ({ chat }) => {
         <Box
           key={uuidv4()}
           className={`${classes.message} ${
-            message.sender._id === user._id ? classes.ownMessage : ''
+            message.sender.id === user.id ? classes.ownMessage : ''
           }`}
           p={1}
         >
           {message.text}
           {/* <Typography
             className={`${classes.messageTime} ${
-              message.sender._id === user._id ? classes.ownMessageTime : ''
+              message.sender.id === user.id ? classes.ownMessageTime : ''
             }`}
           >
             {formatTime(message.createdAt)}

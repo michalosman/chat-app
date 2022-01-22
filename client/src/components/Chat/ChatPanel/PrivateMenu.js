@@ -39,7 +39,7 @@ const PrivateMenu = ({ otherUser, chat }) => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteChat(chat._id, socket))
+    dispatch(deleteChat(chat.id, socket))
     closeDeleteDialog()
   }
 

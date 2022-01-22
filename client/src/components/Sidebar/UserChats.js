@@ -10,12 +10,12 @@ const UserChats = () => {
   const chats = useSelector((state) => state.chats)
 
   const chatBoxes = chats.map((chat) => {
-    const otherUser = getOtherMember(chat.members, user._id)
+    const otherUser = getOtherMember(chat.members, user.id)
 
     return (
       <Link
-        to={`/${chat._id}`}
-        key={chat._id}
+        to={`/${chat.id}`}
+        key={chat.id}
         style={{ textDecoration: 'none' }}
       >
         <Button fullWidth style={{ textTransform: 'none', color: 'black' }}>

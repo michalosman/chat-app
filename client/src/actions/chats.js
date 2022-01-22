@@ -30,7 +30,7 @@ export const fetchChat = (chatId) => async (dispatch) => {
 export const createPrivateChat = (email, socket) => async (dispatch) => {
   try {
     const { data } = await api.createPrivateChat(email)
-    data.members.map((member) => socket.createChat(member._id))
+    data.members.map((member) => socket.createChat(member.id))
     dispatch({ type: CREATE_CHAT, payload: data })
   } catch (error) {
     console.log(error)
@@ -62,7 +62,7 @@ export const deleteChat = (chatId, socket) => async (dispatch) => {
   try {
     const { data } = await api.getChat(chatId)
     await api.deleteChat(chatId)
-    data.members.map((member) => socket.deleteChat(member._id))
+    data.members.map((member) => socket.deleteChat(member.id))
     dispatch({ type: DELETE_CHAT, payload: chatId })
   } catch (error) {
     console.log(error)

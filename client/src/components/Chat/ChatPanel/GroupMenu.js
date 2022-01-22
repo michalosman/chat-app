@@ -37,8 +37,8 @@ const GroupMenu = ({ chat }) => {
     if (!newMemberEmail) return
 
     try {
-      const { data } = await api.addMember(chat._id, newMemberEmail)
-      data.members.map((member) => socket.addMember(member._id))
+      const { data } = await api.addMember(chat.id, newMemberEmail)
+      data.members.map((member) => socket.addMember(member.id))
       closeAddMemberDialog()
       setNewMemberEmail('')
     } catch (error) {
@@ -47,12 +47,12 @@ const GroupMenu = ({ chat }) => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteChat(chat._id, socket))
+    dispatch(deleteChat(chat.id, socket))
     closeDeleteGroupDialog()
   }
 
   const handleLeaveGroup = () => {
-    dispatch(leaveGroup(user._id, chat._id, socket))
+    dispatch(leaveGroup(user.id, chat.id, socket))
     closeLeaveGroupDialog()
   }
 
@@ -93,7 +93,7 @@ const GroupMenu = ({ chat }) => {
     closeChatMenu()
   }
 
-  if (user._id !== chat.ownerId) {
+  if (user.id !== chat.ownerId) {
     return (
       <Box display="flex">
         <IconButton onClick={openChatMenu}>

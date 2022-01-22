@@ -16,7 +16,7 @@ const SendBox = ({ chat }) => {
     e.preventDefault()
     if (!message) return
 
-    dispatch(sendMessage(chat._id, message, socket))
+    dispatch(sendMessage(chat.id, message, socket))
     setMessage('')
   }
 

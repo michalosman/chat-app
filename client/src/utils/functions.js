@@ -11,7 +11,7 @@ export const getInitials = (name) => {
 }
 
 export const getOtherMember = (members, userId) => {
-  return members.filter((member) => member._id !== userId)[0]
+  return members.filter((member) => member.id !== userId)[0]
 }
 
 export const formatTime = (date) => {

@@ -8,7 +8,7 @@ import GroupMenu from './GroupMenu'
 
 const ChatPanel = ({ chat }) => {
   const user = useSelector((state) => state.auth)
-  const otherUser = getOtherMember(chat.members, user._id)
+  const otherUser = getOtherMember(chat.members, user.id)
 
   return (
     <Box

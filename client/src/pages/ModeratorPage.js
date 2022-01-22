@@ -33,7 +33,7 @@ const ModeratorPage = () => {
     .filter((report) => !report.isClosed)
     .map((report) => (
       <Card
-        key={report._id}
+        key={report.id}
         variant="outlined"
         style={{ width: 500, maxWidth: '90%', marginBottom: '16px' }}
       >
@@ -53,12 +53,12 @@ const ModeratorPage = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button onClick={(e) => handleCloseReport(e, report._id)}>
+          <Button onClick={(e) => handleCloseReport(e, report.id)}>
             Close
           </Button>
           <Button
             onClick={(e) =>
-              handleWarnUser(e, report._id, report.reportedUser._id)
+              handleWarnUser(e, report.id, report.reportedUser.id)
             }
           >
             Warn

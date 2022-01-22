@@ -14,20 +14,20 @@ const chatsReducer = (chats = [], action) => {
       return action.payload
     case FETCH_CHAT:
       return chats.map((chat) =>
-        chat._id === action.payload._id ? action.payload : chat
+        chat.id === action.payload.id ? action.payload : chat
       )
     case CREATE_CHAT:
       return [...chats, action.payload]
     case DELETE_CHAT:
     case LEAVE_GROUP:
-      return chats.filter((chat) => chat._id !== action.payload)
+      return chats.filter((chat) => chat.id !== action.payload)
     case SEND_MESSAGE:
       return chats.map((chat) =>
-        chat._id === action.payload._id ? action.payload : chat
+        chat.id === action.payload.id ? action.payload : chat
       )
     case RECEIVE_MESSAGE:
       return chats.map((chat) => {
-        if (chat._id === action.payload.chatId) {
+        if (chat.id === action.payload.chatId) {
           chat.messages.push(action.payload.message)
           chat.recentMessage = action.payload.message
         }

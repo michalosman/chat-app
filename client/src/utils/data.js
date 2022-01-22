@@ -1,20 +1,20 @@
 export const chats = [
   {
-    _id: '123',
+    id: '123',
     members: [
       {
-        _id: '61af69f7979cdef47e27a706',
+        id: '61af69f7979cdef47e27a706',
         name: 'User 1',
       },
       {
-        _id: '2',
+        id: '2',
         name: 'User 2',
       },
     ],
     messages: [
       {
         sender: {
-          _id: '61af69f7979cdef47e27a706',
+          id: '61af69f7979cdef47e27a706',
           name: 'User 1',
         },
         text: 'Some message by user 1',
@@ -22,7 +22,7 @@ export const chats = [
       },
       {
         sender: {
-          _id: '61af92fe41e9da961e9e0daa',
+          id: '61af92fe41e9da961e9e0daa',
           name: 'User 2',
         },
         text: 'Some message by user 2',
@@ -31,7 +31,7 @@ export const chats = [
     ],
     recentMessage: {
       sender: {
-        _id: '61af92fe41e9da961e9e0daa',
+        id: '61af92fe41e9da961e9e0daa',
         name: 'User 2',
       },
       text: 'Some message by user 2',
@@ -39,21 +39,21 @@ export const chats = [
     },
   },
   {
-    _id: '1234',
+    id: '1234',
     members: [
       {
-        _id: '61af69f7979cdef47e27a706',
+        id: '61af69f7979cdef47e27a706',
         name: 'User 1',
       },
       {
-        _id: '2',
+        id: '2',
         name: 'User 2',
       },
     ],
     messages: [
       {
         sender: {
-          _id: '61af69f7979cdef47e27a706',
+          id: '61af69f7979cdef47e27a706',
           name: 'User 1',
         },
         text: 'Some message by user 1',
@@ -61,7 +61,7 @@ export const chats = [
       },
       {
         sender: {
-          _id: '61af92fe41e9da961e9e0daa',
+          id: '61af92fe41e9da961e9e0daa',
           name: 'User 2',
         },
         text: 'Some message by user 2',
@@ -70,7 +70,7 @@ export const chats = [
     ],
     recentMessage: {
       sender: {
-        _id: '61af92fe41e9da961e9e0daa',
+        id: '61af92fe41e9da961e9e0daa',
         name: 'User 2',
       },
       text: 'Some message by user 2',

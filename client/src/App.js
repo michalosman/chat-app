@@ -20,8 +20,8 @@ const App = () => {
     if (user) {
       if (user.role === 'user') {
         dispatch(fetchChats())
-        socket.subscribeChats(user._id)
-        chats.map((chat) => socket.subscribeChatMessages(chat._id))
+        socket.subscribeChats(user.id)
+        chats.map((chat) => socket.subscribeChatMessages(chat.id))
       }
     }
   }, [user])
