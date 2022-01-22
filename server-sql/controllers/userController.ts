@@ -29,9 +29,9 @@ export const signUp = async (req: Request, res: Response) => {
   const token = jwt.sign({ id: newUser.id }, SECRET_KEY, {
     expiresIn: '7d',
   })
-  const { password: remove, is_blocked: isBlocked, ...userData } = newUser
+  const { password: remove, ...userData } = newUser
 
-  res.status(200).json({ ...userData, isBlocked, token })
+  res.status(200).json({ ...userData, token })
 }
 
 export const signIn = async (req: Request, res: Response) => {
@@ -46,9 +46,9 @@ export const signIn = async (req: Request, res: Response) => {
   if (!isPasswordCorrect) throw ApiError.badRequest('Wrong password')
 
   const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: '7d' })
-  const { password: remove, is_blocked: isBlocked, ...userData } = user
+  const { password: remove, ...userData } = user
 
-  res.status(200).json({ ...userData, isBlocked, token })
+  res.status(200).json({ ...userData, token })
 }
 
 export const warnUser = async (req: Request, res: Response) => {
@@ -75,10 +75,10 @@ export const blockUser = async (req: Request, res: Response) => {
   const user = await User.findOne(userId)
   if (!user) throw ApiError.notFound('User not found')
 
-  user.is_blocked = true
+  user.isBlocked = true
   await user.save()
 
-  res.status(200).json({ name: user.name, isBlocked: user.is_blocked })
+  res.status(200).json({ name: user.name, isBlocked: user.isBlocked })
 }
 
 export const unblockUser = async (req: Request, res: Response) => {
@@ -90,18 +90,18 @@ export const unblockUser = async (req: Request, res: Response) => {
   const user = await User.findOne(userId)
   if (!user) throw ApiError.notFound('User not found')
 
-  user.is_blocked = false
+  user.isBlocked = false
   await user.save()
 
-  res.status(200).json({ name: user.name, isBlocked: user.is_blocked })
+  res.status(200).json({ name: user.name, isBlocked: user.isBlocked })
 }
 
 export const getUsers = async (req: Request, res: Response) => {
   const users = await User.find()
 
   const usersData = users.map((user) => {
-    const { password: remove, is_blocked: isBlocked, ...userData } = user
-    return { ...userData, isBlocked }
+    const { password: remove, ...userData } = user
+    return userData
   })
 
   res.status(200).json(usersData)

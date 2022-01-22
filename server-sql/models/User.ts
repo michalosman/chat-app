@@ -49,20 +49,20 @@ export class User extends BaseEntity {
   warnings: number
 
   @Column({ default: false })
-  is_blocked: boolean
+  isBlocked: boolean
 
   @OneToMany(() => Message, (message) => message.sender)
   messages: Message[]
 
   @OneToMany(() => Report, (report) => report.sender)
-  sent_reports: Report[]
+  sentReports: Report[]
 
   @OneToMany(() => Report, (report) => report.reported)
-  received_reports: Report[]
+  receivedReports: Report[]
 
   @OneToMany(() => Report, (report) => report.moderator)
-  managed_reports: Report[]
+  managedReports: Report[]
 
   @OneToMany(() => Chat, (chat) => chat.owner)
-  owned_groups: Chat[]
+  ownedGroups: Chat[]
 }

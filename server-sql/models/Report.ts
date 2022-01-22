@@ -21,18 +21,18 @@ export class Report extends BaseEntity{
   @Column({
     default: false,
   })
-  is_closed: boolean
+  isClosed: boolean
 
   @CreateDateColumn()
-  created_at: Date
+  createdAt: Date
 
-  @ManyToOne(() => User, (user) => user.sent_reports)
+  @ManyToOne(() => User, (user) => user.sentReports)
   sender: User
 
-  @ManyToOne(() => User, (user) => user.received_reports)
+  @ManyToOne(() => User, (user) => user.receivedReports)
   reported: User
 
-  @ManyToOne(() => User, (user) => user.managed_reports, {
+  @ManyToOne(() => User, (user) => user.managedReports, {
     nullable: true,
   })
   moderator: User

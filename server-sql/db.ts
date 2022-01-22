@@ -4,7 +4,6 @@ import { Chat } from './models/Chat'
 import { createConnection } from 'typeorm'
 import { User } from './models/User'
 import dotenv from 'dotenv'
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 dotenv.config()
 
 const connectToDB = async () => {
@@ -17,7 +16,6 @@ const connectToDB = async () => {
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
       entities: [User, Chat, Message, Report],
-      namingStrategy: new SnakeNamingStrategy(),
       synchronize: true, //! remove in prod
     })
     console.log('Connected to PostgreSQL')

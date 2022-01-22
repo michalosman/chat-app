@@ -20,7 +20,7 @@ export class Message extends BaseEntity {
   text: string
 
   @CreateDateColumn()
-  created_at: Date
+  createdAt: Date
 
   @ManyToOne(() => User, (user) => user.messages)
   sender: User

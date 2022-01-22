@@ -37,26 +37,26 @@ export class Chat extends BaseEntity {
   type: ChatType
 
   @CreateDateColumn()
-  created_at: Date
+  createdAt: Date
 
   @OneToOne(() => Message)
   @JoinColumn()
-  recent_message: Message
+  recentMessage: Message
 
   @OneToMany(() => Message, (message) => message.chat)
   messages: Message[]
 
-  @ManyToOne(() => User, (user) => user.owned_groups)
+  @ManyToOne(() => User, (user) => user.ownedGroups)
   owner: User
 
   @ManyToMany(() => User)
   @JoinTable({
     name: 'chats_users',
     joinColumn: {
-      name: 'chat_id',
+      name: 'chatId',
     },
     inverseJoinColumn: {
-      name: 'user_id',
+      name: 'userId',
     },
   })
   members: User[]

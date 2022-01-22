@@ -14,17 +14,13 @@ export const getReports = async (req: Request, res: Response) => {
     .getMany()
 
   const reportsData = reports.map((report) => {
-    const { is_closed: isClosed, created_at: createdAt, ...reportData } = report
-
     return {
-      ...reportData,
+      ...report,
       sender: { id: report.sender.id, name: report.sender.name },
       reported: { id: report.reported.id, name: report.reported.name },
       moderator: report.moderator
         ? { id: report.reported.id, name: report.reported.name }
         : null,
-      isClosed,
-      createdAt,
     }
   })
 
@@ -48,7 +44,7 @@ export const createReport = async (req: Request, res: Response) => {
   newReport.reported = reported
   await newReport.save()
 
-  res.status(200).json({ id: newReport.id, createdAt: newReport.created_at })
+  res.status(200).json({ id: newReport.id, createdAt: newReport.createdAt })
 }
 
 export const closeReport = async (req: Request, res: Response) => {
@@ -60,11 +56,11 @@ export const closeReport = async (req: Request, res: Response) => {
 
   const report = await Report.findOne(reportId)
   if (!report) throw ApiError.notFound('Report not found')
-  if (report.is_closed) throw ApiError.badRequest('Report is already closed')
+  if (report.isClosed) throw ApiError.badRequest('Report is already closed')
 
-  report.is_closed = true
+  report.isClosed = true
   report.moderator = moderator
   await report.save()
 
-  res.status(200).json({ id: report.id, isClosed: report.is_closed })
+  res.status(200).json({ id: report.id, isClosed: report.isClosed })
 }
