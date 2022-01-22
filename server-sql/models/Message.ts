@@ -25,6 +25,6 @@ export class Message extends BaseEntity {
   @ManyToOne(() => User, (user) => user.messages)
   sender: User
 
-  @ManyToOne(() => Chat, (chat) => chat.messages)
+  @ManyToOne(() => Chat, (chat) => chat.messages, { onDelete: 'CASCADE' })
   chat: Chat
 }
