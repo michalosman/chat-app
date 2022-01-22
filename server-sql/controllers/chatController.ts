@@ -14,14 +14,32 @@ export const getChats = async (req: Request, res: Response) => {
   const chats = await getRepository(Chat)
     .createQueryBuilder('chats')
     .innerJoinAndSelect('chats.members', 'members')
+    .leftJoinAndSelect('chats.messages', 'messages')
+    .leftJoinAndSelect('messages.sender', 'sender')
     .where("chats.type = 'private'")
     .getMany()
 
-  const userChats = chats.filter((chat) =>
-    chat.members.find((member) => member.id === user.id)
-  )
+  const chatsData = chats
+    .filter((chat) => chat.members.find((member) => member.id === user.id))
+    .map((chat) => {
+      return {
+        ...chat,
+        members: chat.members.map((member) => {
+          return { id: member.id, name: member.name }
+        }),
+        messages: chat.messages.map((message) => {
+          return {
+            ...message,
+            sender: {
+              id: message.sender.id,
+              name: message.sender.name,
+            },
+          }
+        }),
+      }
+    })
 
-  res.status(200).json(userChats)
+  res.status(200).json(chatsData)
 }
 
 export const getChat = async (req: Request, res: Response) => {
@@ -34,6 +52,8 @@ export const getChat = async (req: Request, res: Response) => {
   const chat = await getRepository(Chat)
     .createQueryBuilder('chats')
     .innerJoinAndSelect('chats.members', 'members')
+    .leftJoinAndSelect('chats.messages', 'messages')
+    .leftJoinAndSelect('messages.sender', 'sender')
     .where('chats.id = :chatId', { chatId })
     .getOne()
 
@@ -42,7 +62,23 @@ export const getChat = async (req: Request, res: Response) => {
   const isMember = chat.members.find((member) => member.id === user.id)
   if (!isMember) throw ApiError.forbidden('User is not a chat member')
 
-  res.status(200).json(chat)
+  const chatData = {
+    ...chat,
+    members: chat.members.map((member) => {
+      return { id: member.id, name: member.name }
+    }),
+    messages: chat.messages.map((message) => {
+      return {
+        ...message,
+        sender: {
+          id: message.sender.id,
+          name: message.sender.name,
+        },
+      }
+    }),
+  }
+
+  res.status(200).json(chatData)
 }
 
 export const createPrivateChat = async (req: Request, res: Response) => {
@@ -79,7 +115,10 @@ export const createPrivateChat = async (req: Request, res: Response) => {
   newChat.type = ChatType.PRIVATE
   await newChat.save()
 
-  res.json(newChat)
+  res.status(200).json({
+    id: newChat.id,
+    createdAt: newChat.createdAt,
+  })
 }
 
 export const createGroupChat = async (req: Request, res: Response) => {
@@ -95,7 +134,10 @@ export const createGroupChat = async (req: Request, res: Response) => {
   newGroup.type = ChatType.GROUP
   await newGroup.save()
 
-  res.status(200).json(newGroup)
+  res.status(200).json({
+    id: newGroup.id,
+    createdAt: newGroup.createdAt,
+  })
 }
 
 export const addMember = async (req: Request, res: Response) => {
@@ -130,13 +172,11 @@ export const addMember = async (req: Request, res: Response) => {
   chat.members = [...chat.members, newMember]
   await chat.save()
 
-  res.status(200).json({
-    members: [
-      chat.members.map((member) => {
-        return { id: member.id, name: member.name }
-      }),
-    ],
+  const membersData = chat.members.map((member) => {
+    return { id: member.id, name: member.name }
   })
+
+  res.status(200).json({ membersData })
 }
 
 export const leaveGroup = async (req: Request, res: Response) => {
@@ -166,13 +206,11 @@ export const leaveGroup = async (req: Request, res: Response) => {
   chat.members = [...chat.members.filter((member) => member.id !== user.id)]
   await chat.save()
 
-  res.status(200).json({
-    members: [
-      chat.members.map((member) => {
-        return { id: member.id, name: member.name }
-      }),
-    ],
+  const membersData = chat.members.map((member) => {
+    return { id: member.id, name: member.name }
   })
+
+  res.status(200).json({ membersData })
 }
 
 export const deleteChat = async (req: Request, res: Response) => {
@@ -228,8 +266,24 @@ export const createMessage = async (req: Request, res: Response) => {
   newMessage.chat = chat
   await newMessage.save()
 
-  chat.recent_message = newMessage
+  chat.recentMessage = newMessage
   await chat.save()
 
-  res.status(200).json({ id: newMessage.id, createdAt: newMessage.created_at })
+  const recentMessage = await getRepository(Message)
+    .createQueryBuilder('messages')
+    .innerJoinAndSelect('messages.sender', 'sender')
+    .where('messages.id = :newMessageId', { newMessageId: newMessage.id })
+    .getOne()
+
+  if (!recentMessage) throw ApiError.notFound('Message not found')
+
+  const recentMessageData = {
+    ...recentMessage,
+    sender: {
+      id: recentMessage.sender.id,
+      name: recentMessage.sender.name,
+    },
+  }
+
+  res.status(200).json({ recentMessage: recentMessageData })
 }
