@@ -1,3 +1,4 @@
+import { Message } from './../models/Message'
 import { getRepository } from 'typeorm'
 import { Chat, ChatType } from '../models/Chat'
 import { User, UserRole } from '../models/User'
@@ -5,12 +6,14 @@ import ApiError from '../error/ApiError'
 import 'express-async-errors'
 import { Request, Response } from 'express'
 
+// TODO - Refactor to use queries instead of array methods
+
 export const getChats = async (req: Request, res: Response) => {
   const user = req.user
 
   const chats = await getRepository(Chat)
     .createQueryBuilder('chats')
-    .innerJoinAndSelect('chats.members', 'users')
+    .innerJoinAndSelect('chats.members', 'members')
     .where("chats.type = 'private'")
     .getMany()
 
@@ -25,16 +28,18 @@ export const getChat = async (req: Request, res: Response) => {
   const user = req.user
   const { chatId } = req.params
 
+  if (!chatId) throw ApiError.badRequest('Request data incomplete')
+  if (!parseInt(chatId)) throw ApiError.badRequest('Invalid chat id')
+
   const chat = await getRepository(Chat)
     .createQueryBuilder('chats')
-    .innerJoinAndSelect('chats.members', 'users')
+    .innerJoinAndSelect('chats.members', 'members')
     .where('chats.id = :chatId', { chatId })
     .getOne()
 
   if (!chat) throw ApiError.notFound('Chat not found')
 
   const isMember = chat.members.find((member) => member.id === user.id)
-
   if (!isMember) throw ApiError.forbidden('User is not a chat member')
 
   res.status(200).json(chat)
@@ -44,6 +49,7 @@ export const createPrivateChat = async (req: Request, res: Response) => {
   const creator = req.user
   const { email } = req.body
 
+  if (!email) throw ApiError.badRequest('Request data incomplete')
   if (email === creator.email)
     throw ApiError.methodNotAllowed(
       'Cannot create a chat with your own account'
@@ -56,7 +62,7 @@ export const createPrivateChat = async (req: Request, res: Response) => {
 
   const chats = await getRepository(Chat)
     .createQueryBuilder('chats')
-    .innerJoinAndSelect('chats.members', 'users')
+    .innerJoinAndSelect('chats.members', 'members')
     .where("chats.type = 'private'")
     .getMany()
 
@@ -80,7 +86,7 @@ export const createGroupChat = async (req: Request, res: Response) => {
   const user = req.user
   const { name } = req.body
 
-  if (!name) throw ApiError.notFound('Group chat must have a name')
+  if (!name) throw ApiError.badRequest('Request data incomplete')
 
   const newGroup = new Chat()
   newGroup.owner = user
@@ -92,91 +98,138 @@ export const createGroupChat = async (req: Request, res: Response) => {
   res.status(200).json(newGroup)
 }
 
-// TODO
 export const addMember = async (req: Request, res: Response) => {
-  // const { chatId } = req.params
-  // const { email } = req.body
-  // const chat = await Chat.findById(chatId)
-  // if (!chat) throw ApiError.notFound('Chat not found')
-  // const newMember = await User.findOne({ email })
-  // if (!newMember) throw ApiError.notFound('User not found')
-  // const isMember = chat.members.find(
-  //   (member) => member._id === mongoose.Types.ObjectId(newMember._id).toString()
-  // )
-  // if (isMember) throw ApiError.methodNotAllowed('User is already a member')
-  // const updatedChat = await Chat.findByIdAndUpdate(
-  //   chatId,
-  //   {
-  //     $push: { members: { _id: newMember._id, name: newMember.name } },
-  //   },
-  //   { new: true }
-  // )
-  // res.status(200).json(updatedChat)
+  const user = req.user
+  const { chatId } = req.params
+  const { email } = req.body
+
+  if (!chatId || !email) throw ApiError.badRequest('Request data incomplete')
+  if (!parseInt(chatId)) throw ApiError.badRequest('Invalid chat id')
+
+  const chat = await getRepository(Chat)
+    .createQueryBuilder('chats')
+    .innerJoinAndSelect('chats.members', 'members')
+    .innerJoinAndSelect('chats.owner', 'owner')
+    .where('chats.id = :chatId', { chatId })
+    .getOne()
+
+  if (!chat) throw ApiError.notFound('Chat not found')
+  if (chat.type !== ChatType.GROUP)
+    throw ApiError.badRequest('Chat must be of type group')
+  if (chat.owner.id !== user.id)
+    throw ApiError.methodNotAllowed(
+      'Only group owner can perform this operation'
+    )
+
+  const newMember = await User.findOne({ email })
+  if (!newMember) throw ApiError.notFound('User not found')
+
+  const isMember = chat.members.find((member) => member.id === newMember.id)
+  if (isMember) throw ApiError.methodNotAllowed('User is already a member')
+
+  chat.members = [...chat.members, newMember]
+  await chat.save()
+
+  res.status(200).json({
+    members: [
+      chat.members.map((member) => {
+        return { id: member.id, name: member.name }
+      }),
+    ],
+  })
 }
 
-// TODO
 export const leaveGroup = async (req: Request, res: Response) => {
-  // const user = req.user
-  // const { chatId } = req.params
-  // const chat = Chat.findById(chatId)
-  // const userId = mongoose.Types.ObjectId(user._id).toString()
-  // if (chat.ownerId === userId)
-  //   throw ApiError.methodNotAllowed('Group owner cannot perform this operation')
-  // await Chat.findByIdAndUpdate(chatId, {
-  //   $pull: { members: { _id: user._id } },
-  // })
-  // res.status(200).json({ message: 'Chat left successfully' })
+  const user = req.user
+  const { chatId } = req.params
+
+  if (!chatId) throw ApiError.badRequest('Request data incomplete')
+  if (!parseInt(chatId)) throw ApiError.badRequest('Invalid chat id')
+
+  const chat = await getRepository(Chat)
+    .createQueryBuilder('chats')
+    .innerJoinAndSelect('chats.members', 'members')
+    .innerJoinAndSelect('chats.owner', 'owner')
+    .where('chats.id = :chatId', { chatId })
+    .getOne()
+
+  if (!chat) throw ApiError.notFound('Chat not found')
+  if (chat.type !== ChatType.GROUP)
+    throw ApiError.badRequest('Chat must be of type group')
+  if (chat.owner.id === user.id)
+    throw ApiError.methodNotAllowed('Group owner cannot perform this operation')
+
+  const isMember = chat.members.find((member) => member.id === user.id)
+  if (!isMember)
+    throw ApiError.methodNotAllowed('User must be a member of group')
+
+  chat.members = [...chat.members.filter((member) => member.id !== user.id)]
+  await chat.save()
+
+  res.status(200).json({
+    members: [
+      chat.members.map((member) => {
+        return { id: member.id, name: member.name }
+      }),
+    ],
+  })
 }
 
-// TODO
 export const deleteChat = async (req: Request, res: Response) => {
-  // const user = req.user
-  // const { chatId } = req.params
-  // const chat = await Chat.findById(chatId)
-  // if (!chat) throw ApiError.notFound('Chat not found')
-  // if (chat.type === 'group') {
-  //   if (chat.ownerId !== mongoose.Types.ObjectId(user._id).toString())
-  //     throw ApiError.forbidden('Only group owner can perform this operation')
-  // } else {
-  //   const isMember = chat.members.find(
-  //     (member) => member._id === mongoose.Types.ObjectId(user._id).toString()
-  //   )
-  //   if (!isMember)
-  //     throw ApiError.forbidden('Only chat member can perform this operation')
-  // }
-  // await chat.remove()
-  // res.status(200).json({ message: 'Chat deleted successfully' })
+  const user = req.user
+  const { chatId } = req.params
+
+  if (!chatId) throw ApiError.badRequest('Request data incomplete')
+  if (!parseInt(chatId)) throw ApiError.badRequest('Invalid chat id')
+
+  const chat = await getRepository(Chat)
+    .createQueryBuilder('chats')
+    .innerJoinAndSelect('chats.members', 'members')
+    .where('chats.id = :chatId', { chatId })
+    .getOne()
+
+  if (!chat) throw ApiError.notFound('Chat not found')
+  if (chat.type === ChatType.GROUP) {
+    if (chat.owner.id !== user.id)
+      throw ApiError.forbidden('Only group owner can perform this operation')
+  } else {
+    const isMember = chat.members.find((member) => member.id === user.id)
+    if (!isMember)
+      throw ApiError.forbidden('Only chat member can perform this operation')
+  }
+
+  await chat.remove()
+
+  res.status(200).json({ message: 'Chat deleted successfully' })
 }
 
-// TODO
 export const createMessage = async (req: Request, res: Response) => {
-  // const user = req.user
-  // const { chatId } = req.params
-  // const { text } = req.body
-  // if (!text) throw ApiError.badRequest('Message must have text')
-  // const chat = await Chat.findById(chatId)
-  // if (!chat) throw ApiError.notFound('Chat not found')
-  // const isMember = chat.members.find(
-  //   (member) => member._id === mongoose.Types.ObjectId(user._id).toString()
-  // )
-  // if (!isMember) throw ApiError.forbidden('User is not a chat member')
-  // const message = {
-  //   sender: {
-  //     _id: user._id,
-  //     name: user.name,
-  //   },
-  //   text,
-  // }
-  // const updatedChat = await Chat.findByIdAndUpdate(
-  //   chatId,
-  //   {
-  //     $push: { messages: message },
-  //     recentMessage: message,
-  //   },
-  //   { new: true }
-  // )
-  // res.status(200).json(updatedChat)
-}
+  const user = req.user
+  const { chatId } = req.params
+  const { text } = req.body
 
-// TODO
-// - Refactor to use queries instead of array methods
+  if (!chatId || !text) throw ApiError.badRequest('Request data incomplete')
+  if (!parseInt(chatId)) throw ApiError.badRequest('Invalid chat id')
+
+  const chat = await getRepository(Chat)
+    .createQueryBuilder('chats')
+    .innerJoinAndSelect('chats.members', 'members')
+    .where('chats.id = :chatId', { chatId })
+    .getOne()
+
+  if (!chat) throw ApiError.notFound('Chat not found')
+
+  const isMember = chat.members.find((member) => member.id === user.id)
+  if (!isMember) throw ApiError.forbidden('User is not a chat member')
+
+  const newMessage = new Message()
+  newMessage.sender = user
+  newMessage.text = text
+  newMessage.chat = chat
+  await newMessage.save()
+
+  chat.recent_message = newMessage
+  await chat.save()
+
+  res.status(200).json({ id: newMessage.id, createdAt: newMessage.created_at })
+}
