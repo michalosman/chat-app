@@ -32,18 +32,24 @@ Realtime **Chat App** created with MERN & PERN stack.
 
 ### Frontend
 
+- JavaScript
 - React
 - Redux
 - Material UI
 
 ### Backend
 
+- JavaScript (server)
+- TypeScript (server-sql)
 - Node.js
 - Express
-- MongoDB & Mongoose (NoSQL)
-- PostgreSQL & TypeORM (SQL)
 - Socket.io
 - JWT
+
+### Database
+
+- MongoDB & Mongoose (server)
+- PostgreSQL & TypeORM (server-sql)
 
 ## Geting started
 
@@ -70,21 +76,44 @@ npm install
 npm start
 ```
 
-### Server setup
+### Server setup (server)
 
 Create a .env file in the server directory and set up the following environment variables
 
 ```
 PORT='The port the server will run on'
-MONGO_URI='Your MongoDB database URI'
-SECRET_KEY='Passwords encryption secret key'
 CLIENT_URL='Address of the client'
+SECRET_KEY='Passwords encryption secret key'
+MONGO_URI='Your MongoDB database URI'
 ```
 
 Install packages and start server
 
 ```
 cd server
+npm install
+npm start
+```
+
+### Server setup (server-sql)
+
+Create a .env file in the server directory and set up the following environment variables
+
+```
+PORT='The port the server will run on'
+CLIENT_URL='Address of the client'
+SECRET_KEY='Passwords encryption secret key'
+PG_HOST='Postgres host'
+PG_PORT='Postgres port'
+PG_USERNAME='Postgres username'
+PG_PASSWORD='Postgres password'
+PG_DATABASE='Postgres database name'
+```
+
+Install packages and start server
+
+```
+cd server-sql
 npm install
 npm start
 ```
