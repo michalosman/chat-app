@@ -35,10 +35,12 @@ export const createReport = async (req: Request, res: Response) => {
   const sender = req.user
   const { reportedId, description } = req.body
 
-  const reported = await User.findOne(reportedId)
+  if (!reportedId || !description)
+    throw ApiError.badRequest('Request data incomplete')
+  if (!parseInt(reportedId)) throw ApiError.badRequest('Invalid reported id')
 
+  const reported = await User.findOne(reportedId)
   if (!reported) throw ApiError.notFound('Reported user not found')
-  if (!description) throw ApiError.badRequest('No description provided')
 
   const newReport = new Report()
   newReport.description = description
@@ -53,8 +55,10 @@ export const closeReport = async (req: Request, res: Response) => {
   const moderator = req.user
   const { reportId } = req.params
 
-  const report = await Report.findOne(reportId)
+  if (!reportId) throw ApiError.badRequest('Request data incomplete')
+  if (!parseInt(reportId)) throw ApiError.badRequest('Invalid report id')
 
+  const report = await Report.findOne(reportId)
   if (!report) throw ApiError.notFound('Report not found')
   if (report.is_closed) throw ApiError.badRequest('Report is already closed')
 

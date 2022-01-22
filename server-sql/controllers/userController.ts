@@ -12,7 +12,8 @@ const SECRET_KEY = process.env.SECRET_KEY || ''
 export const signUp = async (req: Request, res: Response) => {
   const { email, password, name } = req.body
 
-  if (!email || !password || !name) throw ApiError.badRequest('Data incomplete')
+  if (!email || !password || !name)
+    throw ApiError.badRequest('Request data incomplete')
 
   const doesExist = Boolean(await User.findOne({ email }))
   if (doesExist) throw ApiError.badRequest('Account already exists')
@@ -36,6 +37,8 @@ export const signUp = async (req: Request, res: Response) => {
 export const signIn = async (req: Request, res: Response) => {
   const { email, password } = req.body
 
+  if (!email || !password) throw ApiError.badRequest('Request data incomplete')
+
   const user = await User.findOne({ email })
   if (!user) throw ApiError.notFound('User not found')
 
@@ -51,6 +54,9 @@ export const signIn = async (req: Request, res: Response) => {
 export const warnUser = async (req: Request, res: Response) => {
   const { userId } = req.params
 
+  if (!userId) throw ApiError.badRequest('Request data incomplete')
+  if (parseInt(userId)) throw ApiError.badRequest('Invalid user id')
+
   const user = await User.findOne(userId)
   if (!user) throw ApiError.notFound('User not found')
 
@@ -63,6 +69,9 @@ export const warnUser = async (req: Request, res: Response) => {
 export const blockUser = async (req: Request, res: Response) => {
   const { userId } = req.params
 
+  if (!userId) throw ApiError.badRequest('Request data incomplete')
+  if (parseInt(userId)) throw ApiError.badRequest('Invalid user id')
+
   const user = await User.findOne(userId)
   if (!user) throw ApiError.notFound('User not found')
 
@@ -74,6 +83,9 @@ export const blockUser = async (req: Request, res: Response) => {
 
 export const unblockUser = async (req: Request, res: Response) => {
   const { userId } = req.params
+
+  if (!userId) throw ApiError.badRequest('Request data incomplete')
+  if (parseInt(userId)) throw ApiError.badRequest('Invalid user id')
 
   const user = await User.findOne(userId)
   if (!user) throw ApiError.notFound('User not found')
