@@ -1,5 +1,5 @@
 import express from 'express'
-import { auth } from '../middleware/auth.js'
+import { auth } from '../middleware/auth'
 import {
   getChats,
   getChat,
@@ -9,7 +9,7 @@ import {
   deleteChat,
   addMember,
   leaveGroup,
-} from '../controllers/chatController.js'
+} from '../controllers/chatController'
 
 const router = express.Router()
 

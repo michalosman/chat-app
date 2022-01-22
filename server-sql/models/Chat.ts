@@ -10,11 +10,13 @@ import {
   JoinColumn,
   OneToMany,
   BaseEntity,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm'
 
-enum ChatType {
+export enum ChatType {
   PRIVATE = 'private',
-  PUBLIC = 'public',
+  GROUP = 'group',
 }
 
 @Entity('chats')
@@ -46,4 +48,16 @@ export class Chat extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.owned_groups)
   owner: User
+
+  @ManyToMany(() => User)
+  @JoinTable({
+    name: 'chats_users',
+    joinColumn: {
+      name: 'chat_id',
+    },
+    inverseJoinColumn: {
+      name: 'user_id',
+    },
+  })
+  members: User[]
 }

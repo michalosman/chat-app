@@ -1,9 +1,9 @@
 import express from 'express'
 import cors from 'cors'
-// import usersRoutes from './routes/users.js'
-// import chatsRoutes from './routes/chats.js'
-// import reportsRoutes from './routes/reports.js'
-// import errorHandler from './error/errorHandler.js'
+import usersRoutes from './routes/users'
+import chatsRoutes from './routes/chats'
+import reportsRoutes from './routes/reports'
+import errorHandler from './error/errorHandler'
 import { Server } from 'socket.io'
 import http from 'http'
 import dotenv from 'dotenv'
@@ -25,11 +25,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
-// app.use('/users', usersRoutes)
-// app.use('/chats', chatsRoutes)
-// app.use('/reports', reportsRoutes)
+app.use('/users', usersRoutes)
+app.use('/chats', chatsRoutes)
+app.use('/reports', reportsRoutes)
 
-// app.use(errorHandler)
+app.use(errorHandler)
 
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)

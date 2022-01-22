@@ -5,13 +5,11 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
-  ManyToMany,
-  JoinTable,
   BaseEntity,
 } from 'typeorm'
 import { Report } from './Report'
 
-enum UserRole {
+export enum UserRole {
   ADMIN = 'admin',
   MODERATOR = 'moderator',
   USER = 'user',
@@ -67,16 +65,4 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Chat, (chat) => chat.owner)
   owned_groups: Chat[]
-
-  @ManyToMany(() => Chat)
-  @JoinTable({
-    name: 'users_chats',
-    joinColumn: {
-      name: 'user_id',
-    },
-    inverseJoinColumn: {
-      name: 'chat_id',
-    },
-  })
-  chats: Chat[]
 }

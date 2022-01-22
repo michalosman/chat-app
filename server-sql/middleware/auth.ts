@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { User } from '../models/User'
+import { User, UserRole } from '../models/User'
 import { Request, Response, NextFunction } from 'express'
 import ApiError from '../error/ApiError'
 
@@ -32,14 +32,14 @@ export const authModerator = (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.user.role !== 'moderator')
+  if (req.user.role !== UserRole.MODERATOR)
     throw ApiError.forbidden('Access denied (moderator only)')
 
   next()
 }
 
 export const authAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user.role !== 'admin')
+  if (req.user.role !== UserRole.ADMIN)
     throw ApiError.forbidden('Access denied (admin only)')
 
   next()
