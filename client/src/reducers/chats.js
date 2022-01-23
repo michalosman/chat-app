@@ -22,9 +22,6 @@ const chatsReducer = (chats = [], action) => {
     case LEAVE_GROUP:
       return chats.filter((chat) => chat.id !== action.payload)
     case SEND_MESSAGE:
-      return chats.map((chat) =>
-        chat.id === action.payload.id ? action.payload : chat
-      )
     case RECEIVE_MESSAGE:
       return chats.map((chat) => {
         if (chat.id === action.payload.chatId) {
