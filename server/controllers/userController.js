@@ -18,16 +18,18 @@ export const signUp = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 12)
 
-  const newUser = await User.create({
+  const newUser = new User({
     email,
     password: hashedPassword,
     name,
   })
 
-  const token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: '7d' })
-  const { password: remove, ...userData } = newUser._doc
+  await newUser.save()
 
-  res.status(200).json({ ...userData, token })
+  const token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: '7d' })
+  const { _id: id, password: remove, ...userData } = newUser._doc
+
+  res.status(200).json({ ...userData, id, token })
 }
 
 export const signIn = async (req, res) => {
@@ -40,9 +42,9 @@ export const signIn = async (req, res) => {
   if (!isPasswordCorrect) throw ApiError.badRequest('Wrong password')
 
   const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '7d' })
-  const { password: remove, ...userData } = user._doc
+  const { _id: id, password: remove, ...userData } = user._doc
 
-  res.status(200).json({ ...userData, token })
+  res.status(200).json({ ...userData, id, token })
 }
 
 export const warnUser = async (req, res) => {
@@ -104,18 +106,13 @@ export const unblockUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   const users = await User.find()
-  res.status(200).json(
-    users.map((user) => {
-      return {
-        id: user._id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        warnings: user.warnings,
-        isBlocked: user.isBlocked,
-      }
-    })
-  )
+
+  const usersData = users.map((user) => {
+    const { _id: id, password: remove, ...userData } = user._doc
+    return { ...userData, id }
+  })
+
+  res.status(200).json(usersData)
 }
 
 export const validateUser = (req, res) => {

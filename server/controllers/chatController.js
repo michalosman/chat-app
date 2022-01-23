@@ -58,6 +58,7 @@ export const createPrivateChat = async (req, res) => {
   })
 
   await newChat.save()
+
   res.status(200).json(newChat)
 }
 
@@ -106,24 +107,32 @@ export const addMember = async (req, res) => {
     { new: true }
   )
 
-  res.status(200).json(updatedChat)
+  res.status(200).json(updatedChat.members)
 }
 
 export const leaveGroup = async (req, res) => {
   const user = req.user
   const { chatId } = req.params
 
-  const chat = Chat.findById(chatId)
-
+  const chat = await Chat.findById(chatId)
   const userId = mongoose.Types.ObjectId(user._id).toString()
   if (chat.ownerId === userId)
     throw ApiError.methodNotAllowed('Group owner cannot perform this operation')
 
-  await Chat.findByIdAndUpdate(chatId, {
-    $pull: { members: { _id: user._id } },
-  })
+  const isMember = chat.members.find(
+    (member) => member._id === mongoose.Types.ObjectId(user._id).toString()
+  )
+  if (!isMember) throw ApiError.methodNotAllowed('User is not a group member')
 
-  res.status(200).json({ message: 'Chat left successfully' })
+  const updatedChat = await Chat.findByIdAndUpdate(
+    chatId,
+    {
+      $pull: { members: { _id: user._id } },
+    },
+    { new: true }
+  )
+
+  res.status(200).json(updatedChat.members)
 }
 
 export const deleteChat = async (req, res) => {
@@ -180,5 +189,5 @@ export const createMessage = async (req, res) => {
     { new: true }
   )
 
-  res.status(200).json(updatedChat)
+  res.status(200).json(updatedChat.recentMessage)
 }

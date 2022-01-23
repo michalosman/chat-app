@@ -1,6 +1,7 @@
 import ApiError from '../error/ApiError.js'
 import Report from '../models/Report.js'
 import User from '../models/User.js'
+import mongoose from 'mongoose'
 import 'express-async-errors'
 
 export const getReports = async (req, res) => {
@@ -10,21 +11,25 @@ export const getReports = async (req, res) => {
 
 export const createReport = async (req, res) => {
   const creator = req.user
-  const { reported, description } = req.body
+  const { reportedId, description } = req.body
+
+  const isUserIdValid = mongoose.Types.ObjectId.isValid(reportedId)
+  if (!isUserIdValid) throw ApiError.badRequest('Invalid user id')
 
   if (!description) throw ApiError.badRequest('No description')
 
-  const user = await User.findById(reported._id)
+  const user = await User.findById(reportedId)
   if (!user) throw ApiError.notFound('Reported user not found')
 
   const newReport = new Report({
-    sender: { _id: creator._id, name: creator.name },
-    reported,
+    sender: { id: creator._id, name: creator.name },
+    reported: { id: user._id, name: user.name },
     description,
   })
 
   await newReport.save()
-  res.status(200).json(newReport)
+
+  res.status(200).json({ id: newReport._id, createdAt: newReport.createdAt })
 }
 
 export const closeReport = async (req, res) => {
@@ -36,5 +41,7 @@ export const closeReport = async (req, res) => {
     isClosed: true,
   })
 
-  res.status(200).json(updatedReport)
+  res
+    .status(200)
+    .json({ id: updatedReport._id, isClosed: updatedReport.isClosed })
 }
