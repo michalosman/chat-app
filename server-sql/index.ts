@@ -40,23 +40,23 @@ connectToDB()
 // Socket.io
 io.on('connection', (socket) => {
   socket.on('subscribe chats', (userId) => {
-    socket.join(userId)
+    socket.join('user' + userId)
   })
 
   socket.on('create chat', (userId) => {
-    socket.to(userId).emit('chat created')
+    socket.to('user' + userId).emit('chat created')
   })
 
   socket.on('delete chat', (userId) => {
-    socket.to(userId).emit('chat deleted')
+    socket.to('user' + userId).emit('chat deleted')
   })
 
   socket.on('add member', (userId) => {
-    socket.to(userId).emit('member added')
+    socket.to('user' + userId).emit('member added')
   })
 
   socket.on('leave group', (userId) => {
-    socket.to(userId).emit('member left')
+    socket.to('user' + userId).emit('member left')
   })
 
   socket.on('subscribe chat messages', (chatId) => {
