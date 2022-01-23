@@ -271,6 +271,7 @@ export const deleteChat = async (req: Request, res: Response) => {
   const chat = await getRepository(Chat)
     .createQueryBuilder('chats')
     .innerJoinAndSelect('chats.members', 'members')
+    .leftJoinAndSelect('chats.owner', 'owner')
     .where('chats.id = :chatId', { chatId })
     .getOne()
 
