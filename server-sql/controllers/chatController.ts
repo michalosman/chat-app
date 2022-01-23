@@ -15,31 +15,48 @@ export const getChats = async (req: Request, res: Response) => {
     .createQueryBuilder('chats')
     .innerJoinAndSelect('chats.members', 'members')
     .leftJoinAndSelect('chats.messages', 'messages')
+    .leftJoinAndSelect('chats.recentMessage', 'recentMessage')
+    .leftJoinAndSelect('recentMessage.sender', 'recentSender')
+    .leftJoinAndSelect('chats.owner', 'owner')
     .leftJoinAndSelect('messages.sender', 'sender')
-    .where("chats.type = 'private'")
     .getMany()
 
-  const chatsData = chats
-    .filter((chat) => chat.members.find((member) => member.id === user.id))
-    .map((chat) => {
-      return {
-        ...chat,
-        members: chat.members.map((member) => {
-          return { id: member.id, name: member.name }
-        }),
-        messages: chat.messages.map((message) => {
-          return {
-            ...message,
-            sender: {
-              id: message.sender.id,
-              name: message.sender.name,
-            },
-          }
-        }),
-      }
-    })
+  try {
+    const chatsData = chats
+      .filter((chat) => chat.members.find((member) => member.id === user.id))
+      .map((chat) => {
+        const { owner: remove, ...chatData } = chat
 
-  res.status(200).json(chatsData)
+        return {
+          ...chatData,
+          ownerId: chat.type === ChatType.GROUP ? chat.owner.id : null,
+          recentMessage: chat.recentMessage
+            ? {
+                ...chat.recentMessage,
+                sender: {
+                  id: chat.recentMessage.sender.id,
+                  name: chat.recentMessage.sender.name,
+                },
+              }
+            : null,
+          members: chat.members.map((member) => {
+            return { id: member.id, name: member.name }
+          }),
+          messages: chat.messages.map((message) => {
+            return {
+              ...message,
+              sender: {
+                id: message.sender.id,
+                name: message.sender.name,
+              },
+            }
+          }),
+        }
+      })
+    res.status(200).json(chatsData)
+  } catch (error) {
+    console.log(error.message)
+  }
 }
 
 export const getChat = async (req: Request, res: Response) => {
@@ -53,6 +70,9 @@ export const getChat = async (req: Request, res: Response) => {
     .createQueryBuilder('chats')
     .innerJoinAndSelect('chats.members', 'members')
     .leftJoinAndSelect('chats.messages', 'messages')
+    .leftJoinAndSelect('chats.recentMessage', 'recentMessage')
+    .leftJoinAndSelect('recentMessage.sender', 'recentSender')
+    .leftJoinAndSelect('chats.owner', 'owner')
     .leftJoinAndSelect('messages.sender', 'sender')
     .where('chats.id = :chatId', { chatId })
     .getOne()
@@ -62,11 +82,23 @@ export const getChat = async (req: Request, res: Response) => {
   const isMember = chat.members.find((member) => member.id === user.id)
   if (!isMember) throw ApiError.forbidden('User is not a chat member')
 
-  const chatData = {
-    ...chat,
+  const { owner: remove, ...chatData } = chat
+
+  const result = {
+    ...chatData,
+    ownerId: chat.type === ChatType.GROUP ? chat.owner.id : null,
     members: chat.members.map((member) => {
       return { id: member.id, name: member.name }
     }),
+    recentMessage: chat.recentMessage
+      ? {
+          ...chat.recentMessage,
+          sender: {
+            id: chat.recentMessage.sender.id,
+            name: chat.recentMessage.sender.name,
+          },
+        }
+      : null,
     messages: chat.messages.map((message) => {
       return {
         ...message,
@@ -78,7 +110,7 @@ export const getChat = async (req: Request, res: Response) => {
     }),
   }
 
-  res.status(200).json(chatData)
+  res.status(200).json(result)
 }
 
 export const createPrivateChat = async (req: Request, res: Response) => {
@@ -115,10 +147,19 @@ export const createPrivateChat = async (req: Request, res: Response) => {
   newChat.type = ChatType.PRIVATE
   await newChat.save()
 
-  res.status(200).json({
+  const newChatData = {
     id: newChat.id,
+    ownerId: null,
+    name: null,
+    type: newChat.type,
+    members: newChat.members.map((member) => {
+      return { id: member.id, name: member.name }
+    }),
+    messages: [],
     createdAt: newChat.createdAt,
-  })
+  }
+
+  res.status(200).json(newChatData)
 }
 
 export const createGroupChat = async (req: Request, res: Response) => {
@@ -134,10 +175,17 @@ export const createGroupChat = async (req: Request, res: Response) => {
   newGroup.type = ChatType.GROUP
   await newGroup.save()
 
-  res.status(200).json({
+  const newGroupData = {
     id: newGroup.id,
+    ownerId: user.id,
+    name: newGroup.name,
+    type: newGroup.type,
+    members: [{ id: user.id, name: user.name }],
+    messages: [],
     createdAt: newGroup.createdAt,
-  })
+  }
+
+  res.status(200).json(newGroupData)
 }
 
 export const addMember = async (req: Request, res: Response) => {
@@ -176,7 +224,7 @@ export const addMember = async (req: Request, res: Response) => {
     return { id: member.id, name: member.name }
   })
 
-  res.status(200).json({ membersData })
+  res.status(200).json(membersData)
 }
 
 export const leaveGroup = async (req: Request, res: Response) => {
@@ -210,7 +258,7 @@ export const leaveGroup = async (req: Request, res: Response) => {
     return { id: member.id, name: member.name }
   })
 
-  res.status(200).json({ membersData })
+  res.status(200).json(membersData)
 }
 
 export const deleteChat = async (req: Request, res: Response) => {
@@ -269,21 +317,15 @@ export const createMessage = async (req: Request, res: Response) => {
   chat.recentMessage = newMessage
   await chat.save()
 
-  const recentMessage = await getRepository(Message)
-    .createQueryBuilder('messages')
-    .innerJoinAndSelect('messages.sender', 'sender')
-    .where('messages.id = :newMessageId', { newMessageId: newMessage.id })
-    .getOne()
-
-  if (!recentMessage) throw ApiError.notFound('Message not found')
-
-  const recentMessageData = {
-    ...recentMessage,
+  const newMessageData = {
+    id: newMessage.id,
+    text: newMessage.text,
+    createdAt: newMessage.createdAt,
     sender: {
-      id: recentMessage.sender.id,
-      name: recentMessage.sender.name,
+      id: newMessage.sender.id,
+      name: newMessage.sender.name,
     },
   }
 
-  res.status(200).json({ recentMessage: recentMessageData })
+  res.status(200).json(newMessageData)
 }
