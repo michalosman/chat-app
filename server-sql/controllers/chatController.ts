@@ -21,42 +21,38 @@ export const getChats = async (req: Request, res: Response) => {
     .leftJoinAndSelect('messages.sender', 'sender')
     .getMany()
 
-  try {
-    const chatsData = chats
-      .filter((chat) => chat.members.find((member) => member.id === user.id))
-      .map((chat) => {
-        const { owner: remove, ...chatData } = chat
+  const chatsData = chats
+    .filter((chat) => chat.members.find((member) => member.id === user.id))
+    .map((chat) => {
+      const { owner: remove, ...chatData } = chat
 
-        return {
-          ...chatData,
-          ownerId: chat.type === ChatType.GROUP ? chat.owner.id : null,
-          recentMessage: chat.recentMessage
-            ? {
-                ...chat.recentMessage,
-                sender: {
-                  id: chat.recentMessage.sender.id,
-                  name: chat.recentMessage.sender.name,
-                },
-              }
-            : null,
-          members: chat.members.map((member) => {
-            return { id: member.id, name: member.name }
-          }),
-          messages: chat.messages.map((message) => {
-            return {
-              ...message,
+      return {
+        ...chatData,
+        ownerId: chat.type === ChatType.GROUP ? chat.owner.id : null,
+        recentMessage: chat.recentMessage
+          ? {
+              ...chat.recentMessage,
               sender: {
-                id: message.sender.id,
-                name: message.sender.name,
+                id: chat.recentMessage.sender.id,
+                name: chat.recentMessage.sender.name,
               },
             }
-          }),
-        }
-      })
-    res.status(200).json(chatsData)
-  } catch (error) {
-    console.log(error.message)
-  }
+          : null,
+        members: chat.members.map((member) => {
+          return { id: member.id, name: member.name }
+        }),
+        messages: chat.messages.map((message) => {
+          return {
+            ...message,
+            sender: {
+              id: message.sender.id,
+              name: message.sender.name,
+            },
+          }
+        }),
+      }
+    })
+  res.status(200).json(chatsData)
 }
 
 export const getChat = async (req: Request, res: Response) => {
