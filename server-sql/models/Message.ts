@@ -11,7 +11,7 @@ import { User } from './User'
 
 @Entity('messages')
 export class Message extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number
 
   @Column({

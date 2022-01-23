@@ -10,7 +10,7 @@ import {
 
 @Entity('reports')
 export class Report extends BaseEntity{
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number
 
   @Column({

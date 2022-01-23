@@ -21,7 +21,7 @@ export enum ChatType {
 
 @Entity('chats')
 export class Chat extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number
 
   @Column({
