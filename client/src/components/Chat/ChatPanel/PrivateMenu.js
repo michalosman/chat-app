@@ -33,7 +33,7 @@ const PrivateMenu = ({ otherUser, chat }) => {
 
   const handleReportUser = async () => {
     if (!reportDescription) return
-    await api.createReport(otherUser, reportDescription)
+    await api.createReport(otherUser.id, reportDescription)
     setReportDescription('')
     closeReportUserDialog()
   }

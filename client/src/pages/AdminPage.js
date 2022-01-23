@@ -20,8 +20,8 @@ const AdminPage = () => {
   }, [])
 
   const fetchUsers = async () => {
-    const { data } = await api.getUsers()
-    setUsers(data)
+    const { data: users } = await api.getUsers()
+    setUsers(users)
   }
 
   const handleBlock = async (e, userId) => {

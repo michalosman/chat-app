@@ -37,12 +37,12 @@ const GroupMenu = ({ chat }) => {
     if (!newMemberEmail) return
 
     try {
-      const { data } = await api.addMember(chat.id, newMemberEmail)
-      data.members.map((member) => socket.addMember(member.id))
+      const { data: members } = await api.addMember(chat.id, newMemberEmail)
+      members.map((member) => socket.addMember(member.id))
       closeAddMemberDialog()
       setNewMemberEmail('')
     } catch (error) {
-      alert('User not found or already exists')
+      alert('User not found or already a member')
     }
   }
 

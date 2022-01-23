@@ -46,6 +46,6 @@ export const deleteChat = (chatId) => API.delete(`/chats/${chatId}`)
 
 // REPORTS
 export const getReports = () => API.get('/reports')
-export const createReport = (reportedUser, description) =>
-  API.post(`/reports`, { reportedUser, description })
+export const createReport = (reportedId, description) =>
+  API.post(`/reports`, { reportedId, description })
 export const closeReport = (id) => API.put(`/reports/close/${id}`)

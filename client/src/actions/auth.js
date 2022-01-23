@@ -8,8 +8,8 @@ import * as api from '../api'
 
 export const signUp = (newUserData) => async (dispatch) => {
   try {
-    const { data } = await api.signUp(newUserData)
-    dispatch({ type: SIGN_UP, payload: data })
+    const { data: user } = await api.signUp(newUserData)
+    dispatch({ type: SIGN_UP, payload: user })
   } catch (error) {
     console.log(error)
   }
@@ -17,8 +17,8 @@ export const signUp = (newUserData) => async (dispatch) => {
 
 export const signIn = (userData) => async (dispatch) => {
   try {
-    const { data } = await api.signIn(userData)
-    dispatch({ type: SIGN_IN, payload: data })
+    const { data: user } = await api.signIn(userData)
+    dispatch({ type: SIGN_IN, payload: user })
   } catch (error) {
     console.log(error)
     alert('Incorrect email or password')

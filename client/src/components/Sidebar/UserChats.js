@@ -13,11 +13,7 @@ const UserChats = () => {
     const otherUser = getOtherMember(chat.members, user.id)
 
     return (
-      <Link
-        to={`/${chat.id}`}
-        key={chat.id}
-        style={{ textDecoration: 'none' }}
-      >
+      <Link to={`/${chat.id}`} key={chat.id} style={{ textDecoration: 'none' }}>
         <Button fullWidth style={{ textTransform: 'none', color: 'black' }}>
           <Box display="flex" alignItems="center" width="100%" p={1}>
             <Avatar

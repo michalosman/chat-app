@@ -18,7 +18,7 @@ const Chat = () => {
   const [chat, setChat] = useState(null)
 
   useEffect(() => {
-    setChat(chats.find((chat) => chat.id === parseInt(chatId)))
+    setChat(chats.find((chat) => chat.id === chatId))
   }, [chats])
 
   useEffect(() => {
@@ -27,7 +27,6 @@ const Chat = () => {
 
     socket.unsubscribeChatMessages(prevChatId.current)
     prevChatId.current = chatId
-
     socket.subscribeChatMessages(chatId)
     dispatch(fetchChat(chatId))
   }, [chatId])

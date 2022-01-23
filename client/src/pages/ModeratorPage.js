@@ -14,8 +14,8 @@ const ModeratorPage = () => {
   }, [])
 
   const fetchReports = async () => {
-    const { data } = await api.getReports()
-    setReports(data)
+    const { data: reports } = await api.getReports()
+    setReports(reports)
   }
 
   const handleCloseReport = async (e, reportId) => {
@@ -46,7 +46,7 @@ const ModeratorPage = () => {
             <strong>Author:</strong> {report.sender.name}
           </Typography>
           <Typography gutterBottom variant="body2">
-            <strong>Reported user:</strong> {report.reportedUser.name}
+            <strong>Reported user:</strong> {report.reported.name}
           </Typography>
           <Typography variant="body2" style={{ overflowWrap: 'break-word' }}>
             <strong>Description:</strong> {report.description}
@@ -57,9 +57,7 @@ const ModeratorPage = () => {
             Close
           </Button>
           <Button
-            onClick={(e) =>
-              handleWarnUser(e, report.id, report.reportedUser.id)
-            }
+            onClick={(e) => handleWarnUser(e, report.id, report.reported.id)}
           >
             Warn
           </Button>
