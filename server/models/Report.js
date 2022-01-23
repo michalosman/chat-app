@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const reportSchema = mongoose.Schema(
   {
     sender: {
-      _id: {
+      id: {
         type: String,
         required: true,
       },
@@ -12,8 +12,8 @@ const reportSchema = mongoose.Schema(
         required: true,
       },
     },
-    reportedUser: {
-      _id: {
+    reported: {
+      id: {
         type: String,
         required: true,
       },
@@ -27,7 +27,7 @@ const reportSchema = mongoose.Schema(
       required: true,
     },
     moderator: {
-      _id: String,
+      id: String,
       name: String,
     },
     isClosed: {
