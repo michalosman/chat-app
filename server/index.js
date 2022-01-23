@@ -8,7 +8,6 @@ import { Server } from 'socket.io'
 import http from 'http'
 import dotenv from 'dotenv'
 import connectToDB from './db.js'
-import 'reflect-metadata'
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
