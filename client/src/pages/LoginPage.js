@@ -23,10 +23,11 @@ const LoginPage = () => {
     const data = new FormData(event.currentTarget)
 
     if (isSignUp) {
-      const name = data.get('firstName') + ' ' + data.get('lastName')
+      const firstName = data.get('firstName')
+      const lastName = data.get('lastName')
       const email = data.get('email')
       const password = data.get('password')
-      dispatch(signUp({ name, email, password }))
+      dispatch(signUp({ firstName, lastName, email, password }))
     } else {
       const email = data.get('email')
       const password = data.get('password')

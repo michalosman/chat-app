@@ -5,6 +5,7 @@ import { User, UserRole } from '../models/User'
 import ApiError from '../error/ApiError'
 import 'express-async-errors'
 import { Request, Response } from 'express'
+import { getFullName } from '../utils'
 
 // TODO - Refactor to use queries instead of array methods
 
@@ -34,19 +35,19 @@ export const getChats = async (req: Request, res: Response) => {
               ...chat.recentMessage,
               sender: {
                 id: chat.recentMessage.sender.id,
-                name: chat.recentMessage.sender.name,
+                name: getFullName(user),
               },
             }
           : null,
         members: chat.members.map((member) => {
-          return { id: member.id, name: member.name }
+          return { id: member.id, name: getFullName(user) }
         }),
         messages: chat.messages.map((message) => {
           return {
             ...message,
             sender: {
               id: message.sender.id,
-              name: message.sender.name,
+              name: getFullName(message.sender),
             },
           }
         }),
@@ -84,14 +85,14 @@ export const getChat = async (req: Request, res: Response) => {
     ...chatData,
     ownerId: chat.type === ChatType.GROUP ? chat.owner.id : null,
     members: chat.members.map((member) => {
-      return { id: member.id, name: member.name }
+      return { id: member.id, name: getFullName(member) }
     }),
     recentMessage: chat.recentMessage
       ? {
           ...chat.recentMessage,
           sender: {
             id: chat.recentMessage.sender.id,
-            name: chat.recentMessage.sender.name,
+            name: getFullName(chat.recentMessage.sender),
           },
         }
       : null,
@@ -100,7 +101,7 @@ export const getChat = async (req: Request, res: Response) => {
         ...message,
         sender: {
           id: message.sender.id,
-          name: message.sender.name,
+          name: getFullName(message.sender),
         },
       }
     }),
@@ -149,7 +150,7 @@ export const createPrivateChat = async (req: Request, res: Response) => {
     name: null,
     type: newChat.type,
     members: newChat.members.map((member) => {
-      return { id: member.id, name: member.name }
+      return { id: member.id, name: getFullName(member) }
     }),
     messages: [],
     createdAt: newChat.createdAt,
@@ -176,7 +177,7 @@ export const createGroupChat = async (req: Request, res: Response) => {
     ownerId: user.id,
     name: newGroup.name,
     type: newGroup.type,
-    members: [{ id: user.id, name: user.name }],
+    members: [{ id: user.id, name: getFullName(user) }],
     messages: [],
     createdAt: newGroup.createdAt,
   }
@@ -217,7 +218,7 @@ export const addMember = async (req: Request, res: Response) => {
   await chat.save()
 
   const membersData = chat.members.map((member) => {
-    return { id: member.id, name: member.name }
+    return { id: member.id, name: getFullName(member) }
   })
 
   res.status(200).json(membersData)
@@ -251,7 +252,7 @@ export const leaveGroup = async (req: Request, res: Response) => {
   await chat.save()
 
   const membersData = chat.members.map((member) => {
-    return { id: member.id, name: member.name }
+    return { id: member.id, name: getFullName(member) }
   })
 
   res.status(200).json(membersData)
@@ -320,7 +321,7 @@ export const createMessage = async (req: Request, res: Response) => {
     createdAt: newMessage.createdAt,
     sender: {
       id: newMessage.sender.id,
-      name: newMessage.sender.name,
+      name: getFullName(newMessage.sender),
     },
   }
 

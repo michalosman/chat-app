@@ -9,9 +9,10 @@ dotenv.config()
 const SECRET_KEY = process.env.SECRET_KEY
 
 export const signUp = async (req, res) => {
-  const { email, password, name } = req.body
+  const { firstName, lastName, email, password } = req.body
 
-  if (!email || !password || !name) throw ApiError.badRequest('Data incomplete')
+  if (!firstName || !lastName || !email || !password)
+    throw ApiError.badRequest('Data incomplete')
 
   const doesExist = Boolean(await User.findOne({ email }))
   if (doesExist) throw ApiError.badRequest('Account already exists')
@@ -19,9 +20,9 @@ export const signUp = async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 12)
 
   const newUser = new User({
+    name: firstName + ' ' + lastName,
     email,
     password: hashedPassword,
-    name,
   })
 
   await newUser.save()

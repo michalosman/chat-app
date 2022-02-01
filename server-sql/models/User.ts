@@ -34,7 +34,12 @@ export class User extends BaseEntity {
   @Column({
     length: 50,
   })
-  name: string
+  firstName: string
+
+  @Column({
+    length: 50,
+  })
+  lastName: string
 
   @Column({
     type: 'enum',

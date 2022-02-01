@@ -4,6 +4,7 @@ import { User } from '../models/User'
 import 'express-async-errors'
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
+import { getFullName } from '../utils'
 
 export const getReports = async (req: Request, res: Response) => {
   const reports = await getRepository(Report)
@@ -16,10 +17,10 @@ export const getReports = async (req: Request, res: Response) => {
   const reportsData = reports.map((report) => {
     return {
       ...report,
-      sender: { id: report.sender.id, name: report.sender.name },
-      reported: { id: report.reported.id, name: report.reported.name },
+      sender: { id: report.sender.id, name: getFullName(report.sender) },
+      reported: { id: report.reported.id, name: getFullName(report.reported) },
       moderator: report.moderator
-        ? { id: report.reported.id, name: report.reported.name }
+        ? { id: report.reported.id, name: getFullName(report.reported) }
         : null,
     }
   })

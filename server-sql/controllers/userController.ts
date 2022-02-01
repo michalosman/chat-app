@@ -5,14 +5,15 @@ import { User } from '../models/User'
 import ApiError from '../error/ApiError'
 import 'express-async-errors'
 import { Request, Response } from 'express'
+import { getFullName } from '../utils'
 
 dotenv.config()
 const SECRET_KEY = process.env.SECRET_KEY || ''
 
 export const signUp = async (req: Request, res: Response) => {
-  const { email, password, name } = req.body
+  const { firstName, lastName, email, password } = req.body
 
-  if (!email || !password || !name)
+  if (!firstName || !lastName || !email || !password)
     throw ApiError.badRequest('Request data incomplete')
 
   const doesExist = Boolean(await User.findOne({ email }))
@@ -21,17 +22,19 @@ export const signUp = async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(password, 12)
 
   const newUser = new User()
+  newUser.firstName = firstName
+  newUser.lastName = lastName
   newUser.email = email
   newUser.password = hashedPassword
-  newUser.name = name
   await newUser.save()
 
+  const { password: remove, ...userData } = newUser
+  const name = getFullName(newUser)
   const token = jwt.sign({ id: newUser.id }, SECRET_KEY, {
     expiresIn: '7d',
   })
-  const { password: remove, ...userData } = newUser
 
-  res.status(200).json({ ...userData, token })
+  res.status(200).json({ ...userData, name, token })
 }
 
 export const signIn = async (req: Request, res: Response) => {
@@ -45,10 +48,11 @@ export const signIn = async (req: Request, res: Response) => {
   const isPasswordCorrect = await bcrypt.compare(password, user.password)
   if (!isPasswordCorrect) throw ApiError.badRequest('Wrong password')
 
-  const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: '7d' })
   const { password: remove, ...userData } = user
+  const name = getFullName(user)
+  const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: '7d' })
 
-  res.status(200).json({ ...userData, token })
+  res.status(200).json({ ...userData, name, token })
 }
 
 export const warnUser = async (req: Request, res: Response) => {
@@ -63,7 +67,10 @@ export const warnUser = async (req: Request, res: Response) => {
   user.warnings += 1
   await user.save()
 
-  res.status(200).json({ name: user.name, warnings: user.warnings })
+  res.status(200).json({
+    name: getFullName(user),
+    warnings: user.warnings,
+  })
 }
 
 export const blockUser = async (req: Request, res: Response) => {
@@ -78,7 +85,10 @@ export const blockUser = async (req: Request, res: Response) => {
   user.isBlocked = true
   await user.save()
 
-  res.status(200).json({ name: user.name, isBlocked: user.isBlocked })
+  res.status(200).json({
+    name: getFullName(user),
+    isBlocked: user.isBlocked,
+  })
 }
 
 export const unblockUser = async (req: Request, res: Response) => {
@@ -93,7 +103,10 @@ export const unblockUser = async (req: Request, res: Response) => {
   user.isBlocked = false
   await user.save()
 
-  res.status(200).json({ name: user.name, isBlocked: user.isBlocked })
+  res.status(200).json({
+    name: getFullName(user),
+    isBlocked: user.isBlocked,
+  })
 }
 
 export const getUsers = async (req: Request, res: Response) => {
