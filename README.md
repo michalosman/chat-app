@@ -117,3 +117,23 @@ cd server-sql
 npm install
 npm start
 ```
+
+Migrations
+
+- Generate
+
+```
+npx ts-node node_modules/typeorm/cli.js migration:generate -n Test
+```
+
+- Run
+
+```
+npx ts-node node_modules/typeorm/cli.js migration:run
+```
+
+- Revert
+
+```
+npx ts-node node_modules/typeorm/cli.js migration:revert
+```

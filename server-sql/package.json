@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon index.ts"
+    "start": "npx nodemon index.ts",
+    "generate-migration": "npx ts-node node_modules/typeorm/cli.js migration:generate -n Test",
+    "run-migration": "npx ts-node node_modules/typeorm/cli.js migration:run",
+    "revert-migration": "npx ts-node node_modules/typeorm/cli.js migration:revert"
   },
   "keywords": [],
   "author": "",
