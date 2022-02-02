@@ -7,8 +7,6 @@ import 'express-async-errors'
 import { Request, Response } from 'express'
 import { getFullName } from '../utils'
 
-// TODO - Refactor to use queries instead of array methods
-
 export const getChats = async (req: Request, res: Response) => {
   const user = req.user
 
