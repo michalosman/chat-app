@@ -114,7 +114,7 @@ export const getUsers = async (req: Request, res: Response) => {
 
   const usersData = users.map((user) => {
     const { password: remove, ...userData } = user
-    return userData
+    return { ...userData, name: getFullName(user) }
   })
 
   res.status(200).json(usersData)

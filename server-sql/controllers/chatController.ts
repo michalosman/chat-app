@@ -35,12 +35,12 @@ export const getChats = async (req: Request, res: Response) => {
               ...chat.recentMessage,
               sender: {
                 id: chat.recentMessage.sender.id,
-                name: getFullName(user),
+                name: getFullName(chat.recentMessage.sender),
               },
             }
           : null,
         members: chat.members.map((member) => {
-          return { id: member.id, name: getFullName(user) }
+          return { id: member.id, name: getFullName(member) }
         }),
         messages: chat.messages.map((message) => {
           return {
