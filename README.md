@@ -123,17 +123,17 @@ Migrations
 - Generate
 
 ```
-npx ts-node node_modules/typeorm/cli.js migration:generate -n Test
+npm run migration:generate Test
 ```
 
 - Run
 
 ```
-npx ts-node node_modules/typeorm/cli.js migration:run
+npm run migration:run
 ```
 
 - Revert
 
 ```
-npx ts-node node_modules/typeorm/cli.js migration:revert
+npm run migration:revert
 ```
