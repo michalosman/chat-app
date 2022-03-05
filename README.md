@@ -65,7 +65,7 @@ cd chat-app-mern
 Create a .env file in the client directory and set up the following environment variables
 
 ```
-REACT_APP_SERVER_URL='Address of the server'
+REACT_APP_SERVER_URL=<Address of the server>
 ```
 
 Install packages and start client
@@ -81,10 +81,10 @@ npm start
 Create a .env file in the server directory and set up the following environment variables
 
 ```
-PORT='The port the server will run on'
-CLIENT_URL='Address of the client'
-SECRET_KEY='Passwords encryption secret key'
-MONGO_URI='Your MongoDB database URI'
+PORT=<The port the server will run on>
+CLIENT_URL=<Address of the client>
+SECRET_KEY=<Passwords encryption secret key>
+MONGO_URI=<Your MongoDB database URI>
 ```
 
 Install packages and start server
@@ -100,14 +100,14 @@ npm start
 Create a .env file in the server directory and set up the following environment variables
 
 ```
-PORT='The port the server will run on'
-CLIENT_URL='Address of the client'
-SECRET_KEY='Passwords encryption secret key'
-PG_HOST='Postgres host'
-PG_PORT='Postgres port'
-PG_USERNAME='Postgres username'
-PG_PASSWORD='Postgres password'
-PG_DATABASE='Postgres database name'
+PORT=<The port the server will run on>
+CLIENT_URL=<Address of the client>
+SECRET_KEY=<Passwords encryption secret key>
+PG_HOST=<Postgres host>
+PG_PORT=<Postgres port>
+PG_USERNAME=<Postgres username>
+PG_PASSWORD=<Postgres password>
+PG_DATABASE=<Postgres database name>
 ```
 
 Install packages and start server
@@ -123,7 +123,7 @@ Migrations
 - Generate
 
 ```
-npm run migration:generate Test
+npm run migration:generate <name>
 ```
 
 - Run
