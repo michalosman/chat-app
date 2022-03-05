@@ -81,6 +81,7 @@ export const createGroupChat = async (req, res) => {
   })
 
   await newChat.save()
+
   res.status(200).json(newChat)
 }
 
@@ -154,6 +155,7 @@ export const deleteChat = async (req, res) => {
   }
 
   await chat.remove()
+
   res.status(200).json({ message: 'Chat deleted successfully' })
 }
 

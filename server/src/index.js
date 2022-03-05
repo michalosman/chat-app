@@ -1,8 +1,8 @@
 import express from 'express'
 import cors from 'cors'
-import usersRoutes from './routes/users.js'
-import chatsRoutes from './routes/chats.js'
-import reportsRoutes from './routes/reports.js'
+import usersRouter from '../routes/users.js.js.js'
+import chatsRouter from '../routes/chats.js.js.js'
+import reportsRouter from './routes/reports.js'
 import errorHandler from './error/errorHandler.js'
 import { Server } from 'socket.io'
 import http from 'http'
@@ -25,9 +25,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
-app.use('/users', usersRoutes)
-app.use('/chats', chatsRoutes)
-app.use('/reports', reportsRoutes)
+app.use('/users', usersRouter)
+app.use('/chats', chatsRouter)
+app.use('/reports', reportsRouter)
 
 app.use(errorHandler)
 
