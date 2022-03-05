@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid'
 import { useSelector } from 'react-redux'
-import { Box } from '@mui/material'
-import useStyles from '../styles'
+import { Box, Typography } from '@mui/material'
+import useStyles from '../../styles'
+import { formatTime } from '../../utils/functions'
 
 const Messages = ({ chat }) => {
   const classes = useStyles()
@@ -19,13 +20,13 @@ const Messages = ({ chat }) => {
           p={1}
         >
           {message.text}
-          {/* <Typography
+          <Typography
             className={`${classes.messageTime} ${
               message.sender.id === user.id ? classes.ownMessageTime : ''
             }`}
           >
             {formatTime(message.createdAt)}
-          </Typography> */}
+          </Typography>
         </Box>
       )
     })

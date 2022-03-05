@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Box, Typography, Avatar, Button } from '@mui/material'
-import useStyles from '../styles'
+import useStyles from '../../styles'
 import { getInitials, getOtherMember } from '../../utils/functions'
 
 const UserChats = () => {
