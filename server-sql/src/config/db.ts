@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm'
 
-const connectToDB = async () => {
+export const connectToDB = async () => {
   try {
     await createConnection()
     console.log('Connected to PostgreSQL')
@@ -8,5 +8,3 @@ const connectToDB = async () => {
     console.log(`Unable to connect to PostgreSQL (${error.message}) `)
   }
 }
-
-export default connectToDB

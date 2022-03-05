@@ -1,11 +1,8 @@
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
 import { User, UserRole } from '../models/User'
 import { Request, Response, NextFunction } from 'express'
-import ApiError from '../error/ApiError'
-
-dotenv.config()
-const SECRET_KEY = process.env.SECRET_KEY || ''
+import ApiError from '../types/ApiError'
+import { SECRET_KEY } from '../config/constants'
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split(' ')[1]

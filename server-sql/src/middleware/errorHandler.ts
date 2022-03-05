@@ -1,4 +1,4 @@
-import ApiError from './ApiError'
+import ApiError from '../types/ApiError'
 import { Request, Response, NextFunction } from 'express'
 
 const errorHandler = (
@@ -10,6 +10,7 @@ const errorHandler = (
   if (err instanceof ApiError)
     return res.status(err.code).json({ code: err.code, error: err.message })
 
+  console.log(err.message)
   return res.status(500).json({ code: 500, error: 'Something went wrong' })
 }
 

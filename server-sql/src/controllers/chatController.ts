@@ -2,7 +2,7 @@ import { Message } from './../models/Message'
 import { getRepository } from 'typeorm'
 import { Chat, ChatType } from '../models/Chat'
 import { User, UserRole } from '../models/User'
-import ApiError from '../error/ApiError'
+import ApiError from '../types/ApiError'
 import 'express-async-errors'
 import { Request, Response } from 'express'
 import { getFullName } from '../utils'
@@ -51,6 +51,7 @@ export const getChats = async (req: Request, res: Response) => {
         }),
       }
     })
+
   res.status(200).json(chatsData)
 }
 

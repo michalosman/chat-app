@@ -1,4 +1,4 @@
-import ApiError from '../error/ApiError'
+import ApiError from '../types/ApiError'
 import { Report } from '../models/Report'
 import { User } from '../models/User'
 import 'express-async-errors'

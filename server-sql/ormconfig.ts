@@ -1,18 +1,17 @@
-import dotenv from 'dotenv'
-dotenv.config()
+import { POSTGRES } from './src/config/constants'
 
-module.exports = {
+export default {
   type: 'postgres',
-  host: process.env.PG_HOST,
-  port: parseInt(process.env.PG_PORT || '5432'),
-  username: process.env.PG_USERNAME,
-  password: process.env.PG_PASSWORD,
-  database: process.env.PG_DATABASE,
-  entities: ['models/*.ts'],
-  migrations: ['migrations/*.ts'],
-  // synchronize: true, //! use in dev, remove in prod
+  host: POSTGRES.HOST,
+  port: POSTGRES.PORT,
+  username: POSTGRES.USERNAME,
+  password: POSTGRES.PASSWORD,
+  database: POSTGRES.DATABASE,
+  entities: ['./src/models/*.ts'],
+  migrations: ['./src/migrations/*.ts'],
+  // synchronize: true, //! useful in dev, remove in prod
   cli: {
-    entitiesDir: 'models',
-    migrationsDir: 'migrations',
+    entitiesDir: './src/models',
+    migrationsDir: './src/migrations',
   },
 }

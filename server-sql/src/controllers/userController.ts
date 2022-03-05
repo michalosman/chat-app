@@ -1,14 +1,11 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import dotenv from 'dotenv'
 import { User } from '../models/User'
-import ApiError from '../error/ApiError'
+import ApiError from '../types/ApiError'
 import 'express-async-errors'
 import { Request, Response } from 'express'
 import { getFullName } from '../utils'
-
-dotenv.config()
-const SECRET_KEY = process.env.SECRET_KEY || ''
+import { SECRET_KEY } from '../config/constants'
 
 export const signUp = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body
@@ -50,7 +47,9 @@ export const signIn = async (req: Request, res: Response) => {
 
   const { password: remove, ...userData } = user
   const name = getFullName(user)
-  const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: '7d' })
+  const token = jwt.sign({ id: user.id }, SECRET_KEY, {
+    expiresIn: '7d',
+  })
 
   res.status(200).json({ ...userData, name, token })
 }
