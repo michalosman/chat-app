@@ -65,7 +65,7 @@ cd chat-app-mern
 Create a .env file in the client directory and set up the following environment variables
 
 ```
-REACT_APP_SERVER_URL=<Address of the server>
+REACT_APP_SERVER_URL=<Address of the server, e.g. http://localhost:5000/>
 ```
 
 Install packages and start client
@@ -81,9 +81,9 @@ npm start
 Create a .env file in the server directory and set up the following environment variables
 
 ```
-PORT=<The port the server will run on>
-CLIENT_URL=<Address of the client>
-SECRET_KEY=<Passwords encryption secret key>
+PORT=<The port the server will run on, e.g. 5000>
+CLIENT_URL=<Address of the client, e.g. http://localhost:3000/>
+SECRET_KEY=<Passwords encryption secret key, e.g. somesecretkey123>
 MONGO_URI=<Your MongoDB database URI>
 ```
 
@@ -100,14 +100,14 @@ npm start
 Create a .env file in the server directory and set up the following environment variables
 
 ```
-PORT=<The port the server will run on>
-CLIENT_URL=<Address of the client>
-SECRET_KEY=<Passwords encryption secret key>
-PG_HOST=<Postgres host>
-PG_PORT=<Postgres port>
+PORT=<The port the server will run on, e.g. 5000>
+CLIENT_URL=<Address of the client, e.g. http://localhost:3000/>
+SECRET_KEY=<Passwords encryption secret key, e.g. somesecretkey123>
+PG_HOST=<Postgres host, e.g. localhost >
+PG_PORT=<Postgres port, e.g. 5432>
 PG_USERNAME=<Postgres username>
 PG_PASSWORD=<Postgres password>
-PG_DATABASE=<Postgres database name>
+PG_DATABASE=<Postgres database name, e.g. chatapp>
 ```
 
 Install packages and start server
