@@ -4,8 +4,13 @@ import usersRouter from './routes/users'
 import chatsRouter from './routes/chats'
 import reportsRouter from './routes/reports'
 import errorHandler from './middleware/errorHandler'
+import http from 'http'
+import { connectToDB } from './config/db'
+import { initializeSocket } from './config/socket'
+import { PORT } from './config/constants'
 
 const app = express()
+const server = http.createServer(app)
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -17,4 +22,9 @@ app.use('/reports', reportsRouter)
 
 app.use(errorHandler)
 
-export default app
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`)
+})
+
+connectToDB()
+initializeSocket(server)

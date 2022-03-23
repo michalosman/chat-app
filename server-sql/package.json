@@ -2,9 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/config/server.ts",
+  "main": "src/app.ts",
   "scripts": {
-    "start": "npx nodemon src/config/server.ts",
+    "start": "npx nodemon src/app.ts",
     "migration:generate": "npx ts-node node_modules/typeorm/cli.js migration:generate -n",
     "migration:run": "npx ts-node node_modules/typeorm/cli.js migration:run",
     "migration:revert": "npx ts-node node_modules/typeorm/cli.js migration:revert"

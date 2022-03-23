@@ -6,7 +6,9 @@ import { fetchChats, receiveMessage } from '../actions/chats'
 export const SocketContext = createContext(null)
 
 const SocketProvider = ({ children }) => {
-  const socket = io(process.env.REACT_APP_SERVER_URL)
+  const socket = io(process.env.REACT_APP_SERVER_URL, {
+    transports: ['websocket'],
+  })
   const dispatch = useDispatch()
 
   const subscribeChats = (userId) => {
