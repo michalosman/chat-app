@@ -3,18 +3,24 @@ import { useSelector } from 'react-redux'
 import { Box, Typography, Avatar, Button } from '@mui/material'
 import useStyles from '../../styles'
 import { getInitials, getOtherMember } from '../../utils/functions'
+import { useParams } from 'react-router-dom'
 
 const UserChats = () => {
   const classes = useStyles()
   const user = useSelector((state) => state.auth)
   const chats = useSelector((state) => state.chats)
+  const { chatId } = useParams()
 
   const chatBoxes = chats.map((chat) => {
     const otherUser = getOtherMember(chat.members, user.id)
 
     return (
       <Link to={`/${chat.id}`} key={chat.id} style={{ textDecoration: 'none' }}>
-        <Button fullWidth style={{ textTransform: 'none', color: 'black' }}>
+        <Button
+          fullWidth
+          style={{ textTransform: 'none', color: 'black' }}
+          className={`${chat.id === chatId ? classes.activeChat : ''}`}
+        >
           <Box display="flex" alignItems="center" width="100%" p={1}>
             <Avatar
               src={`https://avatars.dicebear.com/api/initials/${getInitials(

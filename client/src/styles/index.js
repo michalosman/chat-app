@@ -5,11 +5,16 @@ const useStyles = makeStyles((theme) => ({
     overflowY: 'scroll',
   },
 
+  activeChat: {
+    backgroundColor: theme.palette.action.selected,
+  },
+
   message: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     marginRight: 'auto',
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(3),
     marginLeft: theme.spacing(2),
     borderRadius: '10px',
     backgroundColor: '#eee',
@@ -21,12 +26,18 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
+    '& $messageAuthor': {
+      right: '5px',
+      left: 'auto',
+    },
   },
 
-  messageTime: {
-    fontSize: '10px',
+  messageAuthor: {
+    position: 'absolute',
+    top: '-18px',
+    left: '5px',
+    color: theme.palette.text.secondary,
     fontWeight: 'bold',
-    color: 'grey',
   },
 
   ownMessageTime: {

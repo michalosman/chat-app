@@ -17,6 +17,7 @@ const SocketProvider = ({ children }) => {
     socket.on('chat deleted', () => dispatch(fetchChats()))
     socket.on('member added', () => dispatch(fetchChats()))
     socket.on('member left', () => dispatch(fetchChats()))
+    // ↑ These can be optimized ↑
   }
 
   const createChat = (userId) => {
