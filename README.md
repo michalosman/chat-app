@@ -39,8 +39,8 @@ Realtime **Chat App** created with MERN & PERN stack.
 
 ### Backend
 
-- JavaScript (server)
-- TypeScript (server-sql)
+- JavaScript (server-nosql)
+- TypeScript (server)
 - Node.js
 - Express
 - Socket.io
@@ -48,8 +48,8 @@ Realtime **Chat App** created with MERN & PERN stack.
 
 ### Database
 
-- MongoDB & Mongoose (server)
-- PostgreSQL & TypeORM (server-sql)
+- PostgreSQL & TypeORM (server)
+- MongoDB & Mongoose (server-nosql)
 
 ## Geting started
 
@@ -84,25 +84,6 @@ Create a .env file in the server directory and set up the following environment 
 PORT=<The port the server will run on, e.g. 5000>
 CLIENT_URL=<Address of the client, e.g. http://localhost:3000/>
 SECRET_KEY=<Passwords encryption secret key, e.g. somesecretkey123>
-MONGO_URI=<Your MongoDB database URI>
-```
-
-Install packages and start server
-
-```
-cd server
-npm install
-npm start
-```
-
-### Server setup (server-sql)
-
-Create a .env file in the server directory and set up the following environment variables
-
-```
-PORT=<The port the server will run on, e.g. 5000>
-CLIENT_URL=<Address of the client, e.g. http://localhost:3000/>
-SECRET_KEY=<Passwords encryption secret key, e.g. somesecretkey123>
 PG_HOST=<Postgres host, e.g. localhost >
 PG_PORT=<Postgres port, e.g. 5432>
 PG_USERNAME=<Postgres username>
@@ -113,7 +94,7 @@ PG_DATABASE=<Postgres database name, e.g. chatapp>
 Install packages and start server
 
 ```
-cd server-sql
+cd server
 npm install
 npm start
 ```
@@ -136,4 +117,23 @@ npm run migration:run
 
 ```
 npm run migration:revert
+```
+
+### Server setup (server-nosql)
+
+Create a .env file in the server directory and set up the following environment variables
+
+```
+PORT=<The port the server will run on, e.g. 5000>
+CLIENT_URL=<Address of the client, e.g. http://localhost:3000/>
+SECRET_KEY=<Passwords encryption secret key, e.g. somesecretkey123>
+MONGO_URI=<Your MongoDB database URI>
+```
+
+Install packages and start server
+
+```
+cd server-nosql
+npm install
+npm start
 ```

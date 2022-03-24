@@ -1,4 +1,4 @@
-import { Message } from './../models/Message'
+import { Message } from '../models/Message'
 import { getRepository } from 'typeorm'
 import { Chat, ChatType } from '../models/Chat'
 import { User, UserRole } from '../models/User'
