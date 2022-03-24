@@ -1,4 +1,4 @@
-# Chat App MERN
+# Chat App
 
 Realtime **Chat App** created with MERN & PERN stack.
 
@@ -11,8 +11,9 @@ Realtime **Chat App** created with MERN & PERN stack.
 
 ### User
 
-- [x] Create and delete private chats
-- [x] Create new messages
+- [x] Create and manage private chats
+- [x] Create and manage group chats
+- [x] Send messages
 - [x] Report users
 
 ### Moderator
@@ -56,8 +57,8 @@ Realtime **Chat App** created with MERN & PERN stack.
 ### Clone repository
 
 ```
-git clone https://github.com/michalosman/chat-app-mern.git
-cd chat-app-mern
+git clone https://github.com/michalosman/chat-app.git
+cd chat-app
 ```
 
 ### Client setup
