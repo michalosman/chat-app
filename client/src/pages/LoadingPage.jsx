@@ -1,6 +1,6 @@
 import { Box, CircularProgress } from '@mui/material'
 
-const LoadingPage = () => {
+function LoadingPage() {
   return (
     <Box
       height="100vh"

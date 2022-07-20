@@ -1,11 +1,18 @@
-import { useState, useEffect } from 'react'
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from '@mui/material'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Box, Button, Typography } from '@mui/material'
-import { Card, CardContent, CardActions } from '@mui/material'
+
 import { signOut } from '../actions/auth'
 import * as api from '../api'
 
-const ModeratorPage = () => {
+function ModeratorPage() {
   const dispatch = useDispatch()
   const [reports, setReports] = useState([])
 

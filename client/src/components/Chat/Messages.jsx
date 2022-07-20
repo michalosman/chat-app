@@ -1,9 +1,10 @@
-import { v4 as uuidv4 } from 'uuid'
-import { useSelector } from 'react-redux'
 import { Box, Typography } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { v4 as uuidv4 } from 'uuid'
+
 import useStyles from '../../styles'
 
-const Messages = ({ chat }) => {
+function Messages({ chat }) {
   const classes = useStyles()
   const user = useSelector((state) => state.auth)
 

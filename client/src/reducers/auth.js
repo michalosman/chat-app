@@ -1,8 +1,8 @@
 import {
-  SIGN_UP,
+  AUTO_SIGN_IN,
   SIGN_IN,
   SIGN_OUT,
-  AUTO_SIGN_IN,
+  SIGN_UP,
 } from '../constants/actionTypes'
 
 const authReducer = (auth = null, action) => {

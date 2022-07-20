@@ -1,12 +1,13 @@
-import { useState, useContext } from 'react'
-import { useDispatch } from 'react-redux'
 import SendIcon from '@mui/icons-material/Send'
 import { Box, IconButton, Input } from '@mui/material'
-import useStyles from '../../styles'
+import { useContext, useState } from 'react'
+import { useDispatch } from 'react-redux'
+
 import { sendMessage } from '../../actions/chats'
 import { SocketContext } from '../../context/Socket'
+import useStyles from '../../styles'
 
-const SendBox = ({ chat }) => {
+function SendBox({ chat }) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [message, setMessage] = useState('')
@@ -21,7 +22,7 @@ const SendBox = ({ chat }) => {
   }
 
   return (
-    <Box p={2} borderTop={1} borderColor={'divider'}>
+    <Box p={2} borderTop={1} borderColor="divider">
       <Box component="form" onSubmit={handleSendMessage} display="flex">
         <Input
           className={classes.input}

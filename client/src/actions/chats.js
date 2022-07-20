@@ -1,12 +1,12 @@
 import * as api from '../api'
 import {
-  FETCH_CHAT,
-  FETCH_CHATS,
   CREATE_CHAT,
   DELETE_CHAT,
+  FETCH_CHAT,
+  FETCH_CHATS,
   LEAVE_GROUP,
-  SEND_MESSAGE,
   RECEIVE_MESSAGE,
+  SEND_MESSAGE,
 } from '../constants/actionTypes'
 
 export const fetchChats = () => async (dispatch) => {

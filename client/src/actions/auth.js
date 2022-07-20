@@ -1,10 +1,10 @@
+import * as api from '../api'
 import {
-  SIGN_UP,
+  AUTO_SIGN_IN,
   SIGN_IN,
   SIGN_OUT,
-  AUTO_SIGN_IN,
+  SIGN_UP,
 } from '../constants/actionTypes'
-import * as api from '../api'
 
 export const signUp = (newUserData) => async (dispatch) => {
   try {

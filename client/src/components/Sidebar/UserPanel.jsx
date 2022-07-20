@@ -1,30 +1,31 @@
-import { useState, useContext } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import AddIcon from '@mui/icons-material/Add'
+import GroupsIcon from '@mui/icons-material/Groups'
 import LogoutIcon from '@mui/icons-material/Logout'
 import PersonIcon from '@mui/icons-material/Person'
-import GroupsIcon from '@mui/icons-material/Groups'
 import {
-  Box,
-  Typography,
   Avatar,
-  IconButton,
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+  IconButton,
+  ListItemIcon,
   Menu,
   MenuItem,
-  ListItemIcon,
+  TextField,
+  Typography,
 } from '@mui/material'
-import { getInitials } from '../../utils/functions'
-import { signOut } from '../../actions/auth'
-import { createPrivateChat, createGroupChat } from '../../actions/chats'
-import { SocketContext } from '../../context/Socket'
+import { useContext, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-const UserPanel = () => {
+import { signOut } from '../../actions/auth'
+import { createGroupChat, createPrivateChat } from '../../actions/chats'
+import { SocketContext } from '../../context/Socket'
+import { getInitials } from '../../utils/functions'
+
+function UserPanel() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
   const socket = useContext(SocketContext)
@@ -87,7 +88,7 @@ const UserPanel = () => {
       justifyContent="space-between"
       p={2}
       borderBottom={1}
-      borderColor={'divider'}
+      borderColor="divider"
     >
       <Box display="flex" alignItems="center">
         <Avatar
@@ -138,7 +139,7 @@ const UserPanel = () => {
           <DialogTitle>Create new private chat</DialogTitle>
           <DialogContent>
             <Typography variant="body2" gutterBottom>
-              Enter user's email address.
+              Enter user&apos;s email address.
             </Typography>
             <TextField
               autoFocus

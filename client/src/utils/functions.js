@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 export const getInitials = (name) => {
-  const isSingleWord = name.split(' ').length === 1 ? true : false
+  const isSingleWord = name.split(' ').length === 1
 
   if (isSingleWord) {
     return name[0]

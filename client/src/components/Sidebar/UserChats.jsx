@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom'
+import { Avatar, Box, Button, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { Box, Typography, Avatar, Button } from '@mui/material'
+import { Link, useParams } from 'react-router-dom'
+
 import useStyles from '../../styles'
 import { getInitials, getOtherMember } from '../../utils/functions'
-import { useParams } from 'react-router-dom'
 
-const UserChats = () => {
+function UserChats() {
   const classes = useStyles()
   const user = useSelector((state) => state.auth)
   const chats = useSelector((state) => state.chats)

@@ -1,28 +1,29 @@
-import { useContext, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import DeleteIcon from '@mui/icons-material/Delete'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import {
   Box,
-  Typography,
-  IconButton,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+  IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
+  TextField,
+  Typography,
 } from '@mui/material'
+import { useContext, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { deleteChat, leaveGroup } from '../../../actions/chats'
 import * as api from '../../../api'
 import { SocketContext } from '../../../context/Socket'
 
-const GroupMenu = ({ chat }) => {
+function GroupMenu({ chat }) {
   const dispatch = useDispatch()
   const socket = useContext(SocketContext)
   const user = useSelector((state) => state.auth)
@@ -170,7 +171,7 @@ const GroupMenu = ({ chat }) => {
         <DialogTitle>Add new member</DialogTitle>
         <DialogContent>
           <Typography variant="body2" gutterBottom>
-            Enter new member's email address.
+            Enter new member&apos;s email address.
           </Typography>
           <TextField
             autoFocus

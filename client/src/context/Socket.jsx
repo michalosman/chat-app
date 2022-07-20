@@ -1,11 +1,12 @@
-import io from 'socket.io-client'
-import { createContext } from 'react'
+import { createContext, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
+import io from 'socket.io-client'
+
 import { fetchChats, receiveMessage } from '../actions/chats'
 
 export const SocketContext = createContext(null)
 
-const SocketProvider = ({ children }) => {
+function SocketProvider({ children }) {
   const socket = io(process.env.REACT_APP_SERVER_URL, {
     transports: ['websocket'],
   })
@@ -54,7 +55,8 @@ const SocketProvider = ({ children }) => {
 
   return (
     <SocketContext.Provider
-      value={{
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      value={useMemo(() => ({
         subscribeChats,
         createChat,
         deleteChat,
@@ -63,7 +65,7 @@ const SocketProvider = ({ children }) => {
         subscribeChatMessages,
         unsubscribeChatMessages,
         sendMessage,
-      }}
+      }))}
     >
       {children}
     </SocketContext.Provider>

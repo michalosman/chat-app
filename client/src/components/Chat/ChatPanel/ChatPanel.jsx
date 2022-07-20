@@ -1,12 +1,11 @@
+import { Avatar, Box, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
 
-import { Box, Avatar, Typography } from '@mui/material'
-
 import { getInitials, getOtherMember } from '../../../utils/functions'
-import PrivateMenu from './PrivateMenu'
 import GroupMenu from './GroupMenu'
+import PrivateMenu from './PrivateMenu'
 
-const ChatPanel = ({ chat }) => {
+function ChatPanel({ chat }) {
   const user = useSelector((state) => state.auth)
   const otherUser = getOtherMember(chat.members, user.id)
 
@@ -16,7 +15,7 @@ const ChatPanel = ({ chat }) => {
       justifyContent="space-between"
       p={2}
       borderBottom={1}
-      borderColor={'divider'}
+      borderColor="divider"
     >
       <Box display="flex" alignItems="center">
         <Avatar

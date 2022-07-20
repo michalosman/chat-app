@@ -1,4 +1,4 @@
-export const chats = [
+const chats = [
   {
     id: '123',
     members: [
@@ -78,3 +78,5 @@ export const chats = [
     },
   },
 ]
+
+export default chats

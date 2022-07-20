@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+
 import authReducer from './auth'
 import chatsReducer from './chats'
 

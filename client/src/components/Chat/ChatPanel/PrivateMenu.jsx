@@ -1,27 +1,28 @@
-import { useContext, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import ReportIcon from '@mui/icons-material/Report'
 import DeleteIcon from '@mui/icons-material/Delete'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import ReportIcon from '@mui/icons-material/Report'
 import {
   Box,
-  Typography,
-  IconButton,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+  IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
+  TextField,
+  Typography,
 } from '@mui/material'
+import { useContext, useState } from 'react'
+import { useDispatch } from 'react-redux'
+
 import { deleteChat } from '../../../actions/chats'
 import * as api from '../../../api'
 import { SocketContext } from '../../../context/Socket'
 
-const PrivateMenu = ({ otherUser, chat }) => {
+function PrivateMenu({ otherUser, chat }) {
   const dispatch = useDispatch()
 
   const socket = useContext(SocketContext)

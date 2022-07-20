@@ -1,18 +1,19 @@
-import { useState } from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import { useDispatch } from 'react-redux'
 import {
   Avatar,
-  Button,
-  TextField,
-  Grid,
   Box,
-  Typography,
+  Button,
   Container,
+  Grid,
+  TextField,
+  Typography,
 } from '@mui/material'
-import { signUp, signIn } from '../actions/auth'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
-const LoginPage = () => {
+import { signIn, signUp } from '../actions/auth'
+
+function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
   const dispatch = useDispatch()
 

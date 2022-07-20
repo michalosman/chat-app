@@ -1,11 +1,11 @@
 import {
-  FETCH_CHAT,
-  FETCH_CHATS,
   CREATE_CHAT,
   DELETE_CHAT,
+  FETCH_CHAT,
+  FETCH_CHATS,
   LEAVE_GROUP,
-  SEND_MESSAGE,
   RECEIVE_MESSAGE,
+  SEND_MESSAGE,
 } from '../constants/actionTypes'
 
 const chatsReducer = (chats = [], action) => {
@@ -26,6 +26,7 @@ const chatsReducer = (chats = [], action) => {
       return chats.map((chat) => {
         if (chat.id === action.payload.chatId) {
           chat.messages.push(action.payload.message)
+          // eslint-disable-next-line no-param-reassign
           chat.recentMessage = action.payload.message
         }
         return chat

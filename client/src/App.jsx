@@ -1,16 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import AdminPage from './pages/AdminPage'
-import UserPage from './pages/UserPage'
-import ModeratorPage from './pages/ModeratorPage'
-import LoginPage from './pages/LoginPage'
-import useAuth from './hooks/useAuth'
-import LoadingPage from './pages/LoadingPage'
+
 import { fetchChats } from './actions/chats'
 import { SocketContext } from './context/Socket'
+import useAuth from './hooks/useAuth'
+import AdminPage from './pages/AdminPage'
+import LoadingPage from './pages/LoadingPage'
+import LoginPage from './pages/LoginPage'
+import ModeratorPage from './pages/ModeratorPage'
+import UserPage from './pages/UserPage'
 
-const App = () => {
+function App() {
   const [user, loading] = useAuth()
   const dispatch = useDispatch()
   const socket = useContext(SocketContext)

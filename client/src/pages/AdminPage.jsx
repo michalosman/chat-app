@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import {
   Box,
   Button,
   Card,
-  CardContent,
   CardActions,
+  CardContent,
   Typography,
 } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+
 import { signOut } from '../actions/auth'
 import * as api from '../api'
 
-const AdminPage = () => {
+function AdminPage() {
   const dispatch = useDispatch()
   const [users, setUsers] = useState([])
 
