@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   ownMessage: {
+    textAlign: 'right',
     alignItems: 'flex-end',
     marginRight: theme.spacing(2),
     marginLeft: 'auto',
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   messageAuthor: {
+    minWidth: '300px',
     position: 'absolute',
     top: '-18px',
     left: '5px',
