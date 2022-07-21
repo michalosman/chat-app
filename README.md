@@ -1,6 +1,6 @@
 # Chat App
 
-Realtime **Chat App** created with MERN & PERN stack.
+Realtime **Chat App** created with MERN stack. There's also an alternative backend version using an SQL database.
 
 ## Features
 
@@ -40,8 +40,8 @@ Realtime **Chat App** created with MERN & PERN stack.
 
 ### Backend
 
-- JavaScript (server-nosql)
-- TypeScript (server)
+- JavaScript
+- TypeScript
 - Node.js
 - Express
 - Socket.io
@@ -49,8 +49,8 @@ Realtime **Chat App** created with MERN & PERN stack.
 
 ### Database
 
-- PostgreSQL & TypeORM (server)
-- MongoDB & Mongoose (server-nosql)
+- MongoDB & Mongoose
+- PostgreSQL & TypeORM
 
 ## Geting started
 
@@ -77,7 +77,26 @@ npm install
 npm start
 ```
 
-### Server setup (server)
+### Server setup
+
+Create a .env file in the server directory and set up the following environment variables
+
+```
+PORT=<The port the server will run on, e.g. 5000>
+CLIENT_URL=<Address of the client, e.g. http://localhost:3000/>
+SECRET_KEY=<Passwords encryption secret key, e.g. somesecretkey123>
+MONGO_URI=<Your MongoDB database URI>
+```
+
+Install packages and start server
+
+```
+cd server
+npm install
+npm start
+```
+
+### SQL server setup (server-sql)
 
 Create a .env file in the server directory and set up the following environment variables
 
@@ -118,23 +137,4 @@ npm run migration:run
 
 ```
 npm run migration:revert
-```
-
-### Server setup (server-nosql)
-
-Create a .env file in the server directory and set up the following environment variables
-
-```
-PORT=<The port the server will run on, e.g. 5000>
-CLIENT_URL=<Address of the client, e.g. http://localhost:3000/>
-SECRET_KEY=<Passwords encryption secret key, e.g. somesecretkey123>
-MONGO_URI=<Your MongoDB database URI>
-```
-
-Install packages and start server
-
-```
-cd server-nosql
-npm install
-npm start
 ```
