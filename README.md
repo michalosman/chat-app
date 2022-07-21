@@ -2,6 +2,8 @@
 
 Realtime **Chat App** created with MERN stack. There's also an alternative backend version using a SQL database.
 
+[Live Demo](https://chat-app-mern-michalosman.netlify.app/) :point_left:
+
 ## Features
 
 ### Guest
