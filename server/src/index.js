@@ -11,13 +11,13 @@ import connectToDB from './db.js'
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:3000'
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000'
 
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: CLIENT_ORIGIN,
+    origin: CLIENT_URL,
   },
 })
 
