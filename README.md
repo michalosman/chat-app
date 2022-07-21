@@ -1,6 +1,6 @@
 # Chat App
 
-Realtime **Chat App** created with MERN stack. There's also an alternative backend version using an SQL database.
+Realtime **Chat App** created with MERN stack. There's also an alternative backend version using a SQL database.
 
 ## Features
 
